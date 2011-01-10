@@ -21,7 +21,6 @@ import org.mt4j.components.MTComponent;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.components.visibleComponents.shapes.MTPolygon;
-import org.mt4j.util.MTColor;
 import org.mt4j.util.animation.AnimationEvent;
 import org.mt4j.util.animation.IAnimation;
 import org.mt4j.util.animation.IAnimationListener;
