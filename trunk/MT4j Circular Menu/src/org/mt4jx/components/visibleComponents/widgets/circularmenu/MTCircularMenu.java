@@ -28,13 +28,14 @@ public class MTCircularMenu extends MTEllipse {
 
 	private MTCircularMenuBehaviour behavior = BEHAVIOUR_DEFAULT;
 	
-	private float innerRadius;
+	private float innerRadius,outerRadius;
 	private IFont font;
 	
-	public MTCircularMenu(PApplet pApplet, float innerRadius){
+	public MTCircularMenu(PApplet pApplet, float innerRadius, float outerRadius){
 		super(pApplet, new Vector3D(0,0), innerRadius, innerRadius);
 		this.pApplet = pApplet;
 		this.innerRadius = innerRadius;
+		this.outerRadius = outerRadius;
 		
 		this.setComposite(false);
 		this.removeAllGestureEventListeners();
@@ -42,8 +43,8 @@ public class MTCircularMenu extends MTEllipse {
 		this.setFillColor(new MTColor(0,0,0, 255-32));
 		this.setStrokeColor(new MTColor(255,255,255, 255-32));
 		this.setStrokeWeight(4f);
-//		this.setNoFill(true);
-//		this.setNoStroke(true);
+		this.setNoFill(true);
+		this.setNoStroke(true);
 		
 		MTColor white = new MTColor(255,255,255);
 		this.font = FontManager.getInstance().createFont(this.pApplet, "arial", 18);
@@ -199,7 +200,7 @@ public class MTCircularMenu extends MTEllipse {
 		// (re)create segments if something was added
 		if(this.isDirty()){
 			// TODO: calc outer radius as required
-			createMenu(innerRadius, innerRadius+120f);
+			createMenu(innerRadius, outerRadius);
 			System.out.println("isDirty==true->Menu (re)created.");
 		}
 		super.preDraw(graphics);
