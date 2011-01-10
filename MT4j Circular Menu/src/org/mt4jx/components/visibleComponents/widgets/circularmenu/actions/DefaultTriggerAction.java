@@ -1,4 +1,4 @@
-package org.mt4jx.components.visibleComponents.widgets.circularmenu;
+package org.mt4jx.components.visibleComponents.widgets.circularmenu.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4jx.components.visibleComponents.widgets.circularmenu.MTCircularMenuSegment;
+import org.mt4jx.components.visibleComponents.widgets.circularmenu.TriggerAction;
 
 public class DefaultTriggerAction implements TriggerAction {
 	private ArrayList<ActionListener> actionListeners = new ArrayList<ActionListener>();

@@ -2,23 +2,17 @@ package org.mt4jx.components.visibleComponents.widgets.circularmenu;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.TransformSpace;
-import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.components.visibleComponents.shapes.MTPolygon;
-import org.mt4j.sceneManagement.Iscene;
-import org.mt4j.util.animation.Animation;
+import org.mt4j.util.MTColor;
 import org.mt4j.util.animation.AnimationEvent;
 import org.mt4j.util.animation.IAnimation;
 import org.mt4j.util.animation.IAnimationListener;
-import org.mt4j.util.animation.MultiPurposeInterpolator;
 import org.mt4j.util.animation.ani.AniAnimation;
-import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.ToolsGeometry;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
-
-import sun.awt.windows.ThemeReader;
 
 public class AnimationUtil {
 	public static void rotateOut(final MTPolygon as, final boolean destroyWhenCompleted){
@@ -30,9 +24,9 @@ public class AnimationUtil {
 				switch (ae.getId()) {
 				case AnimationEvent.ANIMATION_STARTED:
 				case AnimationEvent.ANIMATION_UPDATED:
-					float currentVal = ae.getCurrentValue();
+					float currentVal = ae.getValue();
 					as.setWidthXYRelativeToParent(currentVal);
-					as.rotateZ(as.getCenterPointRelativeToParent(), -ae.getCurrentStepDelta()*0.4f);
+					as.rotateZ(as.getCenterPointRelativeToParent(), -ae.getDelta()*0.4f);
 					break;
 				case AnimationEvent.ANIMATION_ENDED:
 					as.setVisible(false);
@@ -48,7 +42,6 @@ public class AnimationUtil {
 		closeAnim.start();
 	}
 	public static void rotate2D(final MTPolygon as, float degrees){
-		float width = as.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
 		IAnimation closeAnim = new AniAnimation(0, -1*degrees, 500, AniAnimation.SINE_IN, as);
 		closeAnim.addAnimationListener(new IAnimationListener(){
 			public void processAnimationEvent(AnimationEvent ae) {
@@ -56,7 +49,7 @@ public class AnimationUtil {
 				switch (ae.getId()) {
 				case AnimationEvent.ANIMATION_STARTED:
 				case AnimationEvent.ANIMATION_UPDATED:
-					as.rotateZ(as.getCenterPointRelativeToParent(), -ae.getCurrentStepDelta());
+					as.rotateZ(as.getCenterPointRelativeToParent(), -ae.getDelta());
 					break;
 				case AnimationEvent.ANIMATION_ENDED:
 					break;	
@@ -76,7 +69,7 @@ public class AnimationUtil {
 				switch (ae.getId()) {
 				case AnimationEvent.ANIMATION_STARTED:
 				case AnimationEvent.ANIMATION_UPDATED:
-					float currentVal = ae.getCurrentValue();
+					float currentVal = ae.getValue();
 					as.setWidthXYRelativeToParent(currentVal);
 //					as.rotateZ(as.getCenterPointRelativeToParent(), -ae.getCurrentStepDelta()*0.4f);
 					break;
@@ -103,7 +96,7 @@ public class AnimationUtil {
 				switch (ae.getId()) {
 				case AnimationEvent.ANIMATION_STARTED:
 				case AnimationEvent.ANIMATION_UPDATED:
-					float currentVal = ae.getCurrentValue();
+					float currentVal = ae.getValue();
 					as.setWidthXYRelativeToParent(currentVal);
 					break;
 				case AnimationEvent.ANIMATION_ENDED:
@@ -130,7 +123,7 @@ public class AnimationUtil {
 				switch (ae.getId()) {
 				case AnimationEvent.ANIMATION_STARTED:
 				case AnimationEvent.ANIMATION_UPDATED:
-					float currentVal = ae.getCurrentValue();
+					float currentVal = ae.getValue();
 					as.setWidthXYRelativeToParent(currentVal);
 					break;
 				case AnimationEvent.ANIMATION_ENDED:
@@ -143,45 +136,28 @@ public class AnimationUtil {
 		closeAnim.start();
 	}
 
-	public static void translate(final MTComponent as, float x, float y){
+	public static void translate(final MTComponent as, final float x,
+			final float y) {
 		{
-		IAnimation xAni = new AniAnimation(0, x, 400, AniAnimation.LINEAR, as);
-		xAni.addAnimationListener(new IAnimationListener(){
-			public void processAnimationEvent(AnimationEvent ae) {
-				switch (ae.getId()) {
-				case AnimationEvent.ANIMATION_STARTED:
-				case AnimationEvent.ANIMATION_UPDATED:
-					float delta = ae.getCurrentStepDelta();
-					as.translate(new Vector3D(delta,0));
-					break;
-				case AnimationEvent.ANIMATION_ENDED:
-					break;	
-				default:
-					break;
-				}//switch
-			}//processanimation
-		});
-		xAni.start();
-		}
-		{
-			IAnimation yAni = new AniAnimation(0, y, 400, AniAnimation.EXPO_IN, as);
-			yAni.addAnimationListener(new IAnimationListener(){
+			IAnimation ani = new AniAnimation(0, 1, 400, AniAnimation.SINE_IN,
+					as);
+			ani.addAnimationListener(new IAnimationListener() {
 				public void processAnimationEvent(AnimationEvent ae) {
 					switch (ae.getId()) {
 					case AnimationEvent.ANIMATION_STARTED:
 					case AnimationEvent.ANIMATION_UPDATED:
-						float delta = ae.getCurrentStepDelta();
-						as.translate(new Vector3D(0, delta));
+						float delta = ae.getDelta();
+						as.translate(new Vector3D(delta*x, delta*y));
 						break;
 					case AnimationEvent.ANIMATION_ENDED:
-						break;	
+						break;
 					default:
 						break;
-					}//switch
-				}//processanimation
+					}// switch
+				}// processanimation
 			});
-			yAni.start();
-			}
+			ani.start();
+		}
 	}
 	public static void moveIntoScreen(AbstractShape as, PApplet pa){
 //		Vector3D transVec = AnimationUtil.getTranslationVector(as,container);
@@ -219,7 +195,7 @@ public class AnimationUtil {
 	public static Vector3D getTranslationVector(MTComponent as, MTComponent container){
 		// Parent Geometry
 		
-		Vector3D[] boundingShapeParent = container.getBounds().getVectorsGlobal();
+//		Vector3D[] boundingShapeParent = container.getBounds().getVectorsGlobal();
 		float[] minMaxParent = ToolsGeometry.getMinXYMaxXY(as.getBounds().getVectorsGlobal());
 		float xMinParent = minMaxParent[0];
 		float yMinParent = minMaxParent[1];

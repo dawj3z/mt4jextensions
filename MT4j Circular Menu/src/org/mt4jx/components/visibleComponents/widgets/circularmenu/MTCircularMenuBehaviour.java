@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
+import org.mt4jx.components.visibleComponents.widgets.circularmenu.actions.DefaultSegmentSelectionVisualisationAction;
+import org.mt4jx.components.visibleComponents.widgets.circularmenu.actions.DefaultTriggerAction;
 
 public class MTCircularMenuBehaviour {
 	private Class<? extends IInputProcessor> segmentSelectionProcessor = DragProcessor.class;

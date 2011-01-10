@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.mt4j.util.MTColor;
 import org.mt4jx.components.visibleComponents.shapes.MTEllipseSegmentComplexPoly;
 
-class MTCircularMenuSegment extends MTEllipseSegmentComplexPoly {
+public class MTCircularMenuSegment extends MTEllipseSegmentComplexPoly {
 	private boolean isDown = false;
 	private float scaleDelta = 0.04f;
 	

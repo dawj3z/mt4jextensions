@@ -1,9 +1,10 @@
-package org.mt4jx.components.visibleComponents.widgets.circularmenu;
+package org.mt4jx.components.visibleComponents.widgets.circularmenu.actions;
 
 import org.mt4j.components.interfaces.IMTComponent3D;
+
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
-
+import org.mt4jx.components.visibleComponents.widgets.circularmenu.*;
 public class DefaultSegmentSelectionVisualisationAction implements IGestureEventListener {
 	@Override
 	public boolean processGestureEvent(MTGestureEvent ge) {
