@@ -1,3 +1,20 @@
+/***********************************************************************
+ *   MT4j Extension: MTCircularMenu
+ *   
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU Lesser General Public License (LGPL)
+ *   as published by the Free Software Foundation, either version 3
+ *   of the License, or (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the LGPL
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ***********************************************************************/
 package org.mt4jx.components.visibleComponents.shapes.widgets.imageinfo;
 
 import java.awt.event.ActionEvent;
@@ -20,6 +37,10 @@ import org.mt4jx.components.visibleComponents.widgets.circularmenu.AnimationUtil
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+ * @author Uwe Laufs
+ *
+ */
 public class MTInfoPanel extends MTRectangle {
 	private IFont font;
 	private IFont font2;
