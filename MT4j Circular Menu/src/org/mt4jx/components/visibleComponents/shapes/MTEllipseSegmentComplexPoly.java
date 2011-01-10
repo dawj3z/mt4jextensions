@@ -1,3 +1,20 @@
+/***********************************************************************
+ *   MT4j Extension: MTCircularMenu
+ *   
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU Lesser General Public License (LGPL)
+ *   as published by the Free Software Foundation, either version 3
+ *   of the License, or (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the LGPL
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ***********************************************************************/
 package org.mt4jx.components.visibleComponents.shapes;
 
 import java.util.ArrayList;
@@ -9,8 +26,11 @@ import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
 
+/**
+ * @author Uwe Laufs
+ *
+ */
 public class MTEllipseSegmentComplexPoly extends MTComplexPolygon {
-	/** The theta. */
 	private float theta = 0.0f;
 	
 	public MTEllipseSegmentComplexPoly(PApplet pApplet, Vertex[] vertices) {
@@ -19,13 +39,6 @@ public class MTEllipseSegmentComplexPoly extends MTComplexPolygon {
 	
 	public MTEllipseSegmentComplexPoly(PApplet pApplet, float innerRadius, float outerRadius, float degrees, float orientationAngleDegrees){
 		this(pApplet, new Vertex[]{});
-		// calculate inner bounds
-//		float distInnerCircle = (float)(innerRadius * Math.sin(Math.toRadians(90)) / Math.sin(Math.toRadians(45)));
-//		Vector3D p1 = new Vector3D(0,0-distInnerCircle);
-//		Vector3D p2 = new Vector3D(0-distInnerCircle,0);
-//		MTLine testLine = new MTLine(pApplet,p1.x,p1.y,p2.x,p2.y);
-//		testLine.setStrokeColor(new MTColor(255,0,0));
-//		this.addChild(testLine);
 		this.setVertices(this.createEllipseSegment(innerRadius, innerRadius, outerRadius, outerRadius, degrees, 32, orientationAngleDegrees));
 	}
 
