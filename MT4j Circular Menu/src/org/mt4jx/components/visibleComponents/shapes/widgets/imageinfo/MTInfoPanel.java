@@ -25,7 +25,6 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
-import org.mt4j.components.visibleComponents.widgets.MTImage;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.components.visibleComponents.widgets.buttons.MTImageButton;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
@@ -35,7 +34,6 @@ import org.mt4j.util.math.Vector3D;
 import org.mt4jx.components.visibleComponents.widgets.circularmenu.AnimationUtil;
 
 import processing.core.PApplet;
-import processing.core.PImage;
 
 /**
  * @author Uwe Laufs

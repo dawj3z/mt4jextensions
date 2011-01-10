@@ -20,8 +20,6 @@ package org.mt4jx.components.visibleComponents.widgets.circularmenu;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
-
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.util.MTColor;
 
