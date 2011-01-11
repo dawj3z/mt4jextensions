@@ -1,0 +1,2 @@
+- Solve scaling problem with landscape format pdf documents
+- add aditional functionality
