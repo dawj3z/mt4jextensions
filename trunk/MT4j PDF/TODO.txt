@@ -1,2 +1,3 @@
 - Solve scaling problem with landscape format pdf documents
 - add aditional functionality
+- fix problem with scaling many times (before rendering finished)
