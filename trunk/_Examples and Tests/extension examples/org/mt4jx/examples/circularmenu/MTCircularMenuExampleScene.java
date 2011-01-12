@@ -15,9 +15,9 @@ import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
-import org.mt4jx.components.visibleComponents.widgets.circularmenu.AnimationUtil;
 import org.mt4jx.components.visibleComponents.widgets.circularmenu.CircularMenuSegmentHandle;
 import org.mt4jx.components.visibleComponents.widgets.circularmenu.MTCircularMenu;
+import org.mt4jx.util.animation.AnimationUtil;
 
 public class MTCircularMenuExampleScene extends AbstractScene {
 	private MTApplication app;
@@ -62,7 +62,7 @@ public class MTCircularMenuExampleScene extends AbstractScene {
 					case TapEvent.GESTURE_ENDED:
 						if (te.isTapped()) {
 							CircularMenuSegmentHandle segment;
-							final MTCircularMenu menu = new MTCircularMenu(mtApplication, 60, 190);
+							final MTCircularMenu menu = new MTCircularMenu(mtApplication, 45, 160);
 
 							// no actionListener required
 							segment = menu.createSegment("Cancel");
