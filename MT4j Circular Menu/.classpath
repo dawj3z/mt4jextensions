@@ -48,5 +48,6 @@
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/GlulogicMT.jar"/>
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/mri.jar"/>
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/muito_blobtracking.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MT4j Commons"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

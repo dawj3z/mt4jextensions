@@ -20,6 +20,8 @@ package org.mt4jx.components.visibleComponents.widgets.circularmenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.mt4jx.util.animation.AnimationUtil;
+
 /**
  * @author Uwe Laufs
  *
