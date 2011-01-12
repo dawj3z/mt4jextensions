@@ -91,6 +91,7 @@ public class MTPDF extends MTRectangle {
 		setSizeXYGlobal(width, height);
 		PImage img= null;
 		try {
+			// use double image size as texture (better while scaling up) ?
 			img = new PImage(PDFRenderer.loadImage(pdf, textureWidth, textureHeight, this.pageNumber));
 			setTexture(img);
 		} catch (IOException e) {
