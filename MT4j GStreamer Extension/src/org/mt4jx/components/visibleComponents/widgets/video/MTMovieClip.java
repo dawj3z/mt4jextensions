@@ -347,7 +347,7 @@ public class MTMovieClip extends MTRectangle implements IdragClusterable {
 					public boolean processGestureEvent(MTGestureEvent ge) {
 						DragEvent de = (DragEvent)ge;
 						switch (de.getId()) {
-						case MTGestureEvent.GESTURE_DETECTED:
+						case MTGestureEvent.GESTURE_STARTED:
 							stopSliderAdvance = true;
 							break;
 						case MTGestureEvent.GESTURE_UPDATED:

@@ -18,6 +18,7 @@ import processing.core.PApplet;
 import advanced.puzzle.PuzzleFactory;
 
 public class VideoPuzzleTest_ extends MTApplication {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param args
@@ -83,11 +84,9 @@ public class VideoPuzzleTest_ extends MTApplication {
 			}
 		}
 
-		@Override
-		public void init() {}
-
-		@Override
-		public void shutDown() {}
+		public void onEnter() {}
+		
+		public void onLeave() {}
 		
 	}
 
