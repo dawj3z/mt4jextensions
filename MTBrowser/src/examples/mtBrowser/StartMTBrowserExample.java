@@ -48,6 +48,9 @@ public class StartMTBrowserExample extends MTApplication {
 			getCanvas().addChild(button);
 		}
 		
+		public void onEnter() {}
+		
+		public void onLeave() {}
 		
 		private class PlusButton extends MTRoundRectangle{
 			private Vector3D centerLocal;
