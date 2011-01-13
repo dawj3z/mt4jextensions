@@ -28,10 +28,8 @@ public class MTMovieClipExample extends MTApplication {
 			getCanvas().addChild(movieClip);
 		}
 
-		@Override
-		public void init() {	}
-
-		@Override
-		public void shutDown() {	}
+		public void onEnter() {}
+		
+		public void onLeave() {}
 	}
 }
