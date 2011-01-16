@@ -6,7 +6,7 @@ import org.mt4j.input.inputSources.AbstractInputSource;
 import org.mt4j.util.math.Vector3D;
 
 public class SkeletonJointCursorEvent extends AbstractCursorInputEvt {
-	private float screenZ;
+	private float z;
 	private long sequenceId;
 	private int userId;
 	
@@ -21,13 +21,13 @@ public class SkeletonJointCursorEvent extends AbstractCursorInputEvt {
 								int userId) {
 		
 		super(source, positionX, positionY, id, m);
-		this.screenZ = positionZ;
+		this.z = positionZ;
 		this.sequenceId = sequenceId;
 		this.userId = userId;
 	}
 
-	public float getScreenZ() {
-		return screenZ;
+	public float getZ() {
+		return z;
 	}
 
 	public long getSequenceId() {
@@ -39,10 +39,10 @@ public class SkeletonJointCursorEvent extends AbstractCursorInputEvt {
 	}
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		return new SkeletonJointCursorEvent((AbstractInputSource)this.getSource(), this.getPosX(), this.getPosY(), this.screenZ, this.getCursor(), this.getId(), this.sequenceId, this.userId);
+		return new SkeletonJointCursorEvent((AbstractInputSource)this.getSource(), this.getPosX(), this.getPosY(), this.z, this.getCursor(), this.getId(), this.sequenceId, this.userId);
 	}
 	@Override
 	public Vector3D getPosition(){
-		return new Vector3D(this.getScreenX(), this.getScreenY(), this.getScreenZ());
+		return new Vector3D(this.getX(), this.getY(), this.getZ());
 	}
 }
