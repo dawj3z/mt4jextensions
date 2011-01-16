@@ -18,11 +18,11 @@ import org.tuio4j.cursor2d.Tuio2DCursorEvent;
  * @author Uwe Laufs
  * @version 1.0
  */
-public class Tuio2DCursorInputSource extends AbstractInputSource implements TuioClientListener {
+public class Tuio2dObjectInputSource extends AbstractInputSource implements TuioClientListener {
 	/** this is needed to track which events got fired as a finger down event already. */
 	private Map<Long, Long> tuioIDToCursorID = new HashMap<Long, Long>();;
 	private TuioClient client;
-	public Tuio2DCursorInputSource(MTApplication mtApp){
+	public Tuio2dObjectInputSource(MTApplication mtApp){
 		super(mtApp);
 		this.client = new TuioClient(3333);
 		this.client.connect();
@@ -60,7 +60,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 							System.out.println("enque UPDATE cid:" + c.getId());
 							this.enqueueInputEvent(touchEvt);
 						}else{
-//							logger.error("CURSOR NOT IN ACTIVE CURSOR LIST! TUIO ID: " + cursor.getSessionID());
+							// error
 						}
 					}
 				}
@@ -83,7 +83,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 							tuioIDToCursorID.remove(sessionID);
 						}
 					}else{
-//						logger.info("ERROR WHEN REMOVING FINGER - TUIO ID: " + cursor.getSessionID() + " - Cursor not in tuioIDMap! - probably removed before an update event got fired!");
+						// error
 					}
 				}
 					break;
