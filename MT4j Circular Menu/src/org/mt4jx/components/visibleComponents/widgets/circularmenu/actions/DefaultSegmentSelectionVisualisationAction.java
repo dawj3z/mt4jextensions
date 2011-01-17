@@ -32,7 +32,7 @@ public class DefaultSegmentSelectionVisualisationAction implements IGestureEvent
 		if(eventTarget instanceof MTCircularMenuSegment){
 			MTCircularMenuSegment segment = (MTCircularMenuSegment)eventTarget;
 			switch (ge.getId()) {
-			case MTGestureEvent.GESTURE_DETECTED:
+			case MTGestureEvent.GESTURE_STARTED:
 				segment.segmentDown();
 				break;
 			case MTGestureEvent.GESTURE_ENDED:
