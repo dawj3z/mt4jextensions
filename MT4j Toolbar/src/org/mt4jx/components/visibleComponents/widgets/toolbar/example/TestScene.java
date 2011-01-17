@@ -14,7 +14,7 @@ import org.mt4jx.components.visibleComponents.widgets.toolbar.MTToolbarListItem;
 
 /**
  * @author Alexander Phleps
- *
+ * TODO: clean up example code
  */
 public class TestScene extends AbstractScene {
 	private MTApplication app;
@@ -32,7 +32,7 @@ public class TestScene extends AbstractScene {
 		final MTLayoutContainer buttonContainer = new MTLayoutContainer(MTLayoutContainer.ALIGN_BOTTOM, MTLayoutContainer.LAYOUT_HORIZONTAL, app);
 
 		//add a button with  action listener assigned
-		final MTToolbarButton tbb1 = new MTToolbarButton(app.loadImage(imagePath + "project.png"), app);
+		final MTToolbarButton tbb1 = new MTToolbarButton(app.loadImage(imagePath + "iChat-icon.png"), app);
 		tbb1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -45,14 +45,14 @@ public class TestScene extends AbstractScene {
         });
 		
 		//create three more with no action listeners		
-		final MTToolbarButton tbb2 = new MTToolbarButton(app.loadImage(imagePath + "variants.png"), app);
-		final MTToolbarButton tbb3 = new MTToolbarButton(app.loadImage(imagePath + "library.png"), app);
-		final MTToolbarButton tbb4 = new MTToolbarButton(app.loadImage(imagePath + "help.png"), app);
+		final MTToolbarButton tbb2 = new MTToolbarButton(app.loadImage(imagePath + "Text-Edit-icon.png"), app);
+		final MTToolbarButton tbb3 = new MTToolbarButton(app.loadImage(imagePath + "iCal-icon.png"), app);
+		final MTToolbarButton tbb4 = new MTToolbarButton(app.loadImage(imagePath + "Address-Book-icon.png"), app);
 		
 		//add those four buttons to the buttonContainer we created before		
 		buttonContainer.addChild(tbb1);
-		buttonContainer.addChild(tbb2);
 		buttonContainer.addChild(tbb3);
+		buttonContainer.addChild(tbb2);
 		buttonContainer.addChild(tbb4);
 		
 		
@@ -93,12 +93,12 @@ public class TestScene extends AbstractScene {
 		final MTLayoutContainer submenuContainer = new MTLayoutContainer(MTLayoutContainer.ALIGN_NONE, MTLayoutContainer.LAYOUT_HORIZONTAL, app);
 		
 		//some buttons
-		final MTToolbarButton submenuButton1 = new MTToolbarButton(app.loadImage(imagePath + "breakroom.png"), app);
-		final MTToolbarButton submenuButton2 = new MTToolbarButton(app.loadImage(imagePath + "conference.png"), app);
-		final MTToolbarButton submenuButton3 = new MTToolbarButton(app.loadImage(imagePath + "norm.png"), app);
+//		final MTToolbarButton submenuButton1 = new MTToolbarButton(app.loadImage(imagePath + "Text-Edit-icon.png"), app);
+		final MTToolbarButton submenuButton2 = new MTToolbarButton(app.loadImage(imagePath + "iCal-empty-icon.png"), app);
+		final MTToolbarButton submenuButton3 = new MTToolbarButton(app.loadImage(imagePath + "iCal-icon.png"), app);
 		
 		//add the buttons to the new container
-		submenuContainer.addChild(submenuButton1);
+//		submenuContainer.addChild(submenuButton1);
 		submenuContainer.addChild(submenuButton2);
 		submenuContainer.addChild(submenuButton3);
 		
