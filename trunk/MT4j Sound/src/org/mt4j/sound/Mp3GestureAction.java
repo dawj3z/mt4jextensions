@@ -4,7 +4,7 @@ import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 
 public class Mp3GestureAction implements IGestureEventListener {
-	public static final int GESTURE_DETECTED = MTGestureEvent.GESTURE_DETECTED;
+	public static final int GESTURE_DETECTED = MTGestureEvent.GESTURE_STARTED;
 	public static final int GESTURE_ENDED = MTGestureEvent.GESTURE_ENDED;
 	private int triggerType;
 	private String audioFilePath;
@@ -19,8 +19,8 @@ public class Mp3GestureAction implements IGestureEventListener {
 	@Override
 	public boolean processGestureEvent(MTGestureEvent ge) {
 		switch (ge.getId()) {
-		case MTGestureEvent.GESTURE_DETECTED:
-			if(this.triggerType==MTGestureEvent.GESTURE_DETECTED){
+		case MTGestureEvent.GESTURE_STARTED:
+			if(this.triggerType==MTGestureEvent.GESTURE_STARTED){
 				Mp3Player.play(this.audioFilePath);
 			}
 			break;
