@@ -1,6 +1,5 @@
 package org.mt4jx.components.visibleComponents.widgets.pdf;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
