@@ -35,15 +35,15 @@ public class DefaultTriggerAction implements TriggerAction {
 	@Override
 	public boolean processGestureEvent(MTGestureEvent ge) {
 		System.out.println("TriggerAction: processGestureEvent invoked.");
-		IMTComponent3D eventTarget = ge.getTargetComponent();
+		IMTComponent3D eventTarget = ge.getTarget();
 		System.out.println("EventTaget class: " + eventTarget.getClass().getName());
 		if(eventTarget instanceof MTCircularMenuSegment){
 			System.out.println("TriggerAction handled for TargetComponent: " + eventTarget.getClass().getName());
-			MTCircularMenuSegment segment = (MTCircularMenuSegment)eventTarget;
+//			MTCircularMenuSegment segment = (MTCircularMenuSegment)eventTarget;
 			System.out.println("Event type: " + ge.getClass().getName());
 			switch (ge.getId()) {
 			case MTGestureEvent.GESTURE_ENDED:
-				ActionEvent ae = new ActionEvent(ge.getTargetComponent(), ActionEvent.ACTION_PERFORMED, "action performed on ellipse segment.");
+				ActionEvent ae = new ActionEvent(ge.getTarget(), ActionEvent.ACTION_PERFORMED, "action performed on ellipse segment.");
 				System.out.println("# of actionlisteners to be called: " +  actionListeners.size());
 				for (int i = 0; i < actionListeners.size(); i++) {
 					System.out.println("SEND ACTION EVENT");
