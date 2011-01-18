@@ -25,12 +25,14 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
 
 /**
  * @author Uwe Laufs
@@ -53,7 +55,7 @@ public class MTCircularMenu extends MTEllipse {
 	private IFont font;
 	
 	public MTCircularMenu(PApplet pApplet, float innerRadius, float outerRadius){
-		super(pApplet, new Vector3D(0,0), innerRadius, innerRadius);
+		super(pApplet, new Vector3D(0,0), outerRadius, outerRadius);
 		this.pApplet = pApplet;
 		this.innerRadius = innerRadius;
 		this.outerRadius = outerRadius;
@@ -79,6 +81,12 @@ public class MTCircularMenu extends MTEllipse {
 		MTTextArea item = createText(itemText, this.font);
 		item.setName("Textarea '" +itemText+ "'");
 		return this.createSegment(item);
+	}
+	public CircularMenuSegmentHandle createSegment(PImage icon) {
+		MTRectangle rect = new MTRectangle(pApplet, icon);
+		rect.setPickable(false);
+		rect.setNoStroke(true);
+		return this.createSegment(rect);
 	}
 	public CircularMenuSegmentHandle createSegment(AbstractShape item) {
 		CircularMenuSegmentHandle segmentHandle = this.createSegmentHandle();
@@ -145,7 +153,7 @@ public class MTCircularMenu extends MTEllipse {
 				if(als!=null){
 					for (int k = 0; k < als.length; k++) {
 						triggerActions[j].addActionListener(als[k]);
-						System.out.println("Added ActionListener to TriggerAction for " + currentItem.getName());
+//						System.out.println("Added ActionListener to TriggerAction for " + currentItem.getName());
 					}
 				}
 				ActionListener[] actionListeners = segmentHandles[i].getActionListeners();
@@ -162,26 +170,6 @@ public class MTCircularMenu extends MTEllipse {
 	public CircularMenuSegmentHandle[] getSegmentHandles(){
 		return this.segmentHandles.toArray(new CircularMenuSegmentHandle[this.segmentHandles.size()]);
 	}
-	
-//	public AbstractShape[] getItems(){
-//		ArrayList<AbstractShape> tmp = new ArrayList<AbstractShape>();
-//		for (int i = 0; i < this.segmentHandles.size(); i++) {
-//			tmp.add(this.segmentHandles.get(i).getContainedItem());
-//		}
-//		return tmp.toArray(new AbstractShape[this.segmentHandles.size()]);
-//	}
-//	/**
-//	 * @deprecated
-//	 */
-//	CircularMenuSegmentHandle getSegmentHandle(AbstractShape item){
-//		for (int i = 0; i < this.segmentHandles.size(); i++) {
-//			CircularMenuSegmentHandle current = segmentHandles.get(i);
-//			if(current!=null && current.getContainedItem().equals(item)){
-//				return current;
-//			}
-//		}
-//		return null;
-//	}
 	public boolean hasChildren(MTCircularMenuSegment segment){
 		System.out.println("TODO: implement: public void hasChildren(MTEllipseSegment segment)");
 		return false;
@@ -218,11 +206,11 @@ public class MTCircularMenu extends MTEllipse {
 
 	@Override
 	public void preDraw(PGraphics graphics) {
-		// (re)create segments if something was added
+		// (re)create segments if anything was added
 		if(this.isDirty()){
 			// TODO: calc outer radius as required
 			createMenu(innerRadius, outerRadius);
-			System.out.println("isDirty==true->Menu (re)created.");
+//			System.out.println("isDirty==true->Menu (re)created.");
 		}
 		super.preDraw(graphics);
 	}
