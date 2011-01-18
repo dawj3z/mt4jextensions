@@ -46,25 +46,26 @@ public class MTJFreeChartExampleScene extends AbstractScene {
 	        for (int i = 0; i < 10; i++) {
 	            dataset.addValue(10*Math.random(), "MySeries", "T"+i);
 			}
-	    // Create JFreeChart
+	    // Create a JFreeChart
         JFreeChart chart1 = ChartFactory.createLineChart("Line Chart","x axis","y axis",dataset,PlotOrientation.VERTICAL,true,true,false);
-        // Put the JFreeChart into a MTFreeChart
+        // Put the JFreeChart into a MTJFreeChart wrapper
 		MTJFreeChart mtChart1 = new MTJFreeChart(800, 600, mtApplication, chart1);
 		
 		// Create another chart
         DefaultPieDataset pds = new DefaultPieDataset();
-	        pds.setValue("Java", new Double(18.051));
-	        pds.setValue("C", new Double(18.058));
-	        pds.setValue("C++", new Double(9.707));
-	        pds.setValue("PHP", new Double(9.662));
-	        pds.setValue("(Visual) Basic", new Double(6.392));
-	        pds.setValue("C#", new Double(4.435));
-	        pds.setValue("Python", new Double(4.205));
-	        pds.setValue("Perl", new Double(3.553));
-	        pds.setValue("Delphi", new Double(2.715));
-	        pds.setValue("JavaScript", new Double(2.469));
-	        
-        JFreeChart chart2 = ChartFactory.createPieChart3D("Top 10: TIOBE Programming Community Index\nfor April 2010 (www.tiobe.com)", pds, true, true, Locale.GERMANY);
+        
+        	pds.setValue("Java", new Double(17.773));
+	        pds.setValue("C", new Double(15.822));
+	        pds.setValue("C++", new Double(8.783));
+	        pds.setValue("PHP", new Double(7.835));
+	        pds.setValue("Python", new Double(6.265));
+	        pds.setValue("C#", new Double(6.226));
+	        pds.setValue("(Visual) Basic", new Double(5.867));
+	        pds.setValue("Objective-C", new Double(3.011));
+	        pds.setValue("Perl", new Double(2.857));
+
+
+        JFreeChart chart2 = ChartFactory.createPieChart3D("Top 10: TIOBE Programming Community Index\nfor January 2011 (www.tiobe.com)", pds, true, true, Locale.GERMANY);
         	PiePlot3D plot = (PiePlot3D) chart2.getPlot();
 	        plot.setStartAngle(290);
 	        
