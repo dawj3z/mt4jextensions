@@ -1,4 +1,4 @@
-package org.mt4jx.examples.dnd;
+package org.mt4jx.input.gestureAction.dnd.example;
 
 import java.util.ArrayList;
 
