@@ -1,1 +1,0 @@
-Thsi project is no longer needed, examples are now placed under the extension project folders.
