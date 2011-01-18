@@ -127,14 +127,14 @@ public class MTCircularMenuExampleScene extends AbstractScene {
 							final MTCircularMenu iconMenu = new MTCircularMenu(mtApplication, 35, 120);
 
 							// no actionListener required
-							segment = iconMenu.createSegment(app.loadImage("./icons/Address-Book-icon.png"));
+							segment = iconMenu.createSegment(app.loadImage("./data/Address-Book-icon.png"));
 							segment.setFillColor(new MTColor(32, 32, 192, 255-32));
 							
-							segment = iconMenu.createSegment(app.loadImage("./icons/iPhoto-icon.png"));
+							segment = iconMenu.createSegment(app.loadImage("./data/iPhoto-icon.png"));
 							segment.setFillColor(new MTColor(32, 32, 127, 255-32));
 							// add action listener: bounce out and destroy
 						
-							segment = iconMenu.createSegment(app.loadImage("./icons/iChat-icon.png"));
+							segment = iconMenu.createSegment(app.loadImage("./data/iChat-icon.png"));
 							// add action listener: rotate
 
 							iconMenu.setPositionGlobal(tf2.getCenterPointGlobal());
