@@ -1,4 +1,4 @@
-package org.mt4j.components.visibleComponents.widgets.examples;
+package org.mt4jx.components.visibleComponents.widgets.examples;
 import org.mt4j.MTApplication;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.sceneManagement.AbstractScene;

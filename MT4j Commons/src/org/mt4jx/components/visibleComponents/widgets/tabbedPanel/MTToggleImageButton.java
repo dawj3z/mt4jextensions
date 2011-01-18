@@ -1,4 +1,4 @@
-package org.mt4j.components.visibleComponents.widgets.tabbedPanel;
+package org.mt4jx.components.visibleComponents.widgets.tabbedPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
