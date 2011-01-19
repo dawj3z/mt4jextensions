@@ -65,7 +65,7 @@ public class MTCircularMenuExampleScene extends AbstractScene {
 					case TapEvent.GESTURE_ENDED:
 						if (te.isTapped()) {
 							CircularMenuSegmentHandle segment;
-							final MTCircularMenu textMenu = new MTCircularMenu(mtApplication, 45, 145);
+							final MTCircularMenu textMenu = new MTCircularMenu(mtApplication, 45, 150);
 
 							// no actionListener required
 							segment = textMenu.createSegment("Cancel");
