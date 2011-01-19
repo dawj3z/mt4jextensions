@@ -170,10 +170,6 @@ public class MTCircularMenu extends MTEllipse {
 	public CircularMenuSegmentHandle[] getSegmentHandles(){
 		return this.segmentHandles.toArray(new CircularMenuSegmentHandle[this.segmentHandles.size()]);
 	}
-	public boolean hasChildren(MTCircularMenuSegment segment){
-		System.out.println("TODO: implement: public void hasChildren(MTEllipseSegment segment)");
-		return false;
-	}
 	private void recurseRemoveChildren(MTComponent rootComponent){
 		MTComponent[] children = rootComponent.getChildren();
 		for (int i = 0; i < children.length; i++) {
