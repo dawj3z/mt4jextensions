@@ -46,7 +46,6 @@ public class CircularMenuSegmentHandle {
 	}
 	public void setFillColor(MTColor fillColor) {
 		System.out.println("setFillColor("+fillColor+")");
-		new Exception().printStackTrace();
 		this.fillColor = fillColor;
 	}
 	public MTColor getStrokeColor() {

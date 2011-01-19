@@ -54,7 +54,7 @@ public class MTCircularMenuSegment extends MTEllipseSegmentComplexPoly {
 		this.removeAllGestureEventListeners();
 	}
 	public boolean hasChildren(){
-		return this.parentMenu.hasChildren(this);
+		return false; //TODO: implement when children are supported
 	}
 	public synchronized void segmentUp(){
 		if(isDown){
