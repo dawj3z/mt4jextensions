@@ -1,6 +1,7 @@
 package org.mt4jx.input.gestureAction.dnd.example.stack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.mt4j.MTApplication;
 import org.mt4j.components.MTComponent;
@@ -8,26 +9,26 @@ import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.visibleComponents.shapes.MTPolygon;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
-import org.mt4j.input.gestureAction.TapAndHoldVisualizer;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
-import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Matrix;
 import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
-import org.mt4jx.input.gestureAction.dnd.*;
+import org.mt4jx.input.gestureAction.dnd.DragAndDropAction;
+import org.mt4jx.input.gestureAction.dnd.DragAndDropActionListener;
+import org.mt4jx.input.gestureAction.dnd.DragAndDropTarget;
+import org.mt4jx.input.gestureAction.dnd.DropAction;
+import org.mt4jx.input.gestureAction.dnd.DropTarget;
 
 import processing.core.PApplet;
 
 /**
  * <p>A rectangular component in which other components are
- * stacked via drag-and-drop.
+ * stacked via drag-and-drop.  
  * </p>
  * 
  * @author R.Scarberry
@@ -64,7 +65,7 @@ public class ComponentStack extends MTRectangle
 	}
 	
 	public ComponentStack(PApplet pApplet, Vertex upperLeft, float width, float height) {
-		super(pApplet, upperLeft, width, height);
+		super(upperLeft, width, height, pApplet);
 		this.setName("unnamed component stack");
 		
 		if (pApplet instanceof MTApplication) {
