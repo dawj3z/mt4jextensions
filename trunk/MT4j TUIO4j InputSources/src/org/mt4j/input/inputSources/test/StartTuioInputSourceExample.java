@@ -3,6 +3,7 @@ package org.mt4j.input.inputSources.test;
 import org.mt4j.MTApplication;
 import org.mt4j.input.inputSources.AbstractInputSource;
 import org.mt4j.input.inputSources.Tuio2DCursorInputSource;
+import org.mt4j.input.inputSources.Tuio2dObjectInputSource;
 import org.mt4j.input.inputSources.TuioInputSource;
 
 public class StartTuioInputSourceExample extends MTApplication {
@@ -22,6 +23,8 @@ public class StartTuioInputSourceExample extends MTApplication {
 		}
 		this.getInputManager().registerInputSource(new Tuio2DCursorInputSource(this));
 		System.out.println("register Tuio2DCursorInputSource");
+		this.getInputManager().registerInputSource(new Tuio2dObjectInputSource(this));
+		System.out.println("register Tuio2dObjectInputSource");
 		addScene(new Scene(this, "Tuio Input Source Test Scene"));
 	}
 }

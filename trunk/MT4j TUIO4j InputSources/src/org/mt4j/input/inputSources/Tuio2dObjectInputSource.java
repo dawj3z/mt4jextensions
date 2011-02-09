@@ -6,13 +6,13 @@ import java.util.Map;
 import org.mt4j.MTApplication;
 import org.mt4j.input.inputData.ActiveCursorPool;
 import org.mt4j.input.inputData.InputCursor;
+import org.mt4j.input.inputData.MTFiducialInputEvt;
 import org.mt4j.input.inputData.MTFingerInputEvt;
 import org.mt4j.util.MT4jSettings;
 import org.tuio4j.TuioClient;
 import org.tuio4j.TuioClientListener;
 import org.tuio4j.TuioEvent;
-import org.tuio4j.cursor2d.Tuio2DCursorEvent;
-//TODO: Complete and test
+import org.tuio4j.obj2d.Tuio2DObjectEvent;
 /**
  * See license.txt for license information.
  * @author Uwe Laufs
@@ -24,41 +24,67 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	private TuioClient client;
 	public Tuio2dObjectInputSource(MTApplication mtApp){
 		super(mtApp);
-		this.client = new TuioClient(3333);
+		this.client = TUIOClientManager.getInstance().getClient();
 		this.client.connect();
 		this.client.addListener(this);
 	}
 	@Override
 	public void eventRecieved(TuioEvent tuioEvent) {
-		if(tuioEvent instanceof Tuio2DCursorEvent){
-			Tuio2DCursorEvent cur2DEvt = (Tuio2DCursorEvent)tuioEvent;
-			float absoluteX = cur2DEvt.getXRel() * MT4jSettings.getInstance().getWindowWidth();
-			float abosulteY = cur2DEvt.getYRel() * MT4jSettings.getInstance().getWindowHeight();
+		if(tuioEvent instanceof Tuio2DObjectEvent){
+			Tuio2DObjectEvent obj2DEvt = (Tuio2DObjectEvent)tuioEvent;
+			float absoluteX = obj2DEvt.getXRel() * MT4jSettings.getInstance().getWindowWidth();
+			float abosulteY = obj2DEvt.getYRel() * MT4jSettings.getInstance().getWindowHeight();
 			
-			long sessionID = cur2DEvt.getSessionId();
+			long sessionID = obj2DEvt.getSessionId();
 			System.out.println("inputsource received TuioEvent: " + tuioEvent);
 			switch (tuioEvent.getEventTypeId()) {
 				case TuioEvent.SESSION_DETECTED:
 				{
 					InputCursor c = new InputCursor();
-					MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_DETECTED, c);
+					MTFiducialInputEvt objEvt = new MTFiducialInputEvt(
+							this,
+							absoluteX,
+							abosulteY,
+							MTFingerInputEvt.INPUT_STARTED,
+							c,
+							obj2DEvt.getMarkerId(),
+							obj2DEvt.getAngleRadians(),
+							obj2DEvt.getXVelocity(),
+							obj2DEvt.getYVelocity(),
+							obj2DEvt.getRotationVelocityVector(),
+							obj2DEvt.getMotionAcceleration(),
+							obj2DEvt.getRotationAcceleration()
+					);
+					
 					long cursorID = c.getId();
 					ActiveCursorPool.getInstance().putActiveCursor(cursorID, c);
 					tuioIDToCursorID.put(sessionID, cursorID);
 					System.out.println("enque DETECT cid:" + cursorID);
-					this.enqueueInputEvent(touchEvt);
+					this.enqueueInputEvent(objEvt);
 				}
 					break;
 				case TuioEvent.SESSION_UPDATED:
 				{	
 					Long tuioID = tuioIDToCursorID.get(sessionID);
 					if (tuioID != null){
-//						logger.info("TUIO INPUT UPDATE FINGER - TUIO ID: " + sessionID);
 						InputCursor c = ActiveCursorPool.getInstance().getActiveCursorByID(tuioID);
 						if (c != null){
-							MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_UPDATED, c);
+							MTFiducialInputEvt objEvt = new MTFiducialInputEvt(
+									this,
+									absoluteX,
+									abosulteY,
+									MTFingerInputEvt.INPUT_UPDATED,
+									c,
+									obj2DEvt.getMarkerId(),
+									obj2DEvt.getAngleRadians(),
+									obj2DEvt.getXVelocity(),
+									obj2DEvt.getYVelocity(),
+									obj2DEvt.getRotationVelocityVector(),
+									obj2DEvt.getMotionAcceleration(),
+									obj2DEvt.getRotationAcceleration()
+							);
 							System.out.println("enque UPDATE cid:" + c.getId());
-							this.enqueueInputEvent(touchEvt);
+							this.enqueueInputEvent(objEvt);
 						}else{
 							// error
 						}
@@ -73,13 +99,25 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 						long cursorID = lCursorID;
 						InputCursor c = ActiveCursorPool.getInstance().getActiveCursorByID(cursorID);
 						if (c != null){
-							MTFingerInputEvt te = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_ENDED, c);
+							MTFiducialInputEvt objEvt = new MTFiducialInputEvt(
+									this,
+									absoluteX,
+									abosulteY,
+									MTFingerInputEvt.INPUT_UPDATED,
+									c,
+									obj2DEvt.getMarkerId(),
+									obj2DEvt.getAngleRadians(),
+									obj2DEvt.getXVelocity(),
+									obj2DEvt.getYVelocity(),
+									obj2DEvt.getRotationVelocityVector(),
+									obj2DEvt.getMotionAcceleration(),
+									obj2DEvt.getRotationAcceleration()
+							);
 							tuioIDToCursorID.remove(sessionID);
 							ActiveCursorPool.getInstance().removeCursor(cursorID);
 							System.out.println("enque END cid:" + cursorID);
-							this.enqueueInputEvent(te);
+							this.enqueueInputEvent(objEvt);
 						}else{
-//							logger.info("ERROR WHEN REMOVING FINGER - TUIO ID: " + cursor.getSessionID() + " - Cursor not in active cursor pool!");
 							tuioIDToCursorID.remove(sessionID);
 						}
 					}else{
