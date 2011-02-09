@@ -67,4 +67,8 @@ public class DropAction extends AbstractDnDAction {
 		}
 		System.out.println("#listeners:" + this.listeners.size());
 	}
+	
+	public void removeListener(DropActionListener dal) {
+		this.listeners.remove(dal);
+	}
 }
