@@ -2,12 +2,16 @@ package org.mt4jx.input.gestureAction.dnd.example.stack;
 
 import org.mt4j.MTApplication;
 import org.mt4j.components.MTComponent;
+import org.mt4j.components.visibleComponents.font.FontManager;
+import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Matrix;
+import org.mt4j.util.math.Vector3D;
 import org.mt4jx.input.gestureAction.dnd.DragAndDropAction;
 import org.mt4jx.input.gestureAction.dnd.DragAndDropActionListener;
 import org.mt4jx.input.gestureAction.dnd.DragAndDropTarget;
@@ -30,10 +34,18 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 		float tw = mtApplication.width/6f;
 		float th = 0.6f * mtApplication.height;
 		
-		ComponentStack target1 = new ComponentStack(mtApplication, mtApplication.width/4f, 
-				(mtApplication.height - th)/2f, tw, th); //Font outline color
+		float tx1 = mtApplication.width/3f;
+		float ty1 = (mtApplication.height - th)/2f;
+		
+		// Stack drop target on the left side.
+		ComponentStack target1 = new ComponentStack(mtApplication, tx1, ty1, tw, th);
+		
 		target1.setFillColor(new MTColor(0,255,0,255));
 		target1.setStrokeColor(new MTColor(0,255,0,255));
+		
+		// pickableObjectsOnly MUST be true, since target2 could be dropped onto target1.
+		// If it were false, and you dropped target2 onto target1, dragging and dropping target1
+		// could cause a crash.
 		DragAndDropAction target1Action = new DragAndDropAction(true);
 		target1Action.addDragAndDropActionListener(this);
 		target1.addGestureListener(DragProcessor.class, target1Action);
@@ -41,8 +53,11 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 		
 		this.getCanvas().addChild(target1);
 		
-		MyDnDTarget target2 = new MyDnDTarget(1.5f * tw + mtApplication.width/4f, 
-				(mtApplication.height - th)/2f, tw, th, mtApplication);
+		float tx2 = 2f*mtApplication.width/3f;
+		float ty2 = ty1;
+		
+		// Simple rectangle drop target on the right.
+		MyDnDTarget target2 = new MyDnDTarget(tx2, ty2, tw, th, mtApplication);
 		target2.setFillColor(MTColor.GRAY);
 		DragAndDropAction target2Action = new DragAndDropAction();
 		target2Action.addDragAndDropActionListener(this);
@@ -55,6 +70,7 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 		
 		float ch = mtApplication.height/(numComponents + 1);
 		float cw = (ch/th) * tw;
+		float cx = (tx1 - cw)/2f;
 		
 		float ygap = (mtApplication.height - (ch * numComponents))/(numComponents + 1);
 		
@@ -63,9 +79,10 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 		DragAndDropAction dndAction = new DragAndDropAction();
 		dndAction.addDragAndDropActionListener(this);
 		
+		// Small rectangles to drag and drop on the left.
 		for (int i=0; i<numComponents; i++) {
 			
-			MTRectangle rect = new MTRectangle(mtApplication, cw, ygap * (i+1) + ch * i, cw, ch);
+			MTRectangle rect = new MTRectangle(mtApplication, cx, ygap * (i+1) + ch * i, cw, ch);
 			rect.setFillColor(colors[i%colors.length]);
 			rect.setStrokeColor(MTColor.BLACK);			
 			rect.addGestureListener(DragProcessor.class, dndAction);
@@ -73,6 +90,25 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 			
 			this.getCanvas().addChild(rect);
 		}
+		
+		IFont font = FontManager.getInstance().createFont(mtApplication, "arial.ttf", 24, MTColor.WHITE,
+				MTColor.WHITE);
+		
+		MTTextArea explanation = new MTTextArea(mtApplication, font);
+		explanation.setNoFill(true);
+		explanation.setNoStroke(true);
+		explanation.setText(
+				"The green rectangle is a ComponentStack, while the\n" +
+				"gray rectangle is a simple drop target.  All rectangles\n" +
+				"may be dragged and dropped.  To remove items from the stack\n" +
+				"double-click the stack.");
+		this.getCanvas().addChild(explanation);
+		
+		explanation.setPositionGlobal(new Vector3D((cx + cw) + (mtApplication.width - cx - cw)/2f,
+				ty1/2, 0));
+		
+		explanation.setPickable(false);
+		
 	}
 	
 	@Override
