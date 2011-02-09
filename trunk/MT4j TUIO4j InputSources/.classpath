@@ -3,8 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MT4j"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/TUIO4j"/>
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/jogl/jogl.jar"/>
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/core.jar"/>
+	<classpathentry kind="lib" path="lib/tuio4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
