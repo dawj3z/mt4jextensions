@@ -17,11 +17,16 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEven
  */
 public class DragAndDropAction extends AbstractDnDAction {
 	private Hashtable<IMTComponent3D, DropTarget> componentAndCurrentTarget = new Hashtable<IMTComponent3D, DropTarget>();
+	
+	// For storing listeners.  Lazily instantiated.
+	private DragAndDropActionListenerList listeners;
+	
 	private boolean pickableObjectsOnly = false;
 
 	public DragAndDropAction(){
 
 	}
+	
 	/**
 	 * @param pickableObjectsOnly if set to 'true', objects with isPickable() = 'false' will not be checked. Set parameter to 'false' as far as possible to improve performance.
 	 */
@@ -29,6 +34,22 @@ public class DragAndDropAction extends AbstractDnDAction {
 		this.pickableObjectsOnly = pickableObjectsOnly;
 	}
 	
+	public void addDragAndDropActionListener(DragAndDropActionListener l) {
+		if (listeners == null) listeners = new DragAndDropActionListenerList();
+		if (!listeners.contains(l)) {
+			listeners.add(l);
+		}
+	}
+	
+	public void removeDragAndDropActionListener(DragAndDropActionListener l) {
+		if (listeners != null) {
+			listeners.remove(l);
+			if (listeners.size() == 0) {
+				listeners = null;
+			}
+		}
+	}
+
 	@Override
 	public boolean gestureDetected(MTGestureEvent g) {
 		return false;
@@ -37,16 +58,22 @@ public class DragAndDropAction extends AbstractDnDAction {
 	@Override
 	public boolean gestureUpdated(MTGestureEvent g) {
 		IMTComponent3D sourceComponent = g.getTargetComponent();
-		if (!(g.getTargetComponent() instanceof MTComponent)) {
+		if (!(sourceComponent instanceof MTComponent)) {
 			return false;
 		}
+		
+		MTComponent draggedComponent = (MTComponent) sourceComponent;
+		DragEvent de = (g instanceof DragEvent) ? (DragEvent) g : null;
 		
 		DragAndDropTarget dropTarget = (DragAndDropTarget)this.detectDropTarget(g, pickableObjectsOnly);
 		
 		// entered ?
-		if (dropTarget != null && !targetRemembered(sourceComponent)) {
+		if (dropTarget != null && !targetRemembered(sourceComponent)) {			
 			this.storeComponentTarget(sourceComponent, dropTarget);
 			dropTarget.componentEntered((MTComponent) sourceComponent);
+			if (listeners != null) {
+				listeners.objectEnteredTarget(draggedComponent, dropTarget, de);
+			}
 			// dragged somewhere else ?
 		} else if (dropTarget == null && !targetRemembered(sourceComponent)) {
 			// ignore
@@ -56,9 +83,15 @@ public class DragAndDropAction extends AbstractDnDAction {
 			if(target instanceof DragAndDropTarget){
 				((DragAndDropTarget)target).componentExited((MTComponent) sourceComponent);
 				this.forgetComponentTarget(sourceComponent);
+				if (listeners != null) {
+					listeners.objectExitedTarget(draggedComponent, target, de);
+				}
 				if (dropTarget != null) {
 					this.storeComponentTarget(sourceComponent, dropTarget);
 					dropTarget.componentEntered((MTComponent) sourceComponent);
+					if (listeners != null) {
+						listeners.objectEnteredTarget(draggedComponent, dropTarget, de);
+					}
 				}
 			}
 		}
@@ -67,16 +100,29 @@ public class DragAndDropAction extends AbstractDnDAction {
 
 	@Override
 	public boolean gestureEnded(MTGestureEvent g) {
-		if (!(g.getTargetComponent() instanceof MTComponent)) {
+		IMTComponent3D target = g.getTargetComponent();
+		if (!(target instanceof MTComponent)) {
 			return false;
 		}
+		
+		MTComponent droppedComponent = (MTComponent) target;
+
 		if(g instanceof DragEvent){
-		DropTarget dropTarget = this.detectDropTarget(g, pickableObjectsOnly);
-		DragEvent dragEvent = ((DragEvent)g);
-		if (dropTarget != null) {
-			dropTarget.componentDropped((MTComponent) g.getTargetComponent(), dragEvent);
-			this.storeComponentTarget(g.getTargetComponent(), dropTarget);
-		}
+			
+			DropTarget dropTarget = this.detectDropTarget(g, pickableObjectsOnly);
+			
+			DragEvent dragEvent = ((DragEvent)g);
+			if (dropTarget != null) {
+				dropTarget.componentDropped((MTComponent) g.getTargetComponent(), dragEvent);
+				this.storeComponentTarget(g.getTargetComponent(), dropTarget);
+				if (listeners != null) {
+					listeners.objectDroppedOnTarget(droppedComponent, dropTarget, dragEvent);
+				}
+			} else {
+				if (listeners != null) {
+					listeners.objectDroppedNotOnTarget(droppedComponent, dragEvent);
+				}
+			}
 		}
 		return false;
 	}
