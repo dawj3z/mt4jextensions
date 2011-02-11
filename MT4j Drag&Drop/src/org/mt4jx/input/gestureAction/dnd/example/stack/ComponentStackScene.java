@@ -82,7 +82,7 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 		// Small rectangles to drag and drop on the left.
 		for (int i=0; i<numComponents; i++) {
 			
-			MTRectangle rect = new MTRectangle(mtApplication, cx, ygap * (i+1) + ch * i, cw, ch);
+			MTRectangle rect = new MTRectangle(cx, ygap * (i+1) + ch * i, cw, ch, mtApplication);
 			rect.setFillColor(colors[i%colors.length]);
 			rect.setStrokeColor(MTColor.BLACK);			
 			rect.addGestureListener(DragProcessor.class, dndAction);
