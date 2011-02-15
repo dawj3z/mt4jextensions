@@ -71,7 +71,8 @@ public class MTInfoPanel extends MTRoundRectangle {
 			this.rows.addChild(ta_label);
 			MTLine line = new MTLine(pa, 0,0,maxWidth,0);
 			line.setStrokeColor(strokeColor);
-			line.setStrokeWeight(2f);
+			line.setStrokeWeight(strokeWeight);
+			line.setPickable(false);
 			this.rows.addChild(line);
 			
 			image.setNoStroke(true);
@@ -85,7 +86,8 @@ public class MTInfoPanel extends MTRoundRectangle {
 			
 			line = new MTLine(pa, 0,0,maxWidth,0);
 			line.setStrokeColor(strokeColor);
-			line.setStrokeWeight(2f);
+			line.setStrokeWeight(strokeWeight);
+			line.setPickable(false);
 			this.rows.addChild(line);
 			
 			MTTextArea ta_text = new MTTextArea(pa,0,0,maxWidth, textHeight,textFont);
