@@ -16,30 +16,52 @@ import processing.core.PApplet;
 public class MTInfoPanel extends MTRoundRectangle {
 	private MTColumnLayout2D rows;
 	
-	private IFont font;
-	private IFont textFont;
+	private IFont headlineFont,textFont;
 	private float strokeWeight = 2.5f;
 	private MTColor textColor = new MTColor(255,255,255);
 	private MTColor fillColor = new MTColor(0,0,0, 192);
 	private MTColor strokeColor = new MTColor(255,255,255, 128);
+	private float maxWidth, maxHeight;
+	private String text,labelText;
+	private PApplet pa;
+	private AbstractShape image;
 	
 	public MTInfoPanel(PApplet pa, String labelText, AbstractShape image, String text, float maxWidth, float maxHeight){
+		this(pa, labelText, image, text, maxWidth, maxHeight, null, null);
+	}
+	public MTInfoPanel(PApplet pa, String labelText, AbstractShape image, String text, float maxWidth, float maxHeight, IFont headlineFont, IFont textFont){
 		super(pa,0,0,0,400,300,12,12);
 		this.setFillColor(fillColor);
 		this.setStrokeColor(strokeColor);
-		
+		this.maxWidth = maxWidth;
+		this.maxHeight = maxHeight;
+		this.headlineFont = headlineFont;
+		this.textFont = textFont;
+		this.text = text;
+		this.labelText = labelText;
+		this.pa = pa;
+		this.image = image;
+		this.init();
+	}
+	
+	private void init(){
 		this.rows = new MTColumnLayout2D(pa);
 		this.rows.setPickable(false);
 		this.addChild(rows);
 		this.rows.translate(new Vector3D(1,1));
 		
-		this.font =  FontManager.getInstance().createFont(pa, "arial", 
-				32, 	//Font size
-				textColor);	//Font outline color
-		this.textFont =  FontManager.getInstance().createFont(pa, "arial", 
-				16, 	//Font size
-				textColor);	//Font outline color
-		MTTextArea ta_label = new MTTextArea(pa,0,0,maxWidth, 40,font);
+		// setting default font if missing
+		if(this.headlineFont==null){
+			this.headlineFont =  FontManager.getInstance().createFont(pa, "arial", 
+					32, 	//Font size
+					textColor);	//Font outline color
+		}
+		if(this.textFont==null){
+			this.textFont =  FontManager.getInstance().createFont(pa, "arial", 
+					16, 	//Font size
+					textColor);	//Font outline color
+		}
+		MTTextArea ta_label = new MTTextArea(pa,0,0,maxWidth, 40,headlineFont);
 			ta_label.setNoFill(true);
 			ta_label.setNoStroke(true);
 			ta_label.setPickable(false);
@@ -94,5 +116,4 @@ public class MTInfoPanel extends MTRoundRectangle {
 			float h = this.getHeightXY(TransformSpace.GLOBAL);
 			System.out.println("w/h" + w + "/" + h);
 	}
-	
 }

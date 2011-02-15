@@ -11,7 +11,6 @@ public class CommonsExampleScene extends AbstractScene {
 		super(mtApplication, name);
 		this.app = mtApplication;
 		MTRectangle rect = new MTRectangle(mtApplication, mtApplication.loadImage("./data/logo.gif"));
-		
 		MTInfoPanel foo = new MTInfoPanel(mtApplication, "LabelText LabelText LabelText LabelText LabelText", rect, "Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. Text. ", 500, 200);
 		this.getCanvas().addChild(foo);
 	}
