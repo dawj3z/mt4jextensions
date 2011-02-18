@@ -157,6 +157,13 @@ public class EnhancedFontManager {
 		}
 	}
 	
+	/**
+	 * Set the font path.  This may be a list of directories containing font
+	 * files, separated by path separators.  In other words, it uses the same
+	 * format as a java classpath.
+	 * 
+	 * @param fontPath
+	 */
 	public void setFontPath(String fontPath) {
 	  if (fontPath == null) {
 	    throw new NullPointerException();
@@ -167,10 +174,20 @@ public class EnhancedFontManager {
 	  }
 	}
 	
+    /**
+     * Returns the font path, which is a list of directories separated by path separators.
+     * 
+     * @return the font path specification.
+     */
 	public String getFontPath() {
 	  return fontPath;
 	}
 	
+	/**
+	 * Returns the font path parsed into the directories comprising it.
+	 * 
+	 * @return
+	 */
 	public String[] fontPaths() {
 	  StringTokenizer tokenizer = new StringTokenizer(File.pathSeparator);
 	  List<String> pathList = new ArrayList<String>(tokenizer.countTokens());
@@ -183,12 +200,15 @@ public class EnhancedFontManager {
 	  return pathList.toArray(new String[pathList.size()]);
 	}
 	
+	// Ensures information on the available fonts is loaded and current.
 	private void checkAvailableFontsCurrent() {
 		if (availableFonts == null) {
 			loadAvailableFonts();
 		}	
 	}
 	
+	// Load the information on available fonts.
+	//
 	private void loadAvailableFonts() {
 		
 		Map<String, String> availableFonts = new TreeMap<String, String> ();
@@ -224,6 +244,8 @@ public class EnhancedFontManager {
 					IEnhancedFontFactory factory = suffixToFactory.get(ext);
 					if (factory != null) { 
 						String filePath = file.getAbsolutePath();
+						// It's important that this method return quickly and not consume
+						// many resources.
 						String fontName = factory.extractFontName(filePath);
 						if (fontName != null && fontName.length() > 0) {								
 							availableFonts.put(fontName, filePath);
@@ -257,12 +279,23 @@ public class EnhancedFontManager {
 		this.availableFontsReverse = availableFontsReverse;
 	}
 	
+	/**
+	 * Returns the names of the available fonts.
+	 * 
+	 * @return the names as an array of strings.
+	 */
 	public synchronized String[] availableFonts() {
 		checkAvailableFontsCurrent();
 		Set<String> keys = availableFonts.keySet();
 		return keys.toArray(new String[keys.size()]);
 	}
 	
+	/**
+	 * Returns true if a font with the specified name is available.
+	 * 
+	 * @param fontName
+	 * @return
+	 */
 	public synchronized boolean isFontAvailable(String fontName) {
 		checkAvailableFontsCurrent();
 		return availableFonts.containsKey(fontName);
@@ -407,8 +440,8 @@ public class EnhancedFontManager {
 	}
 
 	/**
-	 * Loads and returns a font stored as a resource instead of in a file in one of
-	 * the font directories.
+	 * Loads and returns a font stored as a resource in a jar instead of 
+	 * from a file in one of the font directories.
 	 * 
 	 * @param pa
 	 * @param fontResourceName
