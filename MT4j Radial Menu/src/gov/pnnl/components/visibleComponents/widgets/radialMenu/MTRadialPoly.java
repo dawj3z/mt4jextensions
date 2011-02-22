@@ -156,12 +156,12 @@ public class MTRadialPoly extends MTPolygon {
 
                 AnimationUtil.scaleIn(menuItem);
 
-                if (LOG.isDebugEnabled())
+                if (LOG.isTraceEnabled())
                 {
-                  LOG.debug("ButtonHeight: " + buttonHeight);
-                  LOG.debug("SubMenuLevel: " + menuItem.getSubMenuLevel());
-                  LOG.debug("Adjusted Radius: " + adjRadius);
-                  LOG.debug("Sub-menu degrees: " + degrees);
+                  LOG.trace("ButtonHeight: " + buttonHeight);
+                  LOG.trace("SubMenuLevel: " + menuItem.getSubMenuLevel());
+                  LOG.trace("Adjusted Radius: " + adjRadius);
+                  LOG.trace("Sub-menu degrees: " + degrees);
                 }
 
                 // Add sub-menu items to root MTRadialMenu
