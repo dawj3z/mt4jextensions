@@ -254,20 +254,20 @@ public class MTRadialMenu extends MTEllipse {
     this.buttonTopWidth = halfOuterCircumference / 7f;
     this.buttonBottomWidth = halfInnerCircumference / 7f;
 
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("Number of menuItems: " + menuItems.size());
-      LOG.debug("Circle Radius: " + this.radius);
-      LOG.debug("Inner Radius: " + innerRadius);
-      LOG.debug("Outer Radius: " + outerRadius);
-      LOG.debug("Outer Circumference: " + outerCircumference);
-      LOG.debug("Inner Circumference: " + innerCircumference);
-      LOG.debug("Half Outer Circumference: " + halfOuterCircumference);
-      LOG.debug("Half Inner Circumference: " + halfInnerCircumference);
-      LOG.debug("AngularDiv: " + angularDiv);
-      LOG.debug("Button Height: " + this.buttonHeight);
-      LOG.debug("Button Top Width: " + this.buttonTopWidth);
-      LOG.debug("Button Bottom Width: " + this.buttonBottomWidth);
-      LOG.debug("Top Arc Height: " + this.topArcHeight);
+    if (LOG.isTraceEnabled()) {
+      LOG.trace("Number of menuItems: " + menuItems.size());
+      LOG.trace("Circle Radius: " + this.radius);
+      LOG.trace("Inner Radius: " + innerRadius);
+      LOG.trace("Outer Radius: " + outerRadius);
+      LOG.trace("Outer Circumference: " + outerCircumference);
+      LOG.trace("Inner Circumference: " + innerCircumference);
+      LOG.trace("Half Outer Circumference: " + halfOuterCircumference);
+      LOG.trace("Half Inner Circumference: " + halfInnerCircumference);
+      LOG.trace("AngularDiv: " + angularDiv);
+      LOG.trace("Button Height: " + this.buttonHeight);
+      LOG.trace("Button Top Width: " + this.buttonTopWidth);
+      LOG.trace("Button Bottom Width: " + this.buttonBottomWidth);
+      LOG.trace("Top Arc Height: " + this.topArcHeight);
     }
 
     for (int i = 0; i < menuItems.size(); i++) {
@@ -479,15 +479,15 @@ public class MTRadialMenu extends MTEllipse {
 
     final Vertex lowerLeftPoint = new Vertex(x + bottomArcAdjustment, y + height - bottomArcHeight, 0);
 
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("topArcWidth: " + topArcWidth);
-      LOG.debug("bottomArcWidth: " + bottomArcWidth);
-      LOG.debug("bottomArcHeight: " + bottomArcHeight);
-      LOG.debug("upperLeftPoint: " + upperLeftPoint);
-      LOG.debug("upperRightPoint: " + upperRightPoint);
-      LOG.debug("bottomArcAdjustment: " + bottomArcAdjustment);
-      LOG.debug("lowerRightPoint: " + lowerRightPoint);
-      LOG.debug("lowerLeftPoint: " + lowerLeftPoint);
+    if (LOG.isTraceEnabled()) {
+      LOG.trace("topArcWidth: " + topArcWidth);
+      LOG.trace("bottomArcWidth: " + bottomArcWidth);
+      LOG.trace("bottomArcHeight: " + bottomArcHeight);
+      LOG.trace("upperLeftPoint: " + upperLeftPoint);
+      LOG.trace("upperRightPoint: " + upperRightPoint);
+      LOG.trace("bottomArcAdjustment: " + bottomArcAdjustment);
+      LOG.trace("lowerRightPoint: " + lowerRightPoint);
+      LOG.trace("lowerLeftPoint: " + lowerLeftPoint);
     }
 
     // Calculates the arcs
