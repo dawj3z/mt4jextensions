@@ -98,12 +98,16 @@ public class EnhancedFontManager {
     suffixToFactory = new HashMap<String, IEnhancedFontFactory>();
     fontResourcesToFiles = new HashMap<String, String>();
 
-    // Register default font factories
-    registerFontFactory(".ttf", new EnhancedTTFontFactory());
     this.registerFontFactory(".svg", new EnhancedSvgFontFactory());
 
     EnhancedBitmapFontFactory bitmapFontFactory = new EnhancedBitmapFontFactory();
 
+    // Register default font factories
+    
+    // I've noticed on my windows 7 system that loading ttf fonts
+    // with the bitmap font factory yields more pleasing results.  
+    //TODO: investigate to see if the ttf font factory ignores the antialiasing hint.
+    this.registerFontFactory(".ttf", bitmapFontFactory);
     this.registerFontFactory("", bitmapFontFactory);
     this.registerFontFactory(".vlw", bitmapFontFactory);
     this.registerFontFactory(".otf", bitmapFontFactory);
@@ -191,7 +195,7 @@ public class EnhancedFontManager {
    * @return
    */
   public String[] fontPaths() {
-    StringTokenizer tokenizer = new StringTokenizer(File.pathSeparator);
+    StringTokenizer tokenizer = new StringTokenizer(getFontPath(), File.pathSeparator);
     List<String> pathList = new ArrayList<String>(tokenizer.countTokens());
     while (tokenizer.hasMoreTokens()) {
       String path = tokenizer.nextToken().trim();
@@ -256,6 +260,9 @@ public class EnhancedFontManager {
             String fontName = factory.extractFontName(filePath);
             // Store font name mapped to its file path.
             if (fontName != null && fontName.length() > 0) {
+              if (availableFonts.containsKey(fontName)) {
+                System.err.printf(".... font %s found in both %s and %s\n", fontName, filePath, availableFonts.get(fontName));
+              }
               availableFonts.put(fontName, filePath);
               availableFontsReverse.put(filePath, fontName);
             }
@@ -277,14 +284,15 @@ public class EnhancedFontManager {
 
     /*
      * Just prints out all the info.
-     * Iterator<String> it = availableFonts.keySet().iterator();
-     * while(it.hasNext()) {
-     * String fn = it.next();
-     * String filename = availableFonts.get(fn);
-     * if (filename == null) filename = "[SYSTEM]";
-     * System.out.println("\t\t... " + fn + " ==> " + filename);
-     * }
      */
+     Iterator<String> it = availableFonts.keySet().iterator();
+     while(it.hasNext()) {
+       String fn = it.next();
+       String filename = availableFonts.get(fn);
+       if (filename == null) filename = "[SYSTEM]";
+       System.out.println("\t\t... " + fn + " ==> " + filename);
+     }
+     /**/
 
     this.availableFonts = availableFonts;
     this.availableFontsReverse = availableFontsReverse;
@@ -312,6 +320,42 @@ public class EnhancedFontManager {
     return availableFonts.containsKey(fontName);
   }
 
+  /**
+   * Returns the full path to the file holding the specified font.
+   * This returns null for some system fonts.
+   * 
+   * @param fontName
+   * 
+   * @return
+   */
+  public synchronized String fontFilePath(String fontName) {
+    checkAvailableFontsCurrent();
+    return availableFonts.get(fontName);
+  }
+  
+  /**
+   * Returns the file name extension for the file containing the specified font if
+   * the font is available.  If not available, returns null.
+   * 
+   * @param fontName
+   * 
+   * @return file name extension for the font file.  If null, the font with the 
+   *   specified name is not available.  If non-null but blank, it is probably a system font
+   *   that either is not in one of the font path directories, or is contained in a file with
+   *   an extension not associated with a font factory. 
+   */
+  public synchronized String fontFileExtension(String fontName) {
+    checkAvailableFontsCurrent();
+    if (isFontAvailable(fontName)) {
+      String fontPath = availableFonts.get(fontName);
+      if (fontPath != null) {
+        return getFontSuffix(fontPath);
+      }
+      return "";
+    }
+    return null;
+  }
+  
   /**
    * Gets the default font.
    * 
@@ -473,6 +517,9 @@ public class EnhancedFontManager {
 
     String fontFileName = this.availableFonts.get(fontName);
     if (fontFileName == null || fontFileName.length() == 0) {
+      // It's probably a system font.  Pretend the font file name is the
+      // same as the font name.  Will fall through to the bitmap font factory
+      // which will load it as a processing font.
       fontFileName = fontName;
     }
 
