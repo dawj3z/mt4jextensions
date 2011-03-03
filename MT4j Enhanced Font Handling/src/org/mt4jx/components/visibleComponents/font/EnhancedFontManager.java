@@ -326,6 +326,14 @@ public class EnhancedFontManager {
         new MTColor(FontManager.DEFAULT_FONT_STROKE_COLOR),
         FontManager.DEFAULT_FONT_ANTIALIASING);
   }
+  
+  /**
+   * Returns the name of the default font.
+   * @return
+   */
+  public String defaultFontName() {
+    return FontManager.DEFAULT_FONT;
+  }
 
   /**
    * Creates the font.
