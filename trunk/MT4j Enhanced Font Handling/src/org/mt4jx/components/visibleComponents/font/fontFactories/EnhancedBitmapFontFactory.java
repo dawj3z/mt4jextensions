@@ -7,6 +7,8 @@
  */
 package org.mt4jx.components.visibleComponents.font.fontFactories;
 
+import java.io.File;
+
 import org.mt4j.components.visibleComponents.font.fontFactories.BitmapFontFactory;
 
 /**
@@ -23,7 +25,22 @@ public class EnhancedBitmapFontFactory extends BitmapFontFactory
      * Not yet implemented.  This method simply returns null.
      */
 	public String extractFontName(String fontFileName) {
-	    //TODO: Find out how to extract font names from .vlw and .otf files.
-		return null;
-	}	
+	  int n = fontFileName.lastIndexOf('.');
+	  if (n >= 0) {
+	    String extension = fontFileName.substring(n).toLowerCase();
+	    // If it's a true-type file, borrow code from the other class.
+	    if (extension.equals(".ttf")) {
+	      try {
+            String[] names = EnhancedTTFontFactory.getFontNames(new File(fontFileName), 0);
+            if (names.length > 1) {
+              return names[1];
+            }
+	      } catch (Exception e) {
+	        // Ignore.  Probably not a properly structured file.
+          }
+	    }
+	  }
+	  //TODO: Find out how to extract font names from .vlw and .otf files.
+	  return null;	
+	}
 }
