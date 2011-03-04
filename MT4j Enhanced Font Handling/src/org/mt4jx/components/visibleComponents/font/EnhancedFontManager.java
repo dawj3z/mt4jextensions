@@ -260,9 +260,6 @@ public class EnhancedFontManager {
             String fontName = factory.extractFontName(filePath);
             // Store font name mapped to its file path.
             if (fontName != null && fontName.length() > 0) {
-              if (availableFonts.containsKey(fontName)) {
-                System.err.printf(".... font %s found in both %s and %s\n", fontName, filePath, availableFonts.get(fontName));
-              }
               availableFonts.put(fontName, filePath);
               availableFontsReverse.put(filePath, fontName);
             }
@@ -285,13 +282,13 @@ public class EnhancedFontManager {
     /*
      * Just prints out all the info.
      */
-     Iterator<String> it = availableFonts.keySet().iterator();
-     while(it.hasNext()) {
-       String fn = it.next();
-       String filename = availableFonts.get(fn);
-       if (filename == null) filename = "[SYSTEM]";
-       System.out.println("\t\t... " + fn + " ==> " + filename);
-     }
+//     Iterator<String> it = availableFonts.keySet().iterator();
+//     while(it.hasNext()) {
+//       String fn = it.next();
+//       String filename = availableFonts.get(fn);
+//       if (filename == null) filename = "[SYSTEM]";
+//       System.out.println("\t\t... " + fn + " ==> " + filename);
+//     }
      /**/
 
     this.availableFonts = availableFonts;
