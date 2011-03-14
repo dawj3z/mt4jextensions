@@ -68,4 +68,9 @@ public class MyDragAndDropTarget extends MTRectangle implements DragAndDropTarge
 		System.out.println(this.getName() +": "+ droppedComponent.getName() + " exited.");
 		this.setText();
 	}
+
+	@Override
+	public boolean dndAccept(MTComponent component) {
+		return true;
+	}
 }
