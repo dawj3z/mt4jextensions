@@ -22,6 +22,7 @@ import org.mt4jx.input.gestureAction.dnd.DragAndDropAction;
 import org.mt4jx.input.gestureAction.dnd.DragAndDropActionListener;
 import org.mt4jx.input.gestureAction.dnd.DragAndDropTarget;
 import org.mt4jx.input.gestureAction.dnd.DropAction;
+import org.mt4jx.input.gestureAction.dnd.DragAndDropFilter;
 import org.mt4jx.input.gestureAction.dnd.DropTarget;
 
 import processing.core.PApplet;
@@ -52,6 +53,13 @@ public class ComponentStack extends MTRectangle
 	private float mMinStackedComponentDimensionRatio = 0.4f;
 	private float mStackedComponentOffset = 5f;
 	
+	// If true, the stack will self-destruct when the last component
+	// stacked upon it has been removed.
+	private boolean mDestructWhenEmpty;
+	
+	// To limit what components may be dropped on this stack.
+	private DragAndDropFilter mDropFilter;
+	
 	public ComponentStack(PApplet pApplet, float width, float height) {
 		this(pApplet, new Vertex(0, 0, 0, 0, 0), width, height);
 	}
@@ -65,7 +73,7 @@ public class ComponentStack extends MTRectangle
 	}
 	
 	public ComponentStack(PApplet pApplet, Vertex upperLeft, float width, float height) {
-		super(upperLeft, width, height, pApplet);
+		super(pApplet, upperLeft, width, height);
 		this.setName("unnamed component stack");
 		
 		if (pApplet instanceof MTApplication) {
@@ -95,6 +103,14 @@ public class ComponentStack extends MTRectangle
 		}
 	}
 	
+	public boolean getDestructWhenEmpty() {
+		return mDestructWhenEmpty;
+	}
+	
+	public void setDestructWhenEmpty(boolean b) {
+		mDestructWhenEmpty = b;
+	}
+	
 	public void addToTopOfStack(MTComponent comp) {
 		// Add component as child.
 		this.addChild(comp);
@@ -114,6 +130,10 @@ public class ComponentStack extends MTRectangle
 			// Dropped back on component without being removed.
 			sizeStackedComponents();
 		}
+	}
+	
+	public MTComponent[] getStackedComponents() {
+		return mStackedComponents.toArray(new MTComponent[mStackedComponents.size()]);
 	}
 	
 	@Override
@@ -146,9 +166,11 @@ public class ComponentStack extends MTRectangle
 		int n = mStackedComponents.indexOf(comp);
 		if (n >= 0) {
 			mStackedComponents.remove(n);
-			this.mStackedComponents.remove(comp);
 			sizeStackedComponents();
-		}		
+		}
+		if (mStackedComponents.size() == 0 && mDestructWhenEmpty) {
+			this.destroy();
+		}
 	}
 	
 	private void sizeStackedComponents() {
@@ -251,5 +273,18 @@ public class ComponentStack extends MTRectangle
 	public void objectExitedTarget(MTComponent object, DropTarget dt,
 			DragEvent de) {
 		// Stub
+	}
+
+	public DragAndDropFilter getDropFilter() {
+		return mDropFilter;
+	}
+	
+	public void setDropFilter(DragAndDropFilter filter) {
+		mDropFilter = filter;
+	}
+
+	@Override
+	public boolean dndAccept(MTComponent component) {
+		return mDropFilter == null || mDropFilter.dndAccept(component);
 	}
 }

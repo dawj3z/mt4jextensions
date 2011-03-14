@@ -28,7 +28,7 @@ public abstract class AbstractDnDAction implements IGestureEventListener {
 	public boolean processGestureEvent(MTGestureEvent g) {
 		if(g instanceof DragEvent){
 		switch (g.getId()) {
-			case DragEvent.GESTURE_DETECTED:
+			case DragEvent.GESTURE_STARTED:
 				this.gestureDetected(g);
 				break;
 			case DragEvent.GESTURE_UPDATED:
@@ -61,7 +61,7 @@ public abstract class AbstractDnDAction implements IGestureEventListener {
 			DragEvent dragEvent = (DragEvent)g;
 			InputCursor cursor = dragEvent.getDragCursor();
 			AbstractCursorInputEvt lastCursorEvent = cursor.getEvents().get(cursor.getEventCount()-1);
-			return new Vector3D(lastCursorEvent.getPosX(), lastCursorEvent.getPosY());
+			return new Vector3D(lastCursorEvent.getX(), lastCursorEvent.getY());
 		}else if(g instanceof ScaleEvent){
 			//TODO implement
 			return null;
@@ -72,7 +72,7 @@ public abstract class AbstractDnDAction implements IGestureEventListener {
 	
 	
 	protected MTComponent getVisibileParentComponent(MTGestureEvent g){
-		IMTComponent3D inputComponent = g.getTargetComponent();
+		IMTComponent3D inputComponent = g.getTarget();
 		if((inputComponent instanceof MTComponent)){
 			return getVisibileParentComponent((MTComponent)inputComponent);
 		}else{
@@ -126,7 +126,7 @@ public abstract class AbstractDnDAction implements IGestureEventListener {
 	 */
 	protected DropTarget detectDropTarget(MTGestureEvent g, boolean pickableObjectsOnly) {
 		DropTarget returnValue = null;
-		MTComponent sourceComponent = (MTComponent) g.getTargetComponent();
+		MTComponent sourceComponent = (MTComponent) g.getTarget();
 		Vector3D componentDropPositions = this.getCursorPosition(g);
 		{
 				MTCanvas parentCanvas = this.getParentCanvas(sourceComponent);
@@ -146,10 +146,14 @@ public abstract class AbstractDnDAction implements IGestureEventListener {
 					// skip the currently dragged source component
 					if (!(currentComponent.equals(sourceComponent))) {
 						if (currentComponent instanceof DropTarget) {
-							 System.out.println("DROP TARGET DETECTED:" +
-							 currentComponent);
-							returnValue = ((DropTarget) currentComponent);
-							return returnValue;
+							DropTarget target = (DropTarget) currentComponent;
+							// Only pick a target that will accept the 
+							// source component.
+							if (target.dndAccept(sourceComponent)) {
+								System.out.println("DROP TARGET DETECTED:" +
+										target);
+								return target;
+							}
 						} else {
 						 System.out.println("NOT A DROP TARGET:" + currentComponent);
 						}

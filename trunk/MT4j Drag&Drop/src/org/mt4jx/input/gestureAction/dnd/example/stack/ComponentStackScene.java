@@ -19,7 +19,8 @@ import org.mt4jx.input.gestureAction.dnd.DropTarget;
 
 import processing.core.PApplet;
 
-public class ComponentStackScene extends AbstractScene implements DragAndDropActionListener {
+public class ComponentStackScene extends AbstractScene 
+	implements DragAndDropActionListener {
 
 	public ComponentStackScene(MTApplication mtApplication, String name) {
 		
@@ -175,7 +176,7 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 
 		public MyDnDTarget(float x, float y, float width,
 				float height, PApplet pApplet) {
-			super(x, y, width, height, pApplet);
+			super(pApplet, x, y, width, height);
 			this.setStrokeWeight(3f);
 			this.setStrokeColor(MTColor.PURPLE);
 			this.setNoStroke(true);
@@ -198,6 +199,11 @@ public class ComponentStackScene extends AbstractScene implements DragAndDropAct
 		@Override
 		public void componentExited(MTComponent exitedComponent) {
 			this.setNoStroke(true);
+		}
+
+		@Override
+		public boolean dndAccept(MTComponent component) {
+			return true;
 		}
 		
 	}
