@@ -28,6 +28,22 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 		this.client.connect();
 		this.client.addListener(this);
 	}
+	
+	@Override
+	public void onRegistered() {
+		super.onRegistered();
+		this.client.connect();
+		this.client.addListener(this);
+	}
+
+	@Override
+	public void onUnregistered() {
+		super.onUnregistered();
+		this.client.disconnect();
+		this.client.removeListener(this);
+	}
+	
+	
 	@Override
 	public void eventRecieved(TuioEvent tuioEvent) {
 		if(tuioEvent instanceof Tuio2DObjectEvent){
@@ -59,7 +75,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 					long cursorID = c.getId();
 					ActiveCursorPool.getInstance().putActiveCursor(cursorID, c);
 					tuioIDToCursorID.put(sessionID, cursorID);
-					System.out.println("enque DETECT cid:" + cursorID);
+					System.out.println("enque DETECT cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
 					this.enqueueInputEvent(objEvt);
 				}
 					break;
@@ -83,7 +99,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 									obj2DEvt.getMotionAcceleration(),
 									obj2DEvt.getRotationAcceleration()
 							);
-							System.out.println("enque UPDATE cid:" + c.getId());
+							System.out.println("enque UPDATE cid:" + c.getId() + " (" + absoluteX + "," + abosulteY + ")");
 							this.enqueueInputEvent(objEvt);
 						}else{
 							// error
@@ -101,9 +117,11 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 						if (c != null){
 							MTFiducialInputEvt objEvt = new MTFiducialInputEvt(
 									this,
-									absoluteX,
-									abosulteY,
-									MTFingerInputEvt.INPUT_UPDATED,
+//									absoluteX,
+//									abosulteY,
+									c.getCurrentEvent().getX(), 
+									c.getCurrentEvent().getY(),
+									MTFingerInputEvt.INPUT_ENDED,
 									c,
 									obj2DEvt.getMarkerId(),
 									obj2DEvt.getAngleRadians(),
@@ -115,7 +133,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 							);
 							tuioIDToCursorID.remove(sessionID);
 							ActiveCursorPool.getInstance().removeCursor(cursorID);
-							System.out.println("enque END cid:" + cursorID);
+							System.out.println("enque END cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
 							this.enqueueInputEvent(objEvt);
 						}else{
 							tuioIDToCursorID.remove(sessionID);
