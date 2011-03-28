@@ -52,7 +52,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 			float abosulteY = cur2DEvt.getYRel() * MT4jSettings.getInstance().getWindowHeight();
 			
 			long sessionID = cur2DEvt.getSessionId();
-			System.out.println("inputsource received TuioEvent: " + tuioEvent);
+//			System.out.println("inputsource received TuioEvent: " + tuioEvent);
 			switch (tuioEvent.getEventTypeId()) {
 				case TuioEvent.SESSION_DETECTED:
 				{
@@ -61,7 +61,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 					long cursorID = c.getId();
 					ActiveCursorPool.getInstance().putActiveCursor(cursorID, c);
 					tuioIDToCursorID.put(sessionID, cursorID);
-					System.out.println("enque DETECT cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
+//					System.out.println("enque DETECT cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
 					this.enqueueInputEvent(touchEvt);
 				}
 					break;
@@ -73,7 +73,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 						InputCursor c = ActiveCursorPool.getInstance().getActiveCursorByID(tuioID);
 						if (c != null){
 							MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_UPDATED, c);
-							System.out.println("enque UPDATE cid:" + c.getId() + " (" + absoluteX + "," + abosulteY + ")");
+//							System.out.println("enque UPDATE cid:" + c.getId() + " (" + absoluteX + "," + abosulteY + ")");
 							this.enqueueInputEvent(touchEvt);
 						}else{
 //							logger.error("CURSOR NOT IN ACTIVE CURSOR LIST! TUIO ID: " + cursor.getSessionID());
@@ -93,7 +93,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 							MTFingerInputEvt te = new MTFingerInputEvt(this, c.getCurrentEvent().getX(), c.getCurrentEvent().getY(), MTFingerInputEvt.INPUT_ENDED, c); //fire with the last x,y, because tuio sends 0,0 which doesent make much sense
 							tuioIDToCursorID.remove(sessionID);
 							ActiveCursorPool.getInstance().removeCursor(cursorID);
-							System.out.println("enque END cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
+//							System.out.println("enque END cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
 							this.enqueueInputEvent(te);
 						}else{
 //							logger.info("ERROR WHEN REMOVING FINGER - TUIO ID: " + cursor.getSessionID() + " - Cursor not in active cursor pool!");
