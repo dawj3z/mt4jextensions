@@ -8,8 +8,12 @@ import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
+/**
+ * See license.txt for license information.
+ * @author Uwe Laufs
+ * @version 1.0
+ */
 public class Scene extends AbstractScene {
-
 	public Scene(MTApplication mtApplication, String name) {
 		super(mtApplication, name);
 		//Show touches

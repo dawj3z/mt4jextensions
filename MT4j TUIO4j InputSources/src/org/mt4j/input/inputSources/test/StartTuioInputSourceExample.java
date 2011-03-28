@@ -5,7 +5,11 @@ import org.mt4j.input.inputSources.AbstractInputSource;
 import org.mt4j.input.inputSources.Tuio2DCursorInputSource;
 import org.mt4j.input.inputSources.Tuio2dObjectInputSource;
 import org.mt4j.input.inputSources.TuioInputSource;
-
+/**
+ * See license.txt for license information.
+ * @author Uwe Laufs
+ * @version 1.0
+ */
 public class StartTuioInputSourceExample extends MTApplication {
 	private static final long serialVersionUID = 1L;
 	
