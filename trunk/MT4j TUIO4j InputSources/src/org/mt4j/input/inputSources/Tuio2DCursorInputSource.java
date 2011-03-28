@@ -12,7 +12,6 @@ import org.tuio4j.TuioClient;
 import org.tuio4j.TuioClientListener;
 import org.tuio4j.TuioEvent;
 import org.tuio4j.cursor2d.Tuio2DCursorEvent;
-//TODO: Complete and test
 /**
  * See license.txt for license information.
  * @author Uwe Laufs
@@ -27,8 +26,6 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 		this.client = TUIOClientManager.getInstance().getClient();
 		
 	}
-	
-	
 	@Override
 	public void onRegistered() {
 		super.onRegistered();

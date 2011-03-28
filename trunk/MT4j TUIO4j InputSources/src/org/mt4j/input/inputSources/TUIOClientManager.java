@@ -3,7 +3,11 @@ package org.mt4j.input.inputSources;
 import java.util.Hashtable;
 
 import org.tuio4j.TuioClient;
-
+/**
+ * See license.txt for license information.
+ * @author Uwe Laufs
+ * @version 1.0
+ */
 public class TUIOClientManager {
 	private Hashtable<Integer, TuioClient> portAndClient = new Hashtable<Integer, TuioClient>();
 	private static TUIOClientManager instance;
@@ -23,7 +27,7 @@ public class TUIOClientManager {
 		TuioClient client = this.portAndClient.get(port);
 		if(client == null){
 			client = new TuioClient(port);
-			System.out.println("client connected: port " + port);
+			System.out.println("TUIO client connected: port " + port);
 			this.portAndClient.put(port, client);
 		}
 		return client;
