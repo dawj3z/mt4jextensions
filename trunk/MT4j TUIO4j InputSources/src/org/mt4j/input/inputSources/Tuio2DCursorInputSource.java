@@ -24,7 +24,6 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 	public Tuio2DCursorInputSource(MTApplication mtApp){
 		super(mtApp);
 		this.client = TUIOClientManager.getInstance().getClient();
-		
 	}
 	@Override
 	public void onRegistered() {
