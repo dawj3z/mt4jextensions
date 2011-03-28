@@ -41,7 +41,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 				case TuioEvent.SESSION_DETECTED:
 				{
 					InputCursor c = new InputCursor();
-					MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_DETECTED, c);
+					MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_STARTED, c);
 					long cursorID = c.getId();
 					ActiveCursorPool.getInstance().putActiveCursor(cursorID, c);
 					tuioIDToCursorID.put(sessionID, cursorID);
