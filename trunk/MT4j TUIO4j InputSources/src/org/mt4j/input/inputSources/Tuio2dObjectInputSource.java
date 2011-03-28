@@ -52,7 +52,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 			float abosulteY = obj2DEvt.getYRel() * MT4jSettings.getInstance().getWindowHeight();
 			
 			long sessionID = obj2DEvt.getSessionId();
-			System.out.println("inputsource received TuioEvent: " + tuioEvent);
+//			System.out.println("inputsource received TuioEvent: " + tuioEvent);
 			switch (tuioEvent.getEventTypeId()) {
 				case TuioEvent.SESSION_DETECTED:
 				{
@@ -75,7 +75,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 					long cursorID = c.getId();
 					ActiveCursorPool.getInstance().putActiveCursor(cursorID, c);
 					tuioIDToCursorID.put(sessionID, cursorID);
-					System.out.println("enque DETECT cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
+//					System.out.println("enque DETECT cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
 					this.enqueueInputEvent(objEvt);
 				}
 					break;
@@ -99,7 +99,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 									obj2DEvt.getMotionAcceleration(),
 									obj2DEvt.getRotationAcceleration()
 							);
-							System.out.println("enque UPDATE cid:" + c.getId() + " (" + absoluteX + "," + abosulteY + ")");
+//							System.out.println("enque UPDATE cid:" + c.getId() + " (" + absoluteX + "," + abosulteY + ")");
 							this.enqueueInputEvent(objEvt);
 						}else{
 							// error
@@ -133,7 +133,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 							);
 							tuioIDToCursorID.remove(sessionID);
 							ActiveCursorPool.getInstance().removeCursor(cursorID);
-							System.out.println("enque END cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
+//							System.out.println("enque END cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
 							this.enqueueInputEvent(objEvt);
 						}else{
 							tuioIDToCursorID.remove(sessionID);
