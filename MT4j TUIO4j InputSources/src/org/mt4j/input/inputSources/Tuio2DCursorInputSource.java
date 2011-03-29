@@ -41,7 +41,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 	
 	
 	@Override
-	public void eventRecieved(TuioEvent tuioEvent) {
+	public void eventReceived(TuioEvent tuioEvent) {
 		if(tuioEvent instanceof Tuio2DCursorEvent){
 			Tuio2DCursorEvent cur2DEvt = (Tuio2DCursorEvent)tuioEvent;
 			float absoluteX = cur2DEvt.getXRel() * MT4jSettings.getInstance().getWindowWidth();
