@@ -45,7 +45,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	
 	
 	@Override
-	public void eventRecieved(TuioEvent tuioEvent) {
+	public void eventReceived(TuioEvent tuioEvent) {
 		if(tuioEvent instanceof Tuio2DObjectEvent){
 			Tuio2DObjectEvent obj2DEvt = (Tuio2DObjectEvent)tuioEvent;
 			float absoluteX = obj2DEvt.getXRel() * MT4jSettings.getInstance().getWindowWidth();
