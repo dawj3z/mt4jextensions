@@ -25,8 +25,8 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	public Tuio2dObjectInputSource(MTApplication mtApp){
 		super(mtApp);
 		this.client = TUIOClientManager.getInstance().getClient();
-		this.client.connect();
-		this.client.addListener(this);
+//		this.client.connect();
+//		this.client.addListener(this);
 	}
 	
 	@Override
