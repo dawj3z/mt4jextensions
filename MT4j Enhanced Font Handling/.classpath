@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="examples"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MT4j"/>
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/core.jar" sourcepath="/processing-head/core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
