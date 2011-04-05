@@ -39,11 +39,9 @@ import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.logging.ILogger;
-import org.mt4j.util.logging.Log4jLogger;
 import org.mt4j.util.logging.MTLoggerFactory;
 import org.mt4jx.components.visibleComponents.font.fontFactories.EnhancedBitmapFontFactory;
 import org.mt4jx.components.visibleComponents.font.fontFactories.EnhancedSvgFontFactory;
-import org.mt4jx.components.visibleComponents.font.fontFactories.EnhancedTTFontFactory;
 import org.mt4jx.components.visibleComponents.font.fontFactories.IEnhancedFontFactory;
 
 import processing.core.PApplet;
@@ -68,10 +66,10 @@ public class EnhancedFontManager {
   private static EnhancedFontManager fontManager;
 
   /** Maps font names to lists containing fonts with those names. */
-  private Map<String, List<IFont>> fonts;
+  private final Map<String, List<IFont>> fonts;
 
   /** The suffix to factory. */
-  private HashMap<String, IEnhancedFontFactory> suffixToFactory;
+  private final HashMap<String, IEnhancedFontFactory> suffixToFactory;
 
   // Paths to directories containing fonts, separated by File.pathSeparator
   // similarly to a java classpath.
@@ -85,7 +83,7 @@ public class EnhancedFontManager {
   private Map<String, String> availableFontsReverse;
 
   // Maps font resource names to the temp files they've been stored in.
-  private Map<String, String> fontResourcesToFiles;
+  private final Map<String, String> fontResourcesToFiles;
 
   private static final int CACHE_MAX_SIZE = 10;
 
@@ -94,19 +92,19 @@ public class EnhancedFontManager {
    */
   private EnhancedFontManager() {
 
-    fonts = new HashMap<String, List<IFont>>();
-    suffixToFactory = new HashMap<String, IEnhancedFontFactory>();
-    fontResourcesToFiles = new HashMap<String, String>();
+    this.fonts = new HashMap<String, List<IFont>>();
+    this.suffixToFactory = new HashMap<String, IEnhancedFontFactory>();
+    this.fontResourcesToFiles = new HashMap<String, String>();
 
     this.registerFontFactory(".svg", new EnhancedSvgFontFactory());
 
-    EnhancedBitmapFontFactory bitmapFontFactory = new EnhancedBitmapFontFactory();
+    final EnhancedBitmapFontFactory bitmapFontFactory = new EnhancedBitmapFontFactory();
 
     // Register default font factories
-    
+
     // I've noticed on my windows 7 system that loading ttf fonts
-    // with the bitmap font factory yields more pleasing results.  
-    //TODO: investigate to see if the ttf font factory ignores the antialiasing hint.
+    // with the bitmap font factory yields more pleasing results.
+    // TODO: investigate to see if the ttf font factory ignores the antialiasing hint.
     this.registerFontFactory(".ttf", bitmapFontFactory);
     this.registerFontFactory("", bitmapFontFactory);
     this.registerFontFactory(".vlw", bitmapFontFactory);
@@ -122,10 +120,10 @@ public class EnhancedFontManager {
     switch (PApplet.platform) {
       case PApplet.WINDOWS:
         // 99% of the time in C:\Windows\Fonts
-        String drives = "CDEABFGH";
-        int len = drives.length();
+        final String drives = "CDEABFGH";
+        final int len = drives.length();
         for (int i = 0; i < len; i++) {
-          String fontDir = drives.substring(i, i + 1)
+          final String fontDir = drives.substring(i, i + 1)
                         + ":\\Windows\\Fonts";
           if (new File(fontDir).isDirectory()) {
             fontPath += File.pathSeparator + fontDir;
@@ -170,13 +168,13 @@ public class EnhancedFontManager {
    * 
    * @param fontPath
    */
-  public void setFontPath(String fontPath) {
+  public void setFontPath(final String fontPath) {
     if (fontPath == null) {
       throw new NullPointerException();
     }
     if (!fontPath.equals(this.fontPath)) {
       this.fontPath = fontPath;
-      availableFonts = null;
+      this.availableFonts = null;
     }
   }
 
@@ -186,7 +184,7 @@ public class EnhancedFontManager {
    * @return the font path specification.
    */
   public String getFontPath() {
-    return fontPath;
+    return this.fontPath;
   }
 
   /**
@@ -195,10 +193,10 @@ public class EnhancedFontManager {
    * @return
    */
   public String[] fontPaths() {
-    StringTokenizer tokenizer = new StringTokenizer(getFontPath(), File.pathSeparator);
-    List<String> pathList = new ArrayList<String>(tokenizer.countTokens());
+    final StringTokenizer tokenizer = new StringTokenizer(this.getFontPath(), File.pathSeparator);
+    final List<String> pathList = new ArrayList<String>(tokenizer.countTokens());
     while (tokenizer.hasMoreTokens()) {
-      String path = tokenizer.nextToken().trim();
+      final String path = tokenizer.nextToken().trim();
       if (path.length() > 0) {
         pathList.add(path);
       }
@@ -208,8 +206,8 @@ public class EnhancedFontManager {
 
   // Ensures information on the available fonts is loaded and current.
   private void checkAvailableFontsCurrent() {
-    if (availableFonts == null) {
-      loadAvailableFonts();
+    if (this.availableFonts == null) {
+      this.loadAvailableFonts();
     }
   }
 
@@ -217,30 +215,31 @@ public class EnhancedFontManager {
   //
   private void loadAvailableFonts() {
 
-    Map<String, String> availableFonts = new TreeMap<String, String>();
-    Map<String, String> availableFontsReverse = new TreeMap<String, String>();
+    final Map<String, String> availableFonts = new TreeMap<String, String>();
+    final Map<String, String> availableFontsReverse = new TreeMap<String, String>();
 
-    String[] fps = fontPaths();
+    final String[] fps = this.fontPaths();
 
     // For filtering out files without extensions that map to factories.
-    final Set<String> fileExtensions = new HashSet<String>(suffixToFactory.keySet());
+    final Set<String> fileExtensions = new HashSet<String>(this.suffixToFactory.keySet());
 
     // Loop through the individual font directories.
     //
-    for (int i = 0; i < fps.length; i++) {
+    for (final String fp : fps) {
 
-      File dir = new File(fps[i]);
+      final File dir = new File(fp);
 
       // Be sure it's an existing directory.
       if (dir.isDirectory()) {
 
         // List only the files with font factories.
-        File[] files = dir.listFiles(new FileFilter() {
-          public boolean accept(File f) {
+        final File[] files = dir.listFiles(new FileFilter() {
+          @Override
+          public boolean accept(final File f) {
             if (f.isFile()) {
-              String fn = f.getName();
-              int n = fn.lastIndexOf('.');
-              String ext = (n >= 0) ? fn.substring(n) : "";
+              final String fn = f.getName();
+              final int n = fn.lastIndexOf('.');
+              final String ext = (n >= 0) ? fn.substring(n) : "";
               return fileExtensions.contains(ext);
             }
             return false;
@@ -248,18 +247,18 @@ public class EnhancedFontManager {
         });
 
         // For each file, have the font factory extract the font name.
-        for (File file : files) {
-          String fn = file.getName();
-          int n = fn.lastIndexOf('.');
-          String ext = (n >= 0) ? fn.substring(n) : "";
-          IEnhancedFontFactory factory = suffixToFactory.get(ext);
+        for (final File file : files) {
+          final String fn = file.getName();
+          final int n = fn.lastIndexOf('.');
+          final String ext = (n >= 0) ? fn.substring(n) : "";
+          final IEnhancedFontFactory factory = this.suffixToFactory.get(ext);
           if (factory != null) {
-            String filePath = file.getAbsolutePath();
+            final String filePath = file.getAbsolutePath();
             // It's important that this method return quickly and not consume
             // many resources.
-            String fontName = factory.extractFontName(filePath);
+            final String fontName = factory.extractFontName(filePath);
             // Store font name mapped to its file path.
-            if (fontName != null && fontName.length() > 0) {
+            if ((fontName != null) && (fontName.length() > 0)) {
               availableFonts.put(fontName, filePath);
               availableFontsReverse.put(filePath, fontName);
             }
@@ -272,8 +271,8 @@ public class EnhancedFontManager {
     // Several system fonts may not map to any of the files found,
     // yet they are still available. Add to the available fonts, but
     // map them to null.
-    String[] allFontNames = PFont.list();
-    for (String fn : allFontNames) {
+    final String[] allFontNames = PFont.list();
+    for (final String fn : allFontNames) {
       if (!availableFonts.containsKey(fn)) {
         availableFonts.put(fn, null);
       }
@@ -282,14 +281,14 @@ public class EnhancedFontManager {
     /*
      * Just prints out all the info.
      */
-//     Iterator<String> it = availableFonts.keySet().iterator();
-//     while(it.hasNext()) {
-//       String fn = it.next();
-//       String filename = availableFonts.get(fn);
-//       if (filename == null) filename = "[SYSTEM]";
-//       System.out.println("\t\t... " + fn + " ==> " + filename);
-//     }
-     /**/
+    // Iterator<String> it = availableFonts.keySet().iterator();
+    // while(it.hasNext()) {
+    // String fn = it.next();
+    // String filename = availableFonts.get(fn);
+    // if (filename == null) filename = "[SYSTEM]";
+    // System.out.println("\t\t... " + fn + " ==> " + filename);
+    // }
+    /**/
 
     this.availableFonts = availableFonts;
     this.availableFontsReverse = availableFontsReverse;
@@ -301,8 +300,8 @@ public class EnhancedFontManager {
    * @return the names as an array of strings.
    */
   public synchronized String[] availableFonts() {
-    checkAvailableFontsCurrent();
-    Set<String> keys = availableFonts.keySet();
+    this.checkAvailableFontsCurrent();
+    final Set<String> keys = this.availableFonts.keySet();
     return keys.toArray(new String[keys.size()]);
   }
 
@@ -312,9 +311,9 @@ public class EnhancedFontManager {
    * @param fontName
    * @return
    */
-  public synchronized boolean isFontAvailable(String fontName) {
-    checkAvailableFontsCurrent();
-    return availableFonts.containsKey(fontName);
+  public synchronized boolean isFontAvailable(final String fontName) {
+    this.checkAvailableFontsCurrent();
+    return this.availableFonts.containsKey(fontName);
   }
 
   /**
@@ -325,34 +324,34 @@ public class EnhancedFontManager {
    * 
    * @return
    */
-  public synchronized String fontFilePath(String fontName) {
-    checkAvailableFontsCurrent();
-    return availableFonts.get(fontName);
+  public synchronized String fontFilePath(final String fontName) {
+    this.checkAvailableFontsCurrent();
+    return this.availableFonts.get(fontName);
   }
-  
+
   /**
    * Returns the file name extension for the file containing the specified font if
-   * the font is available.  If not available, returns null.
+   * the font is available. If not available, returns null.
    * 
    * @param fontName
    * 
-   * @return file name extension for the font file.  If null, the font with the 
-   *   specified name is not available.  If non-null but blank, it is probably a system font
-   *   that either is not in one of the font path directories, or is contained in a file with
-   *   an extension not associated with a font factory. 
+   * @return file name extension for the font file. If null, the font with the
+   *         specified name is not available. If non-null but blank, it is probably a system font
+   *         that either is not in one of the font path directories, or is contained in a file with
+   *         an extension not associated with a font factory.
    */
-  public synchronized String fontFileExtension(String fontName) {
-    checkAvailableFontsCurrent();
-    if (isFontAvailable(fontName)) {
-      String fontPath = availableFonts.get(fontName);
+  public synchronized String fontFileExtension(final String fontName) {
+    this.checkAvailableFontsCurrent();
+    if (this.isFontAvailable(fontName)) {
+      final String fontPath = this.availableFonts.get(fontName);
       if (fontPath != null) {
-        return getFontSuffix(fontPath);
+        return this.getFontSuffix(fontPath);
       }
       return "";
     }
     return null;
   }
-  
+
   /**
    * Gets the default font.
    * 
@@ -360,16 +359,17 @@ public class EnhancedFontManager {
    *          the app
    * @return the default font
    */
-  public IFont getDefaultFont(PApplet app) {
-    return createFont(app,
+  public IFont getDefaultFont(final PApplet app) {
+    return this.createFont(app,
         FontManager.DEFAULT_FONT,
         FontManager.DEFAULT_FONT_SIZE,
         new MTColor(FontManager.DEFAULT_FONT_STROKE_COLOR),
         FontManager.DEFAULT_FONT_ANTIALIASING);
   }
-  
+
   /**
    * Returns the name of the default font.
+   * 
    * @return
    */
   public String defaultFontName() {
@@ -389,8 +389,8 @@ public class EnhancedFontManager {
    *          the anti aliased
    * @return the i font
    */
-  public IFont createFont(PApplet pa, String fontFileName, int fontSize, boolean antiAliased) {
-    return createFont(pa, fontFileName, fontSize, new MTColor(
+  public IFont createFont(final PApplet pa, final String fontFileName, final int fontSize, final boolean antiAliased) {
+    return this.createFont(pa, fontFileName, fontSize, new MTColor(
         FontManager.DEFAULT_FONT_FILL_COLOR), antiAliased);
   }
 
@@ -408,8 +408,8 @@ public class EnhancedFontManager {
    * 
    * @return the i font
    */
-  public IFont createFont(PApplet pa, String fontFileName, int fontSize) {
-    return createFont(pa, fontFileName, fontSize, new MTColor(
+  public IFont createFont(final PApplet pa, final String fontFileName, final int fontSize) {
+    return this.createFont(pa, fontFileName, fontSize, new MTColor(
         FontManager.DEFAULT_FONT_FILL_COLOR));
   }
 
@@ -428,7 +428,7 @@ public class EnhancedFontManager {
    * 
    * @return the i font
    */
-  public IFont createFont(PApplet pa, String fontFileName, int fontSize, MTColor color) {
+  public IFont createFont(final PApplet pa, final String fontFileName, final int fontSize, final MTColor color) {
     return this.createFont(pa, fontFileName, fontSize, color, true);
   }
 
@@ -449,23 +449,23 @@ public class EnhancedFontManager {
    * 
    * @return the i font
    */
-  public IFont createFont(PApplet pa, String fontFileName,
-        int fontSize, MTColor color, boolean antiAliased) {
+  public IFont createFont(final PApplet pa, final String fontFileName,
+        final int fontSize, final MTColor color, final boolean antiAliased) {
 
-    checkAvailableFontsCurrent();
+    this.checkAvailableFontsCurrent();
 
     // Try to find a file that exists in one of the font directories with that file name.
     String fontAbsolutePath = fontFileName;
-    String[] fontPaths = fontPaths();
-    for (String fontPath : fontPaths) {
-      File f = new File(new File(fontPath), fontFileName);
+    final String[] fontPaths = this.fontPaths();
+    for (final String fontPath : fontPaths) {
+      final File f = new File(new File(fontPath), fontFileName);
       if (f.exists() && f.isFile()) {
         fontAbsolutePath = f.getAbsolutePath();
         break;
       }
     }
 
-    return createFontFromFile(pa, fontAbsolutePath, fontSize, color, antiAliased);
+    return this.createFontFromFile(pa, fontAbsolutePath, fontSize, color, antiAliased);
   }
 
   /**
@@ -484,9 +484,9 @@ public class EnhancedFontManager {
    * 
    * @return the font (null if not available)
    */
-  public IFont createFontByName(PApplet pa, final String fontName,
-      int fontSize, MTColor color) {
-    return createFontByName(pa, fontName, fontSize, color, true);
+  public IFont createFontByName(final PApplet pa, final String fontName,
+      final int fontSize, final MTColor color) {
+    return this.createFontByName(pa, fontName, fontSize, color, true);
   }
 
   /**
@@ -506,26 +506,26 @@ public class EnhancedFontManager {
    * 
    * @return the font (null if not available)
    */
-  public IFont createFontByName(PApplet pa, final String fontName,
-      int fontSize, MTColor color,
-      boolean antiAliased) {
+  public IFont createFontByName(final PApplet pa, final String fontName,
+      final int fontSize, final MTColor color,
+      final boolean antiAliased) {
 
-    checkAvailableFontsCurrent();
+    this.checkAvailableFontsCurrent();
 
     String fontFileName = this.availableFonts.get(fontName);
-    if (fontFileName == null || fontFileName.length() == 0) {
-      // It's probably a system font.  Pretend the font file name is the
-      // same as the font name.  Will fall through to the bitmap font factory
+    if ((fontFileName == null) || (fontFileName.length() == 0)) {
+      // It's probably a system font. Pretend the font file name is the
+      // same as the font name. Will fall through to the bitmap font factory
       // which will load it as a processing font.
       fontFileName = fontName;
     }
 
-    return createFont(pa, fontFileName, fontSize, color, antiAliased);
+    return this.createFont(pa, fontFileName, fontSize, color, antiAliased);
   }
 
-  public IFont createFontFromResource(PApplet pa, String fontResourceName, int fontSize,
-      MTColor color) {
-    return createFontFromResource(pa, fontResourceName, fontSize, color, true);
+  public IFont createFontFromResource(final PApplet pa, final String fontResourceName, final int fontSize,
+      final MTColor color) {
+    return this.createFontFromResource(pa, fontResourceName, fontSize, color, true);
   }
 
   /**
@@ -546,14 +546,14 @@ public class EnhancedFontManager {
    * 
    * @return the font (null if not available)
    */
-  public IFont createFontFromResource(PApplet pa, String fontResourceName, int fontSize,
-      MTColor color, boolean antiAliased) {
+  public IFont createFontFromResource(final PApplet pa, final String fontResourceName, final int fontSize,
+      final MTColor color, final boolean antiAliased) {
 
-    String fontAbsolutePath = fontResourcesToFiles.get(fontResourceName);
+    String fontAbsolutePath = this.fontResourcesToFiles.get(fontResourceName);
 
     if (fontAbsolutePath == null) {
 
-      String resourcePath = MT4jSettings.DEFAULT_FONT_PATH + fontResourceName;
+      final String resourcePath = MT4jSettings.DEFAULT_FONT_PATH + fontResourceName;
       InputStream in = null;
       OutputStream out = null;
 
@@ -565,11 +565,11 @@ public class EnhancedFontManager {
         //
         if (in != null) {
 
-          File tempFile = File.createTempFile("tmpfont", getFontSuffix(fontResourceName));
+          final File tempFile = File.createTempFile("tmpfont", this.getFontSuffix(fontResourceName));
           tempFile.deleteOnExit();
 
           out = new FileOutputStream(tempFile);
-          byte[] buffer = new byte[4096];
+          final byte[] buffer = new byte[4096];
 
           int bytesRead = 0;
           while ((bytesRead = in.read(buffer)) != -1) {
@@ -583,10 +583,10 @@ public class EnhancedFontManager {
           in = null;
 
           fontAbsolutePath = tempFile.getAbsolutePath();
-          fontResourcesToFiles.put(fontResourceName, fontAbsolutePath);
+          this.fontResourcesToFiles.put(fontResourceName, fontAbsolutePath);
         }
 
-      } catch (IOException ioe) {
+      } catch (final IOException ioe) {
 
         logger.error("Error copying resource " + fontResourceName + " to temporary file.");
 
@@ -595,35 +595,35 @@ public class EnhancedFontManager {
         if (in != null) {
           try {
             in.close();
-          } catch (IOException ioe2) { /* ignore */
+          } catch (final IOException ioe2) { /* ignore */
           }
         }
         if (out != null) {
           try {
             out.close();
-          } catch (IOException ioe2) { /* ignore */
+          } catch (final IOException ioe2) { /* ignore */
           }
         }
       }
     }
 
-    return createFontFromFile(pa, fontAbsolutePath, fontSize, color, antiAliased);
+    return this.createFontFromFile(pa, fontAbsolutePath, fontSize, color, antiAliased);
   }
 
   // Private method for creating the font usually using the full font path.
   // If fontAbsolutePath is the name of a system font, the EnhancedBitmapFontFactory will
   // load it as a PFont.
   //
-  private IFont createFontFromFile(PApplet pa, String fontAbsolutePath,
-      int fontSize, MTColor color, boolean antiAliased) {
+  private IFont createFontFromFile(final PApplet pa, String fontAbsolutePath,
+      final int fontSize, final MTColor color, final boolean antiAliased) {
 
-    checkAvailableFontsCurrent();
+    this.checkAvailableFontsCurrent();
 
-    String fontName = availableFontsReverse.get(fontAbsolutePath);
+    String fontName = this.availableFontsReverse.get(fontAbsolutePath);
 
     if (fontName == null) {
       // It might be one of the system fonts that doesn't map to a file name.
-      File f = new File(fontAbsolutePath);
+      final File f = new File(fontAbsolutePath);
 
       fontName = f.getName();
 
@@ -638,17 +638,17 @@ public class EnhancedFontManager {
     if (fontName != null) {
 
       // Return cached font if there
-      IFont font = this.getCachedFont(fontName, fontSize, color, antiAliased);
+      final IFont font = this.getCachedFont(fontName, fontSize, color, antiAliased);
       if (font != null) {
         return font;
       }
 
       try {
 
-        String suffix = getFontSuffix(fontAbsolutePath);
+        final String suffix = this.getFontSuffix(fontAbsolutePath);
 
         // Check which factory to use for this file type
-        IEnhancedFontFactory factoryToUse = getFactoryForFileSuffix(suffix);
+        final IEnhancedFontFactory factoryToUse = this.getFactoryForFileSuffix(suffix);
 
         if (factoryToUse != null) {
 
@@ -659,14 +659,14 @@ public class EnhancedFontManager {
 
           // Have to be sure it's not null.
           if (loadedFont != null) {
-            cacheFont(fontName, loadedFont);
+            this.cacheFont(fontName, loadedFont);
           }
 
         } else {
           logger.error("Couldnt find a appropriate font factory for: " + fontName + " Suffix: " + suffix);
         }
 
-      } catch (Exception e) {
+      } catch (final Exception e) {
         logger.error("Error while trying to create the font: " + fontName);
         e.printStackTrace();
       }
@@ -677,8 +677,8 @@ public class EnhancedFontManager {
 
   // Returns the file name extension.
   //
-  private String getFontSuffix(String fontFileName) {
-    int indexOfPoint = fontFileName.lastIndexOf(".");
+  private String getFontSuffix(final String fontFileName) {
+    final int indexOfPoint = fontFileName.lastIndexOf(".");
     String suffix;
     if (indexOfPoint != -1) {
       suffix = fontFileName.substring(indexOfPoint, fontFileName.length());
@@ -697,7 +697,7 @@ public class EnhancedFontManager {
    * @param fileSuffix
    *          the file suffix to use with that factory. ".ttf" for example.
    */
-  public void registerFontFactory(String fileSuffix, IEnhancedFontFactory enhancedFontFactory) {
+  public void registerFontFactory(String fileSuffix, final IEnhancedFontFactory enhancedFontFactory) {
     fileSuffix = fileSuffix.toLowerCase();
     this.suffixToFactory.put(fileSuffix, enhancedFontFactory);
   }
@@ -708,10 +708,9 @@ public class EnhancedFontManager {
    * @param factory
    *          the factory
    */
-  public void unregisterFontFactory(IEnhancedFontFactory factory) {
-    Set<String> suffixesInHashMap = this.suffixToFactory.keySet();
-    for (Iterator<String> iter = suffixesInHashMap.iterator(); iter.hasNext();) {
-      String suffix = (String) iter.next();
+  public void unregisterFontFactory(final IEnhancedFontFactory factory) {
+    final Set<String> suffixesInHashMap = this.suffixToFactory.keySet();
+    for (final String suffix : suffixesInHashMap) {
       if (this.getFactoryForFileSuffix(suffix).equals(factory)) {
         this.suffixToFactory.remove(suffix);
       }
@@ -724,7 +723,7 @@ public class EnhancedFontManager {
    * @return the registered factories
    */
   public IEnhancedFontFactory[] getRegisteredFactories() {
-    Collection<IEnhancedFontFactory> factoryCollection = this.suffixToFactory.values();
+    final Collection<IEnhancedFontFactory> factoryCollection = this.suffixToFactory.values();
     return factoryCollection.toArray(new IEnhancedFontFactory[factoryCollection.size()]);
   }
 
@@ -735,7 +734,7 @@ public class EnhancedFontManager {
    *          the suffix
    * @return the factory for file suffix
    */
-  public IEnhancedFontFactory getFactoryForFileSuffix(String suffix) {
+  public IEnhancedFontFactory getFactoryForFileSuffix(final String suffix) {
     return this.suffixToFactory.get(suffix);
   }
 
@@ -753,16 +752,16 @@ public class EnhancedFontManager {
    * 
    * @return the cached font
    */
-  public IFont getCachedFont(String fontName, int fontSize, MTColor fillColor, boolean antiAliased) {
+  public IFont getCachedFont(final String fontName, final int fontSize, final MTColor fillColor, final boolean antiAliased) {
     // Get a list of fonts registered under the given name.
-    List<IFont> fontList = fonts.get(fontName);
+    final List<IFont> fontList = this.fonts.get(fontName);
     if (fontList != null) {
-      for (IFont font : fontList) {
+      for (final IFont font : fontList) {
         // Don't need to get the font name from the font object, since all fonts in
         // the list have the specified fontName.
-        if (font.getOriginalFontSize() == fontSize &&
+        if ((font.getOriginalFontSize() == fontSize) &&
             font.getFillColor().equals(fillColor) &&
-            font.isAntiAliased() == antiAliased) {
+            (font.isAntiAliased() == antiAliased)) {
           logger.info("Using cached font: " + fontName + " Fontsize: " + Math.round(fontSize) +
               " FillColor: " + fillColor);
           return font;
@@ -772,31 +771,31 @@ public class EnhancedFontManager {
     return null;
   }
 
-  private void cacheFont(String fontName, IFont font) {
-    List<IFont> fontList = fonts.get(fontName);
+  private void cacheFont(final String fontName, final IFont font) {
+    List<IFont> fontList = this.fonts.get(fontName);
     if (fontList == null) {
       fontList = new ArrayList<IFont>();
-      fonts.put(fontName, fontList);
+      this.fonts.put(fontName, fontList);
     }
     fontList.add(font);
-    checkFontCacheSize();
+    this.checkFontCacheSize();
   }
 
   // Trims down the size of the font cache, if necessary.
   private void checkFontCacheSize() {
     int totalSz = 0;
-    Iterator<List<IFont>> it = fonts.values().iterator();
+    Iterator<List<IFont>> it = this.fonts.values().iterator();
     while (it.hasNext()) {
       totalSz += it.next().size();
     }
-    if (totalSz > CACHE_MAX_SIZE && totalSz > 0) {
-      it = fonts.values().iterator();
+    if ((totalSz > CACHE_MAX_SIZE) && (totalSz > 0)) {
+      it = this.fonts.values().iterator();
       while (it.hasNext()) {
-        List<IFont> fontList = it.next();
+        final List<IFont> fontList = it.next();
         if (fontList.size() > 0) {
           fontList.remove(0);
           totalSz--;
-          if (totalSz == CACHE_MAX_SIZE || totalSz == 0) {
+          if ((totalSz == CACHE_MAX_SIZE) || (totalSz == 0)) {
             return;
           }
         }
@@ -813,12 +812,12 @@ public class EnhancedFontManager {
    *          the font
    * @return true, if successful
    */
-  public boolean removeFromCache(IFont font) {
+  public boolean removeFromCache(final IFont font) {
 
-    Iterator<List<IFont>> it = fonts.values().iterator();
+    final Iterator<List<IFont>> it = this.fonts.values().iterator();
     while (it.hasNext()) {
-      List<IFont> list = it.next();
-      int n = list.indexOf(font);
+      final List<IFont> list = it.next();
+      final int n = list.indexOf(font);
       if (n >= 0) {
         list.remove(n);
         return true;
