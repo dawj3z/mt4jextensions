@@ -24,8 +24,13 @@ import org.mt4j.components.visibleComponents.shapes.MTPolygon;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.gestureAction.TapAndHoldVisualizer;
 import org.mt4j.input.inputData.MTFingerInputEvt;
 import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.sceneManagement.AbstractScene;
@@ -154,71 +159,65 @@ public class MTRadialMenuExampleScene extends AbstractScene {
     final IMTInputEventListener changeTextInputListener = new IMTInputEventListener() {
       @Override
       public boolean processInputEvent(final MTInputEvent inEvt) {
-
         // Most input events in MT4j are an instance of AbstractCursorInputEvt (mouse, multi-touch..)
         if (inEvt instanceof MTFingerInputEvt) {
           final MTFingerInputEvt cursorInputEvt = (MTFingerInputEvt) inEvt;
           switch (cursorInputEvt.getId()) {
             case TapEvent.GESTURE_STARTED:
-     {
-     final MTTextArea textArea = (MTTextArea) mtRectangle.getChildByName("textArea");
-     textArea.setText("New Text");
-   }
-     break;
-   default:
-        break;
-    }
-  } else {
-    LOG.warn("Some other event occured:" + inEvt);
-  }
-  return false;
-}
+              final MTTextArea textArea = (MTTextArea) mtRectangle.getChildByName("textArea");
+              textArea.setText("New Text");
+              break;
+            default:
+              break;
+          }
+        } else {
+          LOG.warn("Some other event occured:" + inEvt);
+        }
+
+        return false;
+      }
     };
 
     final IMTInputEventListener rotateInputListener = new IMTInputEventListener() {
       @Override
       public boolean processInputEvent(final MTInputEvent inEvt) {
-
         // Most input events in MT4j are an instance of AbstractCursorInputEvt (mouse, multi-touch..)
         if (inEvt instanceof MTFingerInputEvt) {
           final MTFingerInputEvt cursorInputEvt = (MTFingerInputEvt) inEvt;
           switch (cursorInputEvt.getId()) {
             case TapEvent.GESTURE_STARTED:
-     {
-     AnimationUtil.rotate2D(mtRectangle, 720);
-   }
-     break;
-   default:
-        break;
-    }
-  } else {
-    LOG.warn("Some other event occured:" + inEvt);
-  }
-  return false;
-}
+              AnimationUtil.rotate2D(mtRectangle, 720);
+              break;
+            default:
+              break;
+          }
+        } else {
+          LOG.warn("Some other event occured:" + inEvt);
+        }
+
+        return false;
+      }
     };
 
     final IMTInputEventListener scaleInInputListener = new IMTInputEventListener() {
       @Override
       public boolean processInputEvent(final MTInputEvent inEvt) {
-
         // Most input events in MT4j are an instance of AbstractCursorInputEvt (mouse, multi-touch..)
         if (inEvt instanceof MTFingerInputEvt) {
           final MTFingerInputEvt cursorInputEvt = (MTFingerInputEvt) inEvt;
           switch (cursorInputEvt.getId()) {
             case TapEvent.GESTURE_STARTED:
-     {
-     AnimationUtil.scaleIn(mtRectangle);
-   }
-     break;
-   default:
-        break;
-    }
-  } else {
-    LOG.warn("Some other event occured:" + inEvt);
-  }
-  return false;
-}
+              AnimationUtil.scaleIn(mtRectangle);
+              break;
+            default:
+              break;
+          }
+        } else {
+          LOG.warn("Some other event occured:" + inEvt);
+        }
+
+        return false;
+      }
     };
 
     final float translateOrigX = mtRectangle.getCenterPointLocal().getX();
@@ -228,272 +227,268 @@ public class MTRadialMenuExampleScene extends AbstractScene {
     final IMTInputEventListener translateInputListener = new IMTInputEventListener() {
       @Override
       public boolean processInputEvent(final MTInputEvent inEvt) {
-
         // Most input events in MT4j are an instance of AbstractCursorInputEvt (mouse, multi-touch..)
         if (inEvt instanceof MTFingerInputEvt) {
           final MTFingerInputEvt cursorInputEvt = (MTFingerInputEvt) inEvt;
           switch (cursorInputEvt.getId()) {
             case TapEvent.GESTURE_STARTED:
-     {
-     if (MTRadialMenuExampleScene.this.isTranslate())
-     {
-       final Random random = new Random();
-       float x = random.nextInt(mtApplication.width) / 2;
-       if (x % 2 == 0)
-     {
-       x = -x;
-     }
+              if (MTRadialMenuExampleScene.this.isTranslate())
+               {
+                 final Random random = new Random();
+                 float x = random.nextInt(mtApplication.width) / 2;
+                 if (x % 2 == 0)
+                 {
+                   x = -x;
+                 }
 
-     float y = random.nextInt(mtApplication.height) / 2;
-     if (y % 2 == 0)
-     {
-       y = -y;
-     }
+                 float y = random.nextInt(mtApplication.height) / 2;
+                 if (y % 2 == 0)
+                 {
+                   y = -y;
+                 }
 
-     AnimationUtil.translate(mtRectangle, x, y);
+                 AnimationUtil.translate(mtRectangle, x, y);
 
-     MTRadialMenuExampleScene.this.setTranslate(false);
-   }
-        else
-     {
-       mtRectangle.translate(new Vector3D(translateOrigX, translateOrigY));
-       MTRadialMenuExampleScene.this.setTranslate(true);
-     }
-   }
-     break;
-   default:
-        break;
-    }
-  } else {
-    LOG.warn("Some other event occured:" + inEvt);
-  }
-  return false;
-}
+                 MTRadialMenuExampleScene.this.setTranslate(false);
+               }
+               else
+               {
+                 mtRectangle.translate(new Vector3D(translateOrigX, translateOrigY));
+                 MTRadialMenuExampleScene.this.setTranslate(true);
+               }
+
+               break;
+             default:
+               break;
+           }
+         } else {
+           LOG.warn("Some other event occured:" + inEvt);
+         }
+
+         return false;
+       }
     };
 
     final IMTInputEventListener elasticInInputListener = new IMTInputEventListener() {
       @Override
       public boolean processInputEvent(final MTInputEvent inEvt) {
-
         // Most input events in MT4j are an instance of AbstractCursorInputEvt (mouse, multi-touch..)
         if (inEvt instanceof MTFingerInputEvt) {
           final MTFingerInputEvt cursorInputEvt = (MTFingerInputEvt) inEvt;
           switch (cursorInputEvt.getId()) {
             case TapEvent.GESTURE_STARTED:
-     {
-     elasticInOut(mtRectangle);
-   }
-     break;
-   default:
-        break;
-    }
-  } else {
-    LOG.warn("Some other event occured:" + inEvt);
-  }
-  return false;
-}
+               elasticInOut(mtRectangle);
+               break;
+             default:
+                  break;
+              }
+            } else {
+              LOG.warn("Some other event occured:" + inEvt);
+            }
+            return false;
+          }
     };
 
     /*
      * Add a Radial Menu to the rectangle
      */
-    final IMTInputEventListener rectangleInputListener = new IMTInputEventListener() {
+    mtRectangle.registerInputProcessor(new TapAndHoldProcessor(mtApplication, 1000));
+    mtRectangle.addGestureListener(TapAndHoldProcessor.class, new TapAndHoldVisualizer(mtApplication, this.getCanvas()));
+    mtRectangle.addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
       @Override
-      public boolean processInputEvent(final MTInputEvent inEvt) {
+      public boolean processGestureEvent(final MTGestureEvent ge) {
+        final TapAndHoldEvent th = (TapAndHoldEvent) ge;
+        final IMTComponent3D target = th.getTarget();
 
-        // Most input events in MT4j are an instance of AbstractCursorInputEvt (mouse, multi-touch..)
-        if (inEvt instanceof MTFingerInputEvt) {
-          final MTFingerInputEvt cursorInputEvt = (MTFingerInputEvt) inEvt;
-          final IMTComponent3D target = cursorInputEvt.getTarget();
-          switch (cursorInputEvt.getId()) {
-            case TapEvent.GESTURE_STARTED:
+        switch (th.getId()) {
+          case TapAndHoldEvent.GESTURE_ENDED:
+            if (target.getName().equals("rectangle") || target.getName().equals("textArea"))
+            {
+              if (th.getElapsedTimeNormalized() < 1)
+              {
+                break;
+              }
 
-              if (target.getName().equals("rectangle") || target.getName().equals("textArea"))
-     {
-       if ((MTRadialMenuExampleScene.this.mtRadialMenu2 != null) && !MTRadialMenuExampleScene.this.mtRadialMenu2.isVisible())
-     {
-       MTRadialMenuExampleScene.this.mtRadialMenu2.destroy();
-       MTRadialMenuExampleScene.this.mtRadialMenu2 = null;
-     }
+              if ((MTRadialMenuExampleScene.this.mtRadialMenu2 != null) && !MTRadialMenuExampleScene.this.mtRadialMenu2.isVisible())
+              {
+                MTRadialMenuExampleScene.this.mtRadialMenu2.destroy();
+                MTRadialMenuExampleScene.this.mtRadialMenu2 = null;
+              }
 
-     if (MTRadialMenuExampleScene.this.mtRadialMenu2 == null)
-     {
-       // Build list of menu items
-       final List<MTMenuItem> menuItems = new ArrayList<MTMenuItem>();
+              if (MTRadialMenuExampleScene.this.mtRadialMenu2 == null)
+              {
+                // Build list of menu items
+                final List<MTMenuItem> menuItems = new ArrayList<MTMenuItem>();
 
-       final MTMenuItem menu1 = new MTMenuItem("File", null);
-       menu1.addSubMenuItem(new MTMenuItem("New Session", null));
-       menu1.addSubMenuItem(new MTMenuItem("Open Session", null));
-       menu1.addSubMenuItem(new MTMenuItem("Save Session", null));
-       menu1.addSubMenuItem(new MTMenuItem("Properties", null));
+                final MTMenuItem menu1 = new MTMenuItem("File", null);
+                menu1.addSubMenuItem(new MTMenuItem("New Session", null));
+                menu1.addSubMenuItem(new MTMenuItem("Open Session", null));
+                menu1.addSubMenuItem(new MTMenuItem("Save Session", null));
+                menu1.addSubMenuItem(new MTMenuItem("Properties", null));
 
-       final MTMenuItem menu2 = new MTMenuItem("Edit", null);
-       menu2.addSubMenuItem(new MTMenuItem("Undo Action", null));
-       menu2.addSubMenuItem(new MTMenuItem("Redo Action", null));
-       menu2.addSubMenuItem(new MTMenuItem("Select All", null));
-       menu2.addSubMenuItem(new MTMenuItem("Cut", null));
-       menu2.addSubMenuItem(new MTMenuItem("Copy", null));
-       menu2.addSubMenuItem(new MTMenuItem("Paste", null));
+                final MTMenuItem menu2 = new MTMenuItem("Edit", null);
+                menu2.addSubMenuItem(new MTMenuItem("Undo Action", null));
+                menu2.addSubMenuItem(new MTMenuItem("Redo Action", null));
+                menu2.addSubMenuItem(new MTMenuItem("Select All", null));
+                menu2.addSubMenuItem(new MTMenuItem("Cut", null));
+                menu2.addSubMenuItem(new MTMenuItem("Copy", null));
+                menu2.addSubMenuItem(new MTMenuItem("Paste", null));
 
-       final MTMenuItem menu3 = new MTMenuItem("Actions", null);
+                final MTMenuItem menu3 = new MTMenuItem("Actions", null);
 
-       final MTMenuItem subMenu31 = new MTMenuItem("Rotate", null);
-       subMenu31.addInputEventListener(rotateInputListener);
-       menu3.addSubMenuItem(subMenu31);
+                final MTMenuItem subMenu31 = new MTMenuItem("Rotate", null);
+                subMenu31.addInputEventListener(rotateInputListener);
+                menu3.addSubMenuItem(subMenu31);
 
-       final MTMenuItem subMenu32 = new MTMenuItem("Scale In", null);
-       subMenu32.addInputEventListener(scaleInInputListener);
-       menu3.addSubMenuItem(subMenu32);
+                final MTMenuItem subMenu32 = new MTMenuItem("Scale In", null);
+                subMenu32.addInputEventListener(scaleInInputListener);
+                menu3.addSubMenuItem(subMenu32);
 
-       final MTMenuItem subMenu33 = new MTMenuItem("Translate", null);
-       subMenu33.addInputEventListener(translateInputListener);
-       menu3.addSubMenuItem(subMenu33);
+                final MTMenuItem subMenu33 = new MTMenuItem("Translate", null);
+                subMenu33.addInputEventListener(translateInputListener);
+                menu3.addSubMenuItem(subMenu33);
 
-       final MTMenuItem subMenu34 = new MTMenuItem("Elastic", null);
-       subMenu34.addInputEventListener(elasticInInputListener);
-       menu3.addSubMenuItem(subMenu34);
+                final MTMenuItem subMenu34 = new MTMenuItem("Elastic", null);
+                subMenu34.addInputEventListener(elasticInInputListener);
+                menu3.addSubMenuItem(subMenu34);
 
-       final MTMenuItem subMenu35 = new MTMenuItem("Change Text", null);
-       subMenu35.addInputEventListener(changeTextInputListener);
-       menu3.addSubMenuItem(subMenu35);
+                final MTMenuItem subMenu35 = new MTMenuItem("Change Text", null);
+                subMenu35.addInputEventListener(changeTextInputListener);
+                menu3.addSubMenuItem(subMenu35);
 
-       final MTMenuItem menu4 = new MTMenuItem("View", null);
-       final MTMenuItem menu5 = new MTMenuItem("Filter", null);
+                final MTMenuItem menu4 = new MTMenuItem("View", null);
+                final MTMenuItem menu5 = new MTMenuItem("Filter", null);
 
-       menuItems.add(menu1);
-       menuItems.add(menu2);
-       menuItems.add(menu3);
-       menuItems.add(menu4);
-       menuItems.add(menu5);
+                menuItems.add(menu1);
+                menuItems.add(menu2);
+                menuItems.add(menu3);
+                menuItems.add(menu4);
+                menuItems.add(menu5);
 
-       // Create menu
-       final Vector3D vector = new Vector3D(cursorInputEvt.getX(), cursorInputEvt.getY());
+                // Create menu
+                final Vector3D vector = new Vector3D(th.getCursor().getCurrentEvtPosX(), th.getCursor().getCurrentEvtPosY());
 
-       final IFont font = FontManager.getInstance().createFont(mtApplication, "arial.ttf",
-           16, // Font size
-           new MTColor(255, 255, 255, 255), // Font fill color
-           true); // Anti-alias
+                final IFont font = FontManager.getInstance().createFont(mtApplication, "arial.ttf",
+                    16, // Font size
+                    new MTColor(255, 255, 255, 255), // Font fill color
+                    true); // Anti-alias
 
-       MTRadialMenuExampleScene.this.mtRadialMenu2 = new MTRadialMenu(mtApplication, vector, font, 1f, menuItems);
-       MTRadialMenuExampleScene.this.getCanvas().addChild(MTRadialMenuExampleScene.this.mtRadialMenu2);
-     }
-   }
+                MTRadialMenuExampleScene.this.mtRadialMenu2 = new MTRadialMenu(mtApplication, vector, font, 1f, menuItems);
+                MTRadialMenuExampleScene.this.getCanvas().addChild(MTRadialMenuExampleScene.this.mtRadialMenu2);
+              }
+            }
 
-   break;
- default:
-        break;
-    }
-  } else {
-    LOG.warn("Some other event occured:" + inEvt);
-  }
-  return false;
-}
-    };
+            break;
+          default:
+            break;
+        }
 
-    mtRectangle.addInputListener(rectangleInputListener);
+        return false;
+      }
+    });
 
     /*
-     * Add a Radial Menu to the entire scene
+     * Add a Radial Menu to the textArea
      */
-    final IMTInputEventListener textInputListener = new IMTInputEventListener() {
+    textArea1.registerInputProcessor(new TapAndHoldProcessor(mtApplication, 1000));
+    textArea1.addGestureListener(TapAndHoldProcessor.class, new TapAndHoldVisualizer(mtApplication, this.getCanvas()));
+    textArea1.addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
       @Override
-      public boolean processInputEvent(final MTInputEvent inEvt) {
+      public boolean processGestureEvent(final MTGestureEvent ge) {
+        final TapAndHoldEvent th = (TapAndHoldEvent) ge;
+        final IMTComponent3D target = th.getTarget();
 
-        // Most input events in MT4j are an instance of AbstractCursorInputEvt (mouse, multi-touch..)
-        if (inEvt instanceof MTFingerInputEvt) {
-          final MTFingerInputEvt cursorInputEvt = (MTFingerInputEvt) inEvt;
-          final IMTComponent3D target = cursorInputEvt.getTarget();
-          switch (cursorInputEvt.getId()) {
-            case TapEvent.GESTURE_STARTED:
+        switch (th.getId()) {
+          case TapAndHoldEvent.GESTURE_ENDED:
+            if (target.getName().equals("rectangle") || target.getName().equals("textArea"))
+            {
+              if (th.getElapsedTimeNormalized() < 1)
+              {
+                break;
+              }
 
-              if (target.getName().equals("rectangle") || target.getName().equals("textArea"))
-     {
-       if ((MTRadialMenuExampleScene.this.mtRadialMenu1 != null) && !MTRadialMenuExampleScene.this.mtRadialMenu1.isVisible())
-     {
-       MTRadialMenuExampleScene.this.mtRadialMenu1.destroy();
-       MTRadialMenuExampleScene.this.mtRadialMenu1 = null;
-     }
+              if ((MTRadialMenuExampleScene.this.mtRadialMenu1 != null) && !MTRadialMenuExampleScene.this.mtRadialMenu1.isVisible())
+              {
+                MTRadialMenuExampleScene.this.mtRadialMenu1.destroy();
+                MTRadialMenuExampleScene.this.mtRadialMenu1 = null;
+              }
 
-     if (MTRadialMenuExampleScene.this.mtRadialMenu1 == null)
-     {
-       // Build list of menu items
-       final List<MTMenuItem> menuItems = new ArrayList<MTMenuItem>();
+              if (MTRadialMenuExampleScene.this.mtRadialMenu1 == null)
+              {
+                // Build list of menu items
+                final List<MTMenuItem> menuItems = new ArrayList<MTMenuItem>();
 
-       final MTMenuItem menu1 = new MTMenuItem("Menu 1", null);
-       menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 1", null));
-       menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 2", null));
-       menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 3", null));
-       menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 4", null));
+                final MTMenuItem menu1 = new MTMenuItem("Menu 1", null);
+                menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 1", null));
+                menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 2", null));
+                menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 3", null));
+                menu1.addSubMenuItem(new MTMenuItem("Sub-Menu 4", null));
 
-       final MTMenuItem subMenu5 = new MTMenuItem("Sub-Menu 5", null);
-       subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 1", null));
-       subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 2", null));
-       subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 3", null));
-       subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 4", null));
-       subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 5", null));
-       subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 6", null));
+                final MTMenuItem subMenu5 = new MTMenuItem("Sub-Menu 5", null);
+                subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 1", null));
+                subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 2", null));
+                subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 3", null));
+                subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 4", null));
+                subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 5", null));
+                subMenu5.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 6", null));
 
-       menu1.addSubMenuItem(subMenu5);
+                menu1.addSubMenuItem(subMenu5);
 
-       final MTMenuItem menu2 = new MTMenuItem("Menu 2", null);
-       menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 1", null));
-       menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 2", null));
-       menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 3", null));
-       menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 4", null));
-       menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 5", null));
-       menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 6", null));
+                final MTMenuItem menu2 = new MTMenuItem("Menu 2", null);
+                menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 1", null));
+                menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 2", null));
+                menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 3", null));
+                menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 4", null));
+                menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 5", null));
+                menu2.addSubMenuItem(new MTMenuItem("Sub-Menu 6", null));
 
-       final MTMenuItem subMenu7 = new MTMenuItem("Sub-Menu 7", null);
-       subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 1", null));
-       subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 2", null));
-       subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 3", null));
-       subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 4", null));
-       subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 5", null));
-       subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 6", null));
+                final MTMenuItem subMenu7 = new MTMenuItem("Sub-Menu 7", null);
+                subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 1", null));
+                subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 2", null));
+                subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 3", null));
+                subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 4", null));
+                subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 5", null));
+                subMenu7.addSubMenuItem(new MTMenuItem("Sub-Sub-Menu 6", null));
 
-       menu2.addSubMenuItem(subMenu7);
+                menu2.addSubMenuItem(subMenu7);
 
-       final MTMenuItem menu3 = new MTMenuItem("Menu 3", null);
-       final MTMenuItem menu4 = new MTMenuItem("Menu 4", null);
-       final MTMenuItem menu5 = new MTMenuItem("Menu 5", null);
-       final MTMenuItem menu6 = new MTMenuItem("Menu 6", null);
-       final MTMenuItem menu7 = new MTMenuItem("Menu 7", null);
-       final MTMenuItem menu8 = new MTMenuItem("Menu 8", null);
+                final MTMenuItem menu3 = new MTMenuItem("Menu 3", null);
+                final MTMenuItem menu4 = new MTMenuItem("Menu 4", null);
+                final MTMenuItem menu5 = new MTMenuItem("Menu 5", null);
+                final MTMenuItem menu6 = new MTMenuItem("Menu 6", null);
+                final MTMenuItem menu7 = new MTMenuItem("Menu 7", null);
+                final MTMenuItem menu8 = new MTMenuItem("Menu 8", null);
 
-       menuItems.add(menu1);
-       menuItems.add(menu2);
-       menuItems.add(menu3);
-       menuItems.add(menu4);
-       menuItems.add(menu5);
-       menuItems.add(menu6);
-       menuItems.add(menu7);
-       menuItems.add(menu8);
+                menuItems.add(menu1);
+                menuItems.add(menu2);
+                menuItems.add(menu3);
+                menuItems.add(menu4);
+                menuItems.add(menu5);
+                menuItems.add(menu6);
+                menuItems.add(menu7);
+                menuItems.add(menu8);
 
-       // Create menu
-       final Vector3D vector = new Vector3D(cursorInputEvt.getX(), cursorInputEvt.getY());
+                // Create menu
+                final Vector3D vector = new Vector3D(th.getCursor().getCurrentEvtPosX(), th.getCursor().getCurrentEvtPosY());
 
-       final IFont font = FontManager.getInstance().createFont(mtApplication, "arial.ttf",
-           16, // Font size
-           new MTColor(255, 255, 255, 255), // Font fill color
-           true); // Anti-alias
+                final IFont font = FontManager.getInstance().createFont(mtApplication, "arial.ttf",
+                    16, // Font size
+                    new MTColor(255, 255, 255, 255), // Font fill color
+                    true); // Anti-alias
 
-       MTRadialMenuExampleScene.this.mtRadialMenu1 = new MTRadialMenu(mtApplication, vector, font, 1f, menuItems);
-       MTRadialMenuExampleScene.this.getCanvas().addChild(MTRadialMenuExampleScene.this.mtRadialMenu1);
-     }
-   }
+                MTRadialMenuExampleScene.this.mtRadialMenu1 = new MTRadialMenu(mtApplication, vector, font, 1f, menuItems);
+                MTRadialMenuExampleScene.this.getCanvas().addChild(MTRadialMenuExampleScene.this.mtRadialMenu1);
+              }
+            }
 
-   break;
- default:
-        break;
-    }
-  } else {
-    LOG.warn("Some other event occured:" + inEvt);
-  }
-  return false;
-}
-    };
+            break;
+          default:
+            break;
+        }
 
-    textArea1.addInputListener(textInputListener);
+        return false;
+      }
+    });
   }
 
   /**
@@ -508,21 +503,15 @@ public class MTRadialMenuExampleScene extends AbstractScene {
     closeAnim.addAnimationListener(new IAnimationListener() {
       @Override
       public void processAnimationEvent(final AnimationEvent ae) {
-        // float delta = ae.getAnimation().getInterpolator().getCurrentStepDelta();
         switch (ae.getId()) {
-          case AnimationEvent.ANIMATION_STARTED:
-        case AnimationEvent.ANIMATION_UPDATED:
-        {
-        final float currentVal = ae.getValue();
-        as.setWidthXYRelativeToParent(currentVal);
-        break;
-      }
-      case AnimationEvent.ANIMATION_ENDED:
-          break;
-        default:
-          break;
-      }// switch
-    }// processanimation
+          case AnimationEvent.ANIMATION_UPDATED:
+            final float currentVal = ae.getValue();
+            as.setWidthXYRelativeToParent(currentVal);
+            break;
+          default:
+            break;
+        }// switch
+      }// processanimation
     });
 
     closeAnim.start();
