@@ -42,6 +42,7 @@ import org.mt4j.util.logging.ILogger;
 import org.mt4j.util.logging.MTLoggerFactory;
 import org.mt4jx.components.visibleComponents.font.fontFactories.EnhancedBitmapFontFactory;
 import org.mt4jx.components.visibleComponents.font.fontFactories.EnhancedSvgFontFactory;
+import org.mt4jx.components.visibleComponents.font.fontFactories.EnhancedTTFontFactory;
 import org.mt4jx.components.visibleComponents.font.fontFactories.IEnhancedFontFactory;
 
 import processing.core.PApplet;
@@ -105,7 +106,7 @@ public class EnhancedFontManager {
     // I've noticed on my windows 7 system that loading ttf fonts
     // with the bitmap font factory yields more pleasing results.
     // TODO: investigate to see if the ttf font factory ignores the antialiasing hint.
-    this.registerFontFactory(".ttf", bitmapFontFactory);
+    this.registerFontFactory(".ttf", new EnhancedTTFontFactory() /*bitmapFontFactory*/);
     this.registerFontFactory("", bitmapFontFactory);
     this.registerFontFactory(".vlw", bitmapFontFactory);
     this.registerFontFactory(".otf", bitmapFontFactory);
