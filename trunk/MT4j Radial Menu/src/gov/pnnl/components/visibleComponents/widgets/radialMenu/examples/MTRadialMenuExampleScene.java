@@ -292,9 +292,9 @@ public class MTRadialMenuExampleScene extends AbstractScene {
     /*
      * Add a Radial Menu to the rectangle
      */
-    mtRectangle.registerInputProcessor(new TapAndHoldProcessor(mtApplication, 1000));
-    mtRectangle.addGestureListener(TapAndHoldProcessor.class, new TapAndHoldVisualizer(mtApplication, this.getCanvas()));
-    mtRectangle.addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
+    textArea2.registerInputProcessor(new TapAndHoldProcessor(mtApplication, 1000));
+    textArea2.addGestureListener(TapAndHoldProcessor.class, new TapAndHoldVisualizer(mtApplication, this.getCanvas()));
+    textArea2.addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
       @Override
       public boolean processGestureEvent(final MTGestureEvent ge) {
         final TapAndHoldEvent th = (TapAndHoldEvent) ge;
