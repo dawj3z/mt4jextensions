@@ -117,10 +117,10 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 						if (c != null){
 							MTFiducialInputEvt objEvt = new MTFiducialInputEvt(
 									this,
-//									absoluteX,
-//									abosulteY,
-									c.getCurrentEvent().getX(), 
-									c.getCurrentEvent().getY(),
+									absoluteX,
+									abosulteY,
+//									c.getCurrentEvent().getX(), 
+//									c.getCurrentEvent().getY(),
 									MTFingerInputEvt.INPUT_ENDED,
 									c,
 									obj2DEvt.getMarkerId(),

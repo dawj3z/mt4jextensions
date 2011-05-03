@@ -85,8 +85,8 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 						long cursorID = lCursorID;
 						InputCursor c = ActiveCursorPool.getInstance().getActiveCursorByID(cursorID);
 						if (c != null){
-//							MTFingerInputEvt te = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_ENDED, c);
-							MTFingerInputEvt te = new MTFingerInputEvt(this, c.getCurrentEvent().getX(), c.getCurrentEvent().getY(), MTFingerInputEvt.INPUT_ENDED, c); //fire with the last x,y, because tuio sends 0,0 which doesent make much sense
+							MTFingerInputEvt te = new MTFingerInputEvt(this, absoluteX, abosulteY, MTFingerInputEvt.INPUT_ENDED, c);
+//							MTFingerInputEvt te = new MTFingerInputEvt(this, c.getCurrentEvent().getX(), c.getCurrentEvent().getY(), MTFingerInputEvt.INPUT_ENDED, c); //fire with the last x,y, because tuio sends 0,0 which doesent make much sense
 							tuioIDToCursorID.remove(sessionID);
 							ActiveCursorPool.getInstance().removeCursor(cursorID);
 //							System.out.println("enque END cid:" + cursorID + " (" + absoluteX + "," + abosulteY + ")");
