@@ -12,7 +12,7 @@ import org.mt4j.util.MT4jSettings;
 import org.tuio4j.TuioClient;
 import org.tuio4j.TuioClientListener;
 import org.tuio4j.TuioEvent;
-import org.tuio4j.obj2d.Tuio2DObjectEvent;
+import org.tuio4j.profile.obj2d.Tuio2DObjectEvent;
 /**
  * See license.txt for license information.
  * @author Uwe Laufs
@@ -25,8 +25,6 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	public Tuio2dObjectInputSource(MTApplication mtApp){
 		super(mtApp);
 		this.client = TUIOClientManager.getInstance().getClient();
-//		this.client.connect();
-//		this.client.addListener(this);
 	}
 	
 	@Override
@@ -119,8 +117,6 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 									this,
 									absoluteX,
 									abosulteY,
-//									c.getCurrentEvent().getX(), 
-//									c.getCurrentEvent().getY(),
 									MTFingerInputEvt.INPUT_ENDED,
 									c,
 									obj2DEvt.getMarkerId(),
