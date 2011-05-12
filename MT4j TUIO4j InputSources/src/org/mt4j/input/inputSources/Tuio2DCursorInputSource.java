@@ -39,7 +39,7 @@ public class Tuio2DCursorInputSource extends AbstractInputSource implements Tuio
 			this.client.addListener(this);
 			log.info("TUIO/2DCursor connected (port " + client.getPortNumber() + ")");
 		} catch (Throwable e) {
-			log.error("TUIO/2DCursor not connected: " + e.getMessage());
+			log.info("TUIO/2DCursor not connected: " + e.getMessage());
 		}
 	}
 

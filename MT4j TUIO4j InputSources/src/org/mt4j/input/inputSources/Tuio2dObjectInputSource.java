@@ -40,7 +40,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 			this.client.addListener(this);
 			log.info("TUIO/2dObject connected (port " + client.getPortNumber() + ")");
 		} catch (Throwable e) {
-			log.error("TUIO/2dObject not connected: " + e.getMessage());
+			log.info("TUIO/2dObject not connected: " + e.getMessage());
 		}
 	}
 
