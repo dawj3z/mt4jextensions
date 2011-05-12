@@ -9,10 +9,14 @@ import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTFiducialInputEvt;
 import org.mt4j.input.inputData.MTFingerInputEvt;
 import org.mt4j.util.MT4jSettings;
+import org.mt4j.util.logging.ILogger;
+import org.mt4j.util.logging.MTLoggerFactory;
 import org.tuio4j.TuioClient;
 import org.tuio4j.TuioClientListener;
 import org.tuio4j.TuioEvent;
 import org.tuio4j.profile.obj2d.Tuio2DObjectEvent;
+
+import advanced.mtShell.MTShellScene;
 /**
  * See license.txt for license information.
  * @author Uwe Laufs
@@ -22,6 +26,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	/** this is needed to track which events got fired as a finger down event already. */
 	private Map<Long, Long> tuioIDToCursorID = new HashMap<Long, Long>();;
 	private TuioClient client;
+	private static final ILogger log = MTLoggerFactory.getLogger(Tuio2dObjectInputSource.class.getName());
 	public Tuio2dObjectInputSource(MTApplication mtApp){
 		super(mtApp);
 		this.client = TUIOClientManager.getInstance().getClient();
@@ -33,9 +38,9 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 		try {
 			this.client.connect();
 			this.client.addListener(this);
-			System.out.println("TUIO/2dObject connected (port " + client.getPortNumber() + ")");
+			log.info("TUIO/2dObject connected (port " + client.getPortNumber() + ")");
 		} catch (Throwable e) {
-			System.out.println("TUIO/2dObject not connected: " + e.getMessage());
+			log.error("TUIO/2dObject not connected: " + e.getMessage());
 		}
 	}
 
