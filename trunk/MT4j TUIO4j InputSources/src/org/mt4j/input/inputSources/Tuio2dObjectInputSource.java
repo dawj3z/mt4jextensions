@@ -30,8 +30,13 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	@Override
 	public void onRegistered() {
 		super.onRegistered();
-		this.client.connect();
-		this.client.addListener(this);
+		try {
+			this.client.connect();
+			this.client.addListener(this);
+			System.out.println("TUIO/2dObject connected (port " + client.getPortNumber() + ")");
+		} catch (Throwable e) {
+			System.out.println("TUIO/2dObject not connected: " + e.getMessage());
+		}
 	}
 
 	@Override

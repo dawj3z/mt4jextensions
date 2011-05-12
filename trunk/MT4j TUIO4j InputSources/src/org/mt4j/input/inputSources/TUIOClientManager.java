@@ -27,7 +27,6 @@ public class TUIOClientManager {
 		TuioClient client = this.portAndClient.get(port);
 		if(client == null){
 			client = new TuioClient(port);
-			System.out.println("TUIO client connected: port " + port);
 			this.portAndClient.put(port, client);
 		}else{
 //			System.out.println("returned existing TUIO client.");
