@@ -14,8 +14,6 @@ import org.tuio4j.TuioClient;
 import org.tuio4j.TuioClientListener;
 import org.tuio4j.TuioEvent;
 import org.tuio4j.profile.cursor2d.Tuio2DCursorEvent;
-
-import advanced.mtShell.MTShellScene;
 /**
  * See license.txt for license information.
  * @author Uwe Laufs
