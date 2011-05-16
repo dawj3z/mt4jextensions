@@ -132,6 +132,13 @@ public class ComponentStack extends MTRectangle
 		}
 	}
 	
+	public MTComponent getComponentOnTopOfStack() {
+		if (mStackedComponents.size() > 0) {
+			return mStackedComponents.get(mStackedComponents.size() - 1);
+		}
+		return null;
+	}
+	
 	public MTComponent[] getStackedComponents() {
 		return mStackedComponents.toArray(new MTComponent[mStackedComponents.size()]);
 	}
@@ -140,7 +147,12 @@ public class ComponentStack extends MTRectangle
 	public void componentDropped(MTComponent droppedComponent, DragEvent de) {
 		// Turn off the activation border
 		hideActivationBorder();
-		addToTopOfStack(droppedComponent);
+		if (droppedComponent != this.getComponentOnTopOfStack()) {
+			addToTopOfStack(droppedComponent);
+		} else {
+			droppedComponent.setPickable(false);
+			sizeStackedComponents();
+		}
 	}
 
 	@Override
