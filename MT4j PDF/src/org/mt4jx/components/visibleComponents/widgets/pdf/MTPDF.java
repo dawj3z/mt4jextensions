@@ -136,7 +136,11 @@ public class MTPDF extends MTRectangle {
 			System.out.println("page==null: " + (page==null));
 		this.setTexture(page.getPImage());
 		this.pageNumber = pnumber;
-		new PrefetchThread(previewLoader, pdf, new int[]{pageNumber-1, pageNumber+1}).start();
+		if(pn<this.numberOfPages){
+			new PrefetchThread(previewLoader, pdf, new int[]{pageNumber-1, pageNumber+1}).start();
+		}else{
+			new PrefetchThread(previewLoader, pdf, new int[]{pageNumber-1}).start();
+		}
 	}
 
 	public int getPageNumber(){
