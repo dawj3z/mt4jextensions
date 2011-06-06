@@ -3,6 +3,7 @@ package org.mt4j.input.inputSources;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mt4j.AbstractMTApplication;
 import org.mt4j.MTApplication;
 import org.mt4j.input.inputData.ActiveCursorPool;
 import org.mt4j.input.inputData.InputCursor;
@@ -25,7 +26,7 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	private Map<Long, Long> tuioIDToCursorID = new HashMap<Long, Long>();;
 	private TuioClient client;
 	private static final ILogger log = MTLoggerFactory.getLogger(Tuio2dObjectInputSource.class.getName());
-	public Tuio2dObjectInputSource(MTApplication mtApp){
+	public Tuio2dObjectInputSource(AbstractMTApplication mtApp){
 		super(mtApp);
 		this.client = TUIOClientManager.getInstance().getClient();
 	}
@@ -45,8 +46,18 @@ public class Tuio2dObjectInputSource extends AbstractInputSource implements Tuio
 	@Override
 	public void onUnregistered() {
 		super.onUnregistered();
-		this.client.disconnect();
-		this.client.removeListener(this);
+		if(this.client!=null){
+			// do not disconnect client (maybe change later)
+//			try {
+				this.client.removeListener(this);
+				log.info("TUIO/2dObject disconnected");
+//				if(this.client.hasListeners()){
+//					this.client.disconnect();
+//				}
+//			} catch (Exception e) {
+//				// best effort
+//			}
+		}
 	}
 	
 	
