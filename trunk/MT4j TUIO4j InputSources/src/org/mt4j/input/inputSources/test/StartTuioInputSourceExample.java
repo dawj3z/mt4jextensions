@@ -18,6 +18,14 @@ public class StartTuioInputSourceExample extends MTApplication {
 	@Override
 	public void startUp() {
 		AbstractInputSource[] allSources = this.getInputManager().getInputSources();
+		/*
+		for (int i = 0; i < allSources.length; i++) {
+			if(allSources[i].getClass().getSimpleName().equals("TuioInputSource")){
+				this.getInputManager().unregisterInputSource(allSources[i]);
+				System.out.println("unregistered " + allSources[i].getClass().getName());
+			}
+		}
+		*/
 		this.getInputManager().registerInputSource(new Tuio2DCursorInputSource(this));
 		System.out.println("register Tuio2DCursorInputSource");
 		this.getInputManager().registerInputSource(new Tuio2dObjectInputSource(this));
