@@ -39,7 +39,7 @@ public class AnnularTextExampleScene extends AbstractScene {
             MTColor fontColor = annularFontColors[ringCount%2];
             
             float startAngle = r.nextFloat()*360f;
-            float endAngle = startAngle + 270f;
+            float endAngle = startAngle + 50f + r.nextFloat()*310f;
             
             float arcDegrees = MTAnnularSegment.computeArcDegrees(startAngle, endAngle);
             
