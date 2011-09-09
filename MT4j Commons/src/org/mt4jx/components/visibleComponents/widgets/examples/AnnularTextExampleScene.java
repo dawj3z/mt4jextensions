@@ -46,7 +46,7 @@ public class AnnularTextExampleScene extends AbstractScene {
             float outerRadius = radius + annularThickness;
         
             IFont font = MTAnnularTextArea.findAppropriateFont(mtApplication, radius, 
-                    outerRadius, arcDegrees, "arial.ttf", fontColor, true, 
+                    outerRadius, arcDegrees, "Arial", fontColor, true, 
                     new String[] { theMessage });
             
             MTAnnularTextArea ta = new MTAnnularTextArea(mtApplication, centerX, centerY,
