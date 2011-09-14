@@ -236,7 +236,7 @@ public class MTAnnularSegment extends MTCSSStylableShape {
     @Override
     public void setNoStroke(boolean b) {
         for (MTLine line : outlines) {
-            line.setNoStroke(true);
+            line.setVisible(!b);
         }
     }
     
@@ -426,4 +426,13 @@ public class MTAnnularSegment extends MTCSSStylableShape {
     protected void destroyComponent() {
     }
 
+    public boolean setWidthXYRelativeToParent(float width){
+        if (width > 0){
+            Vector3D centerPoint = this.getCenterPointRelativeToParent(); 
+            float factor = (1f/this.getWidthXYRelativeToParent()) * width;
+            this.scale(factor, factor, 1, centerPoint);
+            return true;
+        }else
+            return false;
+    }
 }
