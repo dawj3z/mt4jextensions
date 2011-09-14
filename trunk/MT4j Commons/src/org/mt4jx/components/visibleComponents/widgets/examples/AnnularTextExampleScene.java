@@ -26,7 +26,11 @@ public class AnnularTextExampleScene extends AbstractScene {
         
         String theMessage = "This is an annular text component.  How do you like it?";
         
-        Random r = new Random();
+        long seed = System.currentTimeMillis()%10000L;
+        
+        System.err.printf("........................... SEED = %d\n", seed);
+        
+        Random r = new Random(seed);
         
         float centerX = mtApplication.width/2f;
         float centerY = mtApplication.height/2f;
