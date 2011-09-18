@@ -30,7 +30,6 @@ import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
-import org.mt4jx.components.visibleComponents.widgets.circularmenu.ThreadAndPreDrawAction;
 
 import processing.core.PApplet;
 

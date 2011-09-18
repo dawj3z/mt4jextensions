@@ -4,18 +4,12 @@ import java.io.File;
 import org.mt4j.MTApplication;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
-import org.mt4j.components.visibleComponents.widgets.buttons.MTImageButton;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
-import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.sceneManagement.AbstractScene;
-import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
-import org.mt4jx.components.visibleComponents.widgets.MTDepthHelper;
 import org.mt4jx.components.visibleComponents.widgets.pdf.MTPDF;
 
 public class PDFExampleScene extends AbstractScene {
@@ -25,7 +19,7 @@ public class PDFExampleScene extends AbstractScene {
 		super(mtApplication, name);
 		this.app = mtApplication;
 		
-		final MTPDF pdf = new MTPDF(mtApplication, new File("d:/Thesis%20Breier%20-%20Multitouch%203D.pdf"));
+		final MTPDF pdf = new MTPDF(mtApplication, new File("d:/test2.pdf"));
 		pdf.scaleGlobal(.5f, .5f, .5f, pdf.getCenterPointGlobal());
 //		pdf.addGestureListener(DragProcessor.class, new IGestureEventListener() {
 //			@Override
@@ -41,6 +35,7 @@ public class PDFExampleScene extends AbstractScene {
 //			}
 //
 //		});
+		
 		MTTextArea previous = new MTTextArea(app, FontManager.getInstance().getDefaultFont(app));
 		previous.setText("Previous");
 		previous.registerInputProcessor(new TapProcessor(app));
