@@ -109,11 +109,39 @@ public class MTAnnularTextArea extends MTAnnularSegment {
                         fontSize++;
                     }
                 }
+                
                 if (fontSize > 0) {
-                    font = fm.createFont(pApplet, fontName, fontSize, fontColor, antiAliased);
+                    
+                    IFont newFont = null;
+                    int tries = 0;
+                    while(newFont == null && tries < 3) {
+                        tries++;
+                        newFont = fm.createFont(pApplet, fontName, fontSize, fontColor, antiAliased);
+                        if (newFont == null) {
+                            tried.add(fontSize);
+                            while(tried.contains(fontSize)) {
+                                if (tooBig) {
+                                    fontSize--;
+                                } else {
+                                    fontSize++;
+                                }
+                            }
+                        }
+                        if (fontSize == 0) {
+                            break;
+                        }
+                    }
+                    
+                    if (newFont == null) {
+                        return font;
+                    } else {
+                        font = newFont;
+                    }
+                    
                     width = stringWidth(font, longestString);
                     height = font.getFontAbsoluteHeight();
                     tried.add(fontSize);
+                
                 } else {
                     break;
                 }
