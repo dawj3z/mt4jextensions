@@ -31,12 +31,13 @@ public class CachedPDFPageLoader {
 		this.renderedPDFPageTable.put(key, image);
 		if(useDisk){
 			String saveFilePath = getStoragePath(key);
-			new File(saveFilePath).mkdirs();
+			new File(saveFilePath).getParentFile().mkdirs();
 			System.out.println("this.storageRoot.getAbsolutePath():" + this.storageRoot.getAbsolutePath());
 			System.out.println("key:" + key);
 			try {
 				if(!new File(saveFilePath).exists()){
 					image.getPImage().save(saveFilePath);
+					System.out.println("!!!!DODO: CREATE ABSOLUTE PATHS");
 				}
 			} catch (Throwable e) {
 				System.out.println(e.getMessage());
@@ -69,7 +70,7 @@ public class CachedPDFPageLoader {
 		if(img ==null){
 			// from file
 			String storagePath = getStoragePath(key);
-			if(new File(storagePath).exists()){
+			if(new File(storagePath).exists() && new File(storagePath).isFile()){
 				PApplet p = new PApplet();
 				PImage image = p.loadImage(storagePath);
 				RenderedPDFPage rpdf = new RenderedPDFPage(pdf, image, page, image.width*image.height);
@@ -83,18 +84,18 @@ public class CachedPDFPageLoader {
 					img = PDFRenderer.render(pdf, scaleFactor, page);
 					if(useDisk){
 						String saveFilePath = this.storageRoot.getAbsolutePath() + key;
-						new File(saveFilePath).mkdirs();
+						new File(saveFilePath).getParentFile().mkdirs();
 						System.out.println("CACHE: STORE: " + this.storageRoot.getAbsolutePath());
 						System.out.println("key:" + key);
 						this.add(pdf, page, img);
 						try {
 							img.getPImage().save(saveFilePath);
+							System.out.println("!!!!DODO: CREATE ABSOLUTE PATHS");
 						} catch (Exception e) {
 							// best effort, maybe in use
 						}
 					}
 					System.out.println("CACHE: ADDED PAGE " + key);
-					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
