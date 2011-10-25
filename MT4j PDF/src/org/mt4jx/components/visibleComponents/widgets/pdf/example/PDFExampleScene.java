@@ -2,13 +2,13 @@ package org.mt4jx.components.visibleComponents.widgets.pdf.example;
 import java.io.File;
 
 import org.mt4j.MTApplication;
-import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.sceneManagement.AbstractScene;
+import org.mt4j.util.font.FontManager;
 import org.mt4j.util.math.Vector3D;
 import org.mt4jx.components.visibleComponents.widgets.pdf.MTPDF;
 

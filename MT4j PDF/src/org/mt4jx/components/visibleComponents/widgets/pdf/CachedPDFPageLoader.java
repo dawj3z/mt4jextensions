@@ -36,11 +36,14 @@ public class CachedPDFPageLoader {
 			System.out.println("key:" + key);
 			try {
 				if(!new File(saveFilePath).exists()){
-					image.getPImage().save(saveFilePath);
-					System.out.println("!!!!DODO: CREATE ABSOLUTE PATHS");
+					System.out.println("TRY SAVE: " + toValidAbsolutePath(saveFilePath));
+					image.getPImage().save(toValidAbsolutePath(saveFilePath));
+					System.out.println("SAVED: " + toValidAbsolutePath(saveFilePath));
+				}else{
+					System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
 				}
 			} catch (Throwable e) {
-				System.out.println(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		lastAccessTable.put(key, System.currentTimeMillis());
@@ -89,8 +92,13 @@ public class CachedPDFPageLoader {
 						System.out.println("key:" + key);
 						this.add(pdf, page, img);
 						try {
-							img.getPImage().save(saveFilePath);
-							System.out.println("!!!!DODO: CREATE ABSOLUTE PATHS");
+							if(!new File(saveFilePath).exists()){
+								System.out.println("TRY SAVE: " + toValidAbsolutePath(saveFilePath));
+								img.getPImage().save(toValidAbsolutePath(saveFilePath));
+								System.out.println("SAVED: " + toValidAbsolutePath(saveFilePath));
+							}else{
+								System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
+							}
 						} catch (Exception e) {
 							// best effort, maybe in use
 						}
@@ -145,6 +153,15 @@ public class CachedPDFPageLoader {
 	public synchronized void clear(){
 		this.renderedPDFPageTable.clear();
 		this.lastAccessTable.clear();
+	}
+	private String toValidAbsolutePath(String p){
+			String path = p;
+			path = path.replace("/", File.separator);
+			path = path.replace("\\", File.separator);
+			path = path.replace(File.separator+".", "");
+			System.out.println("FIXED PATH:" + path);
+			return path;
+
 	}
 ////	TODO:Test
 //	private String[] getKeysDistanceOrder(){
