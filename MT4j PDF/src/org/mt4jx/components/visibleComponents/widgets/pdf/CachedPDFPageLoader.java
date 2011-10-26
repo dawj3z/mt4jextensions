@@ -1,10 +1,14 @@
 package org.mt4jx.components.visibleComponents.widgets.pdf;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
+
+import javax.imageio.ImageIO;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -37,7 +41,12 @@ public class CachedPDFPageLoader {
 			try {
 				if(!new File(saveFilePath).exists()){
 					System.out.println("TRY SAVE: " + toValidAbsolutePath(saveFilePath));
-					image.getPImage().save(toValidAbsolutePath(saveFilePath));
+					try {
+						this.savePNG(image.getPImage(), new File(toValidAbsolutePath(saveFilePath)));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+//					image.getPImage().save(toValidAbsolutePath(saveFilePath));
 					System.out.println("SAVED: " + toValidAbsolutePath(saveFilePath));
 				}else{
 					System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
@@ -94,7 +103,12 @@ public class CachedPDFPageLoader {
 						try {
 							if(!new File(saveFilePath).exists()){
 								System.out.println("TRY SAVE: " + toValidAbsolutePath(saveFilePath));
-								img.getPImage().save(toValidAbsolutePath(saveFilePath));
+								try {
+									this.savePNG(img.getPImage(), new File(toValidAbsolutePath(saveFilePath)));
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+//								img.getPImage().save(toValidAbsolutePath(saveFilePath));
 								System.out.println("SAVED: " + toValidAbsolutePath(saveFilePath));
 							}else{
 								System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
@@ -162,6 +176,10 @@ public class CachedPDFPageLoader {
 			System.out.println("FIXED PATH:" + path);
 			return path;
 
+	}
+	private void savePNG(PImage pi, File target) throws IOException{
+		BufferedImage bi = (BufferedImage)pi.getImage(); // retrieve image
+	    ImageIO.write(bi, "png", target);
 	}
 ////	TODO:Test
 //	private String[] getKeysDistanceOrder(){
