@@ -1,6 +1,5 @@
 package org.mt4jx.components.visibleComponents.widgets.pdf;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -134,12 +133,12 @@ public class CachedPDFPageLoader {
 		return this.storageRoot.getAbsolutePath() + key;
 	}
 	private synchronized void cleanup(){
-		String[] lru = getKeysLRUOrder();
 		int removeCnt = this.renderedPDFPageTable.size() - maxEntries;
-		System.out.println("removeCnt:" + removeCnt);
-		System.out.println("maxEntries:" + maxEntries);
-		System.out.println("size:" + this.renderedPDFPageTable.size());
 		if(removeCnt>0){
+			String[] lru = getKeysLRUOrder();
+			System.out.println("removeCnt:" + removeCnt);
+			System.out.println("maxEntries:" + maxEntries);
+			System.out.println("size:" + this.renderedPDFPageTable.size());
 			for (int i = 0; i < removeCnt; i++) {
 				this.remove(lru[i]);
 			}
