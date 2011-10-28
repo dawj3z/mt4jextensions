@@ -59,7 +59,8 @@ public class PDFRenderer {
         
         Image img = page.getImage(
         		(int)(w*scaleFactor),(int)(h*scaleFactor), //width & height
-                clip, // clip rect
+                null, // disable clipping
+//              clip, // clip rect
                 null, // null for the ImageObserver
                 true, // fill background with white
                 true  // block until drawing is done
