@@ -48,7 +48,7 @@ public class CachedPDFPageLoader {
 //					image.getPImage().save(toValidAbsolutePath(saveFilePath));
 					System.out.println("SAVED: " + toValidAbsolutePath(saveFilePath));
 				}else{
-					System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
+//					System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
 				}
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -110,7 +110,7 @@ public class CachedPDFPageLoader {
 //								img.getPImage().save(toValidAbsolutePath(saveFilePath));
 								System.out.println("SAVED: " + toValidAbsolutePath(saveFilePath));
 							}else{
-								System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
+//								System.err.println("ALREADY EXISTS: " +toValidAbsolutePath(saveFilePath));
 							}
 						} catch (Exception e) {
 							// best effort, maybe in use
