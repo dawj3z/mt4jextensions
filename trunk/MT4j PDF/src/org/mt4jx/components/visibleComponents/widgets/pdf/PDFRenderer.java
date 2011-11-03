@@ -83,18 +83,19 @@ public class PDFRenderer {
 		int w = (int)(page.getBBox().getWidth());
 		int h = (int)(page.getBBox().getHeight());
 		
-		int c1,c2; // for clipping
-		if(w>h){
-			c1 = (int)page.getBBox().getHeight();
-			c2 = (int)page.getBBox().getWidth();
-		}else{
-			c1 = (int)page.getBBox().getWidth();
-			c2 = (int)page.getBBox().getHeight();
-		}
-        Rectangle clip = new Rectangle(0,0,c1,c2);
+//		int c1,c2; // for clipping
+//		if(w>h){
+//			c1 = (int)page.getBBox().getHeight();
+//			c2 = (int)page.getBBox().getWidth();
+//		}else{
+//			c1 = (int)page.getBBox().getWidth();
+//			c2 = (int)page.getBBox().getHeight();
+//		}
+//        Rectangle clip = new Rectangle(0,0,c1,c2);
         Image img = page.getImage(
         		width, height, //width & height
-                clip, // clip rect
+//                clip, // clip rect
+                null, // clip rect
                 null, // null for the ImageObserver
                 true, // fill background with white
                 true  // block until drawing is done
