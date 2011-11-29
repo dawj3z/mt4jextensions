@@ -153,7 +153,7 @@ public class MTPDF extends MTRectangle {
 		this.autoUpdate = autoUpdate;
 	}
 
-	private synchronized void updateTexture(){
+	public synchronized void updateTexture(){
 		if(!isRendering()){
 			System.out.println("RE-RENDER TEXTURE");
 			setRenderingFlag(true);
