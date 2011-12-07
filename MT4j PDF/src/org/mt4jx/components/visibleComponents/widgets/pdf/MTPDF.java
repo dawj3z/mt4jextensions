@@ -221,4 +221,12 @@ public class MTPDF extends MTRectangle {
 		this.previewLoader.clear();
 		super.destroy();
 	}
+	/**
+	 * Sets maximum width for rendering (size is limited by memory restrictions)
+	 * @param sizeLimitX Maximum with for rendering
+	 */
+	public void setSizeLimitX(int sizeLimitX) {
+		this.sizeLimitX = sizeLimitX;
+	}
+	
 }
