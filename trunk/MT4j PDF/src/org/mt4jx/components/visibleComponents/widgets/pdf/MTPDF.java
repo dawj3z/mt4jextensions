@@ -25,11 +25,25 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 import org.mt4j.MTApplication;
+import org.mt4j.components.MTComponent;
+import org.mt4j.components.TransformSpace;
+import org.mt4j.components.visibleComponents.shapes.MTPolygon;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor;
+import org.mt4j.util.MTColor;
+import org.mt4j.util.animation.AnimationEvent;
+import org.mt4j.util.animation.IAnimation;
+import org.mt4j.util.animation.IAnimationListener;
+import org.mt4j.util.animation.ani.AniAnimation;
+import org.mt4j.util.font.FontManager;
+import org.mt4j.util.font.IFont;
+import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 
@@ -46,7 +60,9 @@ public class MTPDF extends MTRectangle {
 	private int numberOfPages=1;
 	private RenderedPDFPage currentPage;
 	private boolean rendering = false;
-
+	private MTRectangle infoLayer;
+		private MTTextArea pageLabel;
+	
 	private static CachedPDFPageLoader previewLoader = new CachedPDFPageLoader(1.0, 10);
 	/**
 	 * limit in pixels for pdf rendering result to avoid memory problems
@@ -54,8 +70,11 @@ public class MTPDF extends MTRectangle {
 	private int sizeLimitX=1920;
 	private boolean autoUpdate = true;
 	
-	public MTPDF(PApplet pApplet, File pdf){
-		this(pApplet, pdf, 1);
+	private MTApplication app;
+	
+	public MTPDF(MTApplication app, File pdf){
+		this(app, pdf, 1);
+		this.app = app;
 	}
 	public MTPDF(PApplet pApplet, File pdf, int pageNumber){
 		super(pApplet,0,0);
@@ -111,7 +130,32 @@ public class MTPDF extends MTRectangle {
 				return false;
 			}
 		});
+		addListener();
+		this.infoLayer = new MTRectangle(this.getWidthXYGlobal(), this.getHeightXYGlobal(), app);
+		this.infoLayer.setPickable(false);
+		this.infoLayer.setNoFill(true);
+		this.infoLayer.setNoFill(true);
+		this.infoLayer.setVisible(false);
+		pageLabel = new MTTextArea(app, createFont());
+			pageLabel.setNoFill(true);
+			pageLabel.setNoStroke(true);
+			updateInfoLayer();
+		{
+			float posX = this.getCenterPointGlobal().x;
+			float posy = this.getCenterPointGlobal().y + (this.getHeightXYGlobal()/2f) - pageLabel.getHeightXY(TransformSpace.GLOBAL);
+			pageLabel.setPositionGlobal(new Vector3D(posX,posy));
+		}
+		this.infoLayer.addChild(pageLabel);
+		this.addChild(infoLayer);
 	}
+	
+	public void updateInfoLayer(){
+		pageLabel.setText(getPageNumber() + "/" + getNumberOfPages());
+	}
+	public void setShowInfoLayer(boolean show){
+		this.infoLayer.setVisible(show);
+	}
+	
 	public void setPageNumber(int pn){
 		int pnumber;
 		if(pn<1){
@@ -135,11 +179,13 @@ public class MTPDF extends MTRectangle {
 			System.out.println("page==null: " + (page==null));
 		this.setTexture(page.getPImage());
 		this.pageNumber = pnumber;
+		this.updateInfoLayer();
 		if(pn<this.numberOfPages){
 			new PrefetchThread(previewLoader, pdf, new int[]{pageNumber-1, pageNumber+1}).start();
 		}else{
 			new PrefetchThread(previewLoader, pdf, new int[]{pageNumber-1}).start();
 		}
+
 	}
 
 	public int getPageNumber(){
@@ -227,6 +273,37 @@ public class MTPDF extends MTRectangle {
 	 */
 	public void setSizeLimitX(int sizeLimitX) {
 		this.sizeLimitX = sizeLimitX;
+	}
+	private void addListener(){
+		System.err.println("register TapAndHoldProcessor");
+		//Add tap&hold gesture to clear all tails
+		TapAndHoldProcessor tapAndHold = new TapAndHoldProcessor(app);
+		tapAndHold.setLockPriority(1.1f);
+		tapAndHold.setMaxFingerUpDist(10);
+		tapAndHold.setHoldTime(500);
+		this.registerInputProcessor(tapAndHold);
+		this.addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
+			public boolean processGestureEvent(MTGestureEvent ge) {
+
+				TapAndHoldEvent t = (TapAndHoldEvent)ge;
+
+				if (t.getId() == TapAndHoldEvent.GESTURE_DETECTED){
+//					System.out.println("STARTED");
+					setShowInfoLayer(true);
+				}else if (t.getId() == TapAndHoldEvent.GESTURE_ENDED){
+					setShowInfoLayer(false);
+				}
+//				// funzt leider nicht...
+//				if (t.getId() == TapAndHoldEvent.GESTURE_ENDED && t.isHoldComplete()){
+//					System.out.println("HOLD COMPLETE");
+//				}
+				return false;
+			}
+		});
+	}
+	private IFont createFont() {
+//		return FontManager.getInstance().createFont(getRenderer(), "Arial.bold", 22);
+		return FontManager.getInstance().createFont(getRenderer(), "Arial.bold", 20, new MTColor(0,0,0,150));
 	}
 	
 }
