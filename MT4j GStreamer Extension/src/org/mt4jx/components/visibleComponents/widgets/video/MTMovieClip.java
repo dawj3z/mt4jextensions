@@ -17,8 +17,6 @@
  ***********************************************************************/
 package org.mt4jx.components.visibleComponents.widgets.video;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -34,7 +32,7 @@ import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
-import org.mt4j.input.inputProcessors.componentProcessors.lassoProcessor.IdragClusterable;
+import org.mt4j.input.inputProcessors.componentProcessors.lassoProcessor.ILassoable;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MT4jSettings;
@@ -58,7 +56,7 @@ import codeanticode.gsvideo.GSMovie;
  * 
  * @author Chris
  */
-public class MTMovieClip extends MTRectangle implements IdragClusterable {
+public class MTMovieClip extends MTRectangle implements ILassoable {
 	
 	/** The app. */
 	private PApplet app;
@@ -231,15 +229,14 @@ public class MTMovieClip extends MTRectangle implements IdragClusterable {
 		PImage closeButtonImage = app.loadImage(MT4jSettings.getInstance().getDefaultImagesPath() +
 		"closeButton64.png");
 		closeButton = new MTImageButton(app, closeButtonImage);
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent r) {
-				switch (r.getID()) {
-				case TapEvent.BUTTON_CLICKED:
+		closeButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				TapEvent te = (TapEvent)ge;
+				if (te.isTapped()){
 					close(); 
-					break;
-				default:
-					break;
 				}
+				return false;
 			}
 		});
 		this.addChild(closeButton);
@@ -526,5 +523,53 @@ public class MTMovieClip extends MTRectangle implements IdragClusterable {
 	public MTVideoTexture getVideoTexture(){
 		return this.movieClip;
 	}
+
+
+	public GSMovie getMovie() {
+		return movieClip.getMovie();
+	}
+
+
+	public void jump(float where) {
+		movieClip.jump(where);
+	}
+
+
+	public void stop() {
+		movieClip.stop();
+	}
+
+
+	public void noLoop() {
+		movieClip.noLoop();
+	}
+
+
+	public void pause() {
+		movieClip.pause();
+	}
+
+
+	public float getTime() {
+		return movieClip.getTime();
+	}
+
+
+	public void goToBeginning() {
+		movieClip.goToBeginning();
+	}
+
+
+	public void play() {
+		movieClip.play();
+	}
+
+
+	public void loop() {
+		movieClip.loop();
+	}
+	
+	
+	
 
 }
