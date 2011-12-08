@@ -1,7 +1,5 @@
 package org.mt4jx.components.visibleComponents.widgets;
 
-import javax.media.opengl.GL;
-
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
@@ -14,10 +12,12 @@ import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.Rotate
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.PlatformUtil;
 import org.mt4j.util.math.Plane;
 import org.mt4j.util.math.Ray;
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.Vector3D;
+import org.mt4j.util.opengl.GL10;
 import org.mt4j.util.opengl.GLTexture;
 
 import processing.core.PApplet;
@@ -267,9 +267,10 @@ public class MTWebView extends MTRectangle{
 		if (webView.isDirty()) {
 			RenderBuffer renderBuffer = webView.render();
 			if (renderBuffer != null) {
-				GL gl = Tools3D.getGL(getRenderer());
+//				GL gl = Tools3D.getGL(getRenderer());
+				GL10 gl = PlatformUtil.getGL();
 				gl.glBindTexture(texture.getTextureTarget(), texture.getTextureID());
-				gl.glTexImage2D(texture.getTextureTarget(), 0, GL.GL_RGBA, this.browserWidth, this.browserHeight, 0, 0x80E1, GL.GL_UNSIGNED_BYTE,
+				gl.glTexImage2D(texture.getTextureTarget(), 0, GL10.GL_RGBA, this.browserWidth, this.browserHeight, 0, 0x80E1, GL10.GL_UNSIGNED_BYTE,
 					renderBuffer.getBuffer());
 				
 //				texture.updateGLTexture(renderBuffer.getBuffer());
