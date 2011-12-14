@@ -55,7 +55,6 @@ import com.sun.pdfview.PDFFile;
  */
 public class MTPDF extends MTRectangle {
 	private File pdf;
-	private PApplet pApplet;
 	private int pageNumber;
 	private int numberOfPages=1;
 	private RenderedPDFPage currentPage;
@@ -70,16 +69,16 @@ public class MTPDF extends MTRectangle {
 	private int sizeLimitX=1920;
 	private boolean autoUpdate = true;
 	
-	private MTApplication app;
+	private PApplet app;
 	
-	public MTPDF(MTApplication app, File pdf){
+	public MTPDF(PApplet app, File pdf){
 		this(app, pdf, 1);
 		this.app = app;
 	}
 	public MTPDF(PApplet pApplet, File pdf, int pageNumber){
 		super(pApplet,0,0);
 		this.pdf = pdf;
-		this.pApplet = pApplet;
+		this.app = pApplet;
 		this.pageNumber = pageNumber;
 		
         PDFFile pdffile;
@@ -203,7 +202,7 @@ public class MTPDF extends MTRectangle {
 		if(!isRendering()){
 			System.out.println("RE-RENDER TEXTURE");
 			setRenderingFlag(true);
-			new ThreadAndPreDrawAction(((MTApplication)pApplet).getCurrentScene()) {
+			new ThreadAndPreDrawAction(((MTApplication)app).getCurrentScene()) {
 				private RenderedPDFPage page = null;
 				@Override
 				public void doFirstThreaded() {
@@ -277,7 +276,7 @@ public class MTPDF extends MTRectangle {
 	private void addListener(){
 		System.err.println("register TapAndHoldProcessor");
 		//Add tap&hold gesture to clear all tails
-		TapAndHoldProcessor tapAndHold = new TapAndHoldProcessor(app);
+		TapAndHoldProcessor tapAndHold = new TapAndHoldProcessor((MTApplication)app);
 		tapAndHold.setLockPriority(1.1f);
 		tapAndHold.setMaxFingerUpDist(10);
 		tapAndHold.setHoldTime(500);
