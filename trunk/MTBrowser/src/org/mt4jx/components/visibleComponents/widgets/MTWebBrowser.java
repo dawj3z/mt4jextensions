@@ -24,6 +24,11 @@ import processing.core.PApplet;
 
 import com.badlogic.gdx.awesomium.Awesomium;
 import com.badlogic.gdx.awesomium.JSArguments;
+import com.badlogic.gdx.awesomium.JSValue;
+import com.badlogic.gdx.awesomium.MouseButton;
+import com.badlogic.gdx.awesomium.Rect;
+import com.badlogic.gdx.awesomium.RenderBuffer;
+import com.badlogic.gdx.awesomium.URLFilteringMode;
 import com.badlogic.gdx.awesomium.WebView;
 import com.badlogic.gdx.awesomium.WebViewListener;
 
@@ -263,8 +268,8 @@ public class MTWebBrowser extends MTRoundRectangle {
 		return modifiers;
 	}
 	
-	public WebView getWebView(){
-		return mtWebView.getWebView();
+	public MTWebView getWebView(){
+		return mtWebView;
 	}
 	
 	private class NavBarInputKeyboardListener implements ITextInputListener{
@@ -361,6 +366,198 @@ public class MTWebBrowser extends MTRoundRectangle {
 			clipRect.setVertices(this.getVerticesLocal());
 		}
 	}
+
+
+	public void setZoom(int percent) {
+		mtWebView.setZoom(percent);
+	}
+
+
+	public void resetZoom() {
+		mtWebView.resetZoom();
+	}
+
+
+	public void loadURL(String url, String frameName, String username,
+			String password) {
+		mtWebView.loadURL(url, frameName, username, password);
+	}
+
+
+	public void loadHTML(String html, String frameName) {
+		mtWebView.loadHTML(html, frameName);
+	}
+
+
+	public void loadFile(String file, String frameName) {
+		mtWebView.loadFile(file, frameName);
+	}
+
+
+	public void addURLFilter(String filter) {
+		mtWebView.addURLFilter(filter);
+	}
+
+
+	public void callJavascriptFunction(String object, String function,
+			JSArguments args, String frameName) {
+		mtWebView.callJavascriptFunction(object, function, args, frameName);
+	}
+
+
+	public void clearAllURLFilters() {
+		mtWebView.clearAllURLFilters();
+	}
+
+
+	public void copy() {
+		mtWebView.copy();
+	}
+
+
+	public void createObject(String objectName) {
+		mtWebView.createObject(objectName);
+	}
+
+
+	public void cut() {
+		mtWebView.cut();
+	}
+
+
+	public void destroyObject(String objectName) {
+		mtWebView.destroyObject(objectName);
+	}
+
+
+	public void executeJavascript(String javascript, String frameName) {
+		mtWebView.executeJavascript(javascript, frameName);
+	}
+
+
+	public JSValue executeJavascriptWithResult(String javascript,
+			String frameName, int timeoutMS) {
+		return mtWebView.executeJavascriptWithResult(javascript, frameName,
+				timeoutMS);
+	}
+
+
+	public JSValue executeJavascriptWithResult(String javascript,
+			String frameName) {
+		return mtWebView.executeJavascriptWithResult(javascript, frameName);
+	}
+
+
+	public void focus() {
+		mtWebView.focus();
+	}
+
+
+	public Rect getDirtyBounds() {
+		return mtWebView.getDirtyBounds();
+	}
+
+
+	public boolean isDirty() {
+		return mtWebView.isDirty();
+	}
+
+
+	public boolean isLoadingPage() {
+		return mtWebView.isLoadingPage();
+	}
+
+
+	public void paste() {
+		mtWebView.paste();
+	}
+
+
+	public void pauseRendering() {
+		mtWebView.pauseRendering();
+	}
+
+
+	public RenderBuffer render() {
+		return mtWebView.render();
+	}
+
+
+	public void resize(int width, int height, boolean waitForRepaint,
+			int repaintTimeoutMS) {
+		mtWebView.resize(width, height, waitForRepaint, repaintTimeoutMS);
+	}
+
+
+	public void resumeRendering() {
+		mtWebView.resumeRendering();
+	}
+
+
+	public void setObjectCallback(String objectName, String callbackName) {
+		mtWebView.setObjectCallback(objectName, callbackName);
+	}
+
+
+	public void setObjectProperty(String objectName, String propName,
+			JSValue value) {
+		mtWebView.setObjectProperty(objectName, propName, value);
+	}
+
+
+	public void setURLFilteringMode(URLFilteringMode mode) {
+		mtWebView.setURLFilteringMode(mode);
+	}
+
+
+	public void stop() {
+		mtWebView.stop();
+	}
+
+
+	public void unfocus() {
+		mtWebView.unfocus();
+	}
+
+
+	public void injectKeyDown(int virtualKeyCode, int modifiers,
+			boolean isSystemKey) {
+		mtWebView.injectKeyDown(virtualKeyCode, modifiers, isSystemKey);
+	}
+
+
+	public void injectKeyTyped(char character) {
+		mtWebView.injectKeyTyped(character);
+	}
+
+
+	public void injectKeyUp(int virtualKeyCode, int modifiers,
+			boolean isSystemKey) {
+		mtWebView.injectKeyUp(virtualKeyCode, modifiers, isSystemKey);
+	}
+
+
+	public void injectMouseDown(MouseButton button) {
+		mtWebView.injectMouseDown(button);
+	}
+
+
+	public void injectMouseMove(int x, int y) {
+		mtWebView.injectMouseMove(x, y);
+	}
+
+
+	public void injectMouseUp(MouseButton button) {
+		mtWebView.injectMouseUp(button);
+	}
+
+
+	public void injectMouseWheel(int scrollAmount) {
+		mtWebView.injectMouseWheel(scrollAmount);
+	}
+	
+	
+	
 	
 //	@Override
 //	public void setWidthLocal(float width) {
@@ -381,6 +578,9 @@ public class MTWebBrowser extends MTRoundRectangle {
 //			clipRect.setVertices(this.getVerticesLocal());
 //		}
 //	}
+	
+	
+	
 	
 
 }
