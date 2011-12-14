@@ -23,8 +23,11 @@ import org.mt4j.util.opengl.GLTexture;
 import processing.core.PApplet;
 
 import com.badlogic.gdx.awesomium.JSArguments;
+import com.badlogic.gdx.awesomium.JSValue;
 import com.badlogic.gdx.awesomium.MouseButton;
+import com.badlogic.gdx.awesomium.Rect;
 import com.badlogic.gdx.awesomium.RenderBuffer;
+import com.badlogic.gdx.awesomium.URLFilteringMode;
 import com.badlogic.gdx.awesomium.WebCore;
 import com.badlogic.gdx.awesomium.WebView;
 import com.badlogic.gdx.awesomium.WebViewListener;
@@ -234,19 +237,8 @@ public class MTWebView extends MTRectangle{
 		});
 	}
 	
-	public void loadURL(String url, String frameName, String username, String password) {
-		webView.loadURL(url, frameName, username, password);
-	}
-
-	public void loadHTML(String html, String frameName) {
-		webView.loadHTML(html, frameName);
-	}
-
-	public void loadFile(String file, String frameName) {
-		webView.loadFile(file, frameName);
-	}
 	
-	
+
 	@Override
 	protected void destroyComponent() {
 		super.destroyComponent();
@@ -352,6 +344,195 @@ public class MTWebView extends MTRectangle{
 		this.zoom = 100;
 		this.getWebView().resetZoom();
 	}
+	
+	
+	
+	public void loadURL(String url, String frameName, String username, String password) {
+		webView.loadURL(url, frameName, username, password);
+	}
+
+	public void loadHTML(String html, String frameName) {
+		webView.loadHTML(html, frameName);
+	}
+
+	public void loadFile(String file, String frameName) {
+		webView.loadFile(file, frameName);
+	}
+	
+	
+	public void addURLFilter(String filter) {
+		webView.addURLFilter(filter);
+	}
+
+	public void callJavascriptFunction(String object, String function,
+			JSArguments args, String frameName) {
+		webView.callJavascriptFunction(object, function, args, frameName);
+	}
+
+	public void clearAllURLFilters() {
+		webView.clearAllURLFilters();
+	}
+
+	public void copy() {
+		webView.copy();
+	}
+
+	public void createObject(String objectName) {
+		webView.createObject(objectName);
+	}
+
+	public void cut() {
+		webView.cut();
+	}
+
+	public void destroyObject(String objectName) {
+		webView.destroyObject(objectName);
+	}
+
+	public void executeJavascript(String javascript, String frameName) {
+		webView.executeJavascript(javascript, frameName);
+	}
+
+	public JSValue executeJavascriptWithResult(String javascript,
+			String frameName, int timeoutMS) {
+		return webView.executeJavascriptWithResult(javascript, frameName,
+				timeoutMS);
+	}
+
+	public JSValue executeJavascriptWithResult(String javascript,
+			String frameName) {
+		return webView.executeJavascriptWithResult(javascript, frameName);
+	}
+
+	public void focus() {
+		webView.focus();
+	}
+
+	public Rect getDirtyBounds() {
+		return webView.getDirtyBounds();
+	}
+
+	public void goToHistoryOffset(int offset) {
+		webView.goToHistoryOffset(offset);
+	}
+
+	public boolean isDirty() {
+		return webView.isDirty();
+	}
+
+	public boolean isLoadingPage() {
+		return webView.isLoadingPage();
+	}
+
+	public boolean isResizing() {
+		return webView.isResizing();
+	}
+
+	public void paste() {
+		webView.paste();
+	}
+
+	public void pauseRendering() {
+		webView.pauseRendering();
+	}
+
+	public void reload() {
+		webView.reload();
+	}
+
+	public RenderBuffer render() {
+		return webView.render();
+	}
+
+	public void resize(int width, int height, boolean waitForRepaint,
+			int repaintTimeoutMS) {
+		webView.resize(width, height, waitForRepaint, repaintTimeoutMS);
+	}
+
+	public void resumeRendering() {
+		webView.resumeRendering();
+	}
+
+	public void setListener(WebViewListener listener) {
+		webView.setListener(listener);
+	}
+
+	public void setObjectCallback(String objectName, String callbackName) {
+		webView.setObjectCallback(objectName, callbackName);
+	}
+
+	public void setObjectProperty(String objectName, String propName,
+			JSValue value) {
+		webView.setObjectProperty(objectName, propName, value);
+	}
+
+	public void setTransparent(boolean isTransparent) {
+		webView.setTransparent(isTransparent);
+	}
+
+	public void setURLFilteringMode(URLFilteringMode mode) {
+		webView.setURLFilteringMode(mode);
+	}
+
+	public void stop() {
+		webView.stop();
+	}
+
+	public void unfocus() {
+		webView.unfocus();
+	}
+
+
+
+	public void injectKeyDown(int virtualKeyCode, int modifiers,
+			boolean isSystemKey) {
+		webView.injectKeyDown(virtualKeyCode, modifiers, isSystemKey);
+	}
+
+
+
+	public void injectKeyTyped(char character) {
+		webView.injectKeyTyped(character);
+	}
+
+
+
+	public void injectKeyUp(int virtualKeyCode, int modifiers,
+			boolean isSystemKey) {
+		webView.injectKeyUp(virtualKeyCode, modifiers, isSystemKey);
+	}
+
+
+
+	public void injectMouseDown(MouseButton button) {
+		webView.injectMouseDown(button);
+	}
+
+
+
+	public void injectMouseMove(int x, int y) {
+		webView.injectMouseMove(x, y);
+	}
+
+
+
+	public void injectMouseUp(MouseButton button) {
+		webView.injectMouseUp(button);
+	}
+
+
+
+	public void injectMouseWheel(int scrollAmount) {
+		webView.injectMouseWheel(scrollAmount);
+	}
+
+
+
+	public void selectAll() {
+		webView.selectAll();
+	}
+	
+	
 	
 	
 }
