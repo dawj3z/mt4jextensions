@@ -130,7 +130,7 @@ public class MTPDF extends MTRectangle {
 			}
 		});
 		addListener();
-		this.infoLayer = new MTRectangle(this.getWidthXYGlobal(), this.getHeightXYGlobal(), app);
+		this.infoLayer = new MTRectangle(app, this.getWidthXYGlobal(), this.getHeightXYGlobal());
 		this.infoLayer.setPickable(false);
 		this.infoLayer.setNoFill(true);
 		this.infoLayer.setNoFill(true);
