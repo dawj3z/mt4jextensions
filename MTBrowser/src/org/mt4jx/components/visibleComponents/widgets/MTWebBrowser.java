@@ -40,6 +40,12 @@ public class MTWebBrowser extends MTRoundRectangle {
 	private BrowserInputKeyboardListener browserInput;
 	private NavBarInputKeyboardListener navInput;
 	private MTComponent clippedChildContainer;
+	private MTImageButton closeButton;
+	private MTImageButton homeButton;
+	private MTImageButton stopButton;
+	private MTImageButton reloadButton;
+	private MTImageButton rightButton;
+	private MTImageButton leftButton;
 
 	public MTWebBrowser(PApplet pApplet, int width, int height) {
 //		super(pApplet, 0, 0, 0, width, height);
@@ -62,9 +68,9 @@ public class MTWebBrowser extends MTRoundRectangle {
 		float hOffset = 55;
 		float vOffset = 22.5f;
 		
-		MTImageButton left = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "arrow_left_32x32.png"));
+		leftButton = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "arrow_left_32x32.png"));
 //		left.scale(2, 2, 1, left.getCenterPointLocal(), TransformSpace.LOCAL);
-		left.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+		leftButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent)ge;
@@ -75,13 +81,13 @@ public class MTWebBrowser extends MTRoundRectangle {
 			}
 		});
 		
-		clippedChildContainer.addChild(left);
-		left.setNoStroke(true);
-		left.translate(new Vector3D(hOffset * 1, vOffset, 0));
+		clippedChildContainer.addChild(leftButton);
+		leftButton.setNoStroke(true);
+		leftButton.translate(new Vector3D(hOffset * 1, vOffset, 0));
 		
-		MTImageButton right = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "arrow_right_32x32.png"));
+		rightButton = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "arrow_right_32x32.png"));
 //		right.scale(2, 2, 1, right.getCenterPointLocal(), TransformSpace.LOCAL);
-		right.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+		rightButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent)ge;
@@ -91,13 +97,13 @@ public class MTWebBrowser extends MTRoundRectangle {
 				return false;
 			}
 		});
-		clippedChildContainer.addChild(right);
-		right.setNoStroke(true);
-		right.translate(new Vector3D(hOffset * 2, vOffset, 0));
+		clippedChildContainer.addChild(rightButton);
+		rightButton.setNoStroke(true);
+		rightButton.translate(new Vector3D(hOffset * 2, vOffset, 0));
 		
-		MTImageButton reload = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "loop_32x32.png"));
+		reloadButton = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "loop_32x32.png"));
 //		reload.scale(2, 2, 1, reload.getCenterPointLocal(), TransformSpace.LOCAL);
-		reload.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+		reloadButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent)ge;
@@ -107,14 +113,14 @@ public class MTWebBrowser extends MTRoundRectangle {
 				return false;
 			}
 		});
-		clippedChildContainer.addChild(reload);
-		reload.setNoStroke(true);
-		reload.translate(new Vector3D(hOffset * 3, vOffset, 0));
+		clippedChildContainer.addChild(reloadButton);
+		reloadButton.setNoStroke(true);
+		reloadButton.translate(new Vector3D(hOffset * 3, vOffset, 0));
 		
 		
-		MTImageButton stop = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "minus_alt_32x32.png"));
+		stopButton = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "minus_alt_32x32.png"));
 //		stop.scale(2, 2, 1, stop.getCenterPointLocal(), TransformSpace.LOCAL);
-		stop.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+		stopButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent)ge;
@@ -124,13 +130,13 @@ public class MTWebBrowser extends MTRoundRectangle {
 				return false;
 			}
 		});
-		clippedChildContainer.addChild(stop);
-		stop.setNoStroke(true);
-		stop.translate(new Vector3D(hOffset * 4, vOffset, 0));
+		clippedChildContainer.addChild(stopButton);
+		stopButton.setNoStroke(true);
+		stopButton.translate(new Vector3D(hOffset * 4, vOffset, 0));
 		
-		MTImageButton home = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "home_32x32.png"));
+		homeButton = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "home_32x32.png"));
 //		home.scale(2, 2, 1, home.getCenterPointLocal(), TransformSpace.LOCAL);
-		home.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+		homeButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent)ge;
@@ -140,13 +146,13 @@ public class MTWebBrowser extends MTRoundRectangle {
 				return false;
 			}
 		});
-		clippedChildContainer.addChild(home);
-		home.setNoStroke(true);
-		home.translate(new Vector3D(hOffset * 5, vOffset, 0));
+		clippedChildContainer.addChild(homeButton);
+		homeButton.setNoStroke(true);
+		homeButton.translate(new Vector3D(hOffset * 5, vOffset, 0));
 		
-		MTImageButton close = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "x_alt_32x32.png"));
+		closeButton = new MTImageButton(pApplet, pApplet.loadImage(MT4jSettings.DEFAULT_IMAGES_PATH + "browser" + MTApplication.separator + "x_alt_32x32.png"));
 //		close(2, 2, 1, stop.getCenterPointLocal(), TransformSpace.LOCAL);
-		close.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+		closeButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent)ge;
@@ -156,9 +162,9 @@ public class MTWebBrowser extends MTRoundRectangle {
 				return false;
 			}
 		});
-		clippedChildContainer.addChild(close);
-		close.setNoStroke(true);
-		close.translate(new Vector3D(hOffset * 13.5f, vOffset, 0));
+		clippedChildContainer.addChild(closeButton);
+		closeButton.setNoStroke(true);
+		closeButton.translate(new Vector3D(hOffset * 13.5f, vOffset, 0));
 		
 		
 		//Add a keyboard
@@ -555,6 +561,38 @@ public class MTWebBrowser extends MTRoundRectangle {
 	public void injectMouseWheel(int scrollAmount) {
 		mtWebView.injectMouseWheel(scrollAmount);
 	}
+
+
+	public MTImageButton getCloseButton() {
+		return closeButton;
+	}
+
+
+	public MTImageButton getHomeButton() {
+		return homeButton;
+	}
+
+
+	public MTImageButton getStopButton() {
+		return stopButton;
+	}
+
+
+	public MTImageButton getReloadButton() {
+		return reloadButton;
+	}
+
+
+	public MTImageButton getRightButton() {
+		return rightButton;
+	}
+
+
+	public MTImageButton getLeftButton() {
+		return leftButton;
+	}
+	
+	
 	
 	
 	
