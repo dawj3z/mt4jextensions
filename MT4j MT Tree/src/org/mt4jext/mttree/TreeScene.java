@@ -5,9 +5,6 @@ import java.util.Map;
 
 import org.mt4j.MTApplication;
 import org.mt4j.components.MTComponent;
-import org.mt4j.components.visibleComponents.font.FontManager;
-import org.mt4j.components.visibleComponents.font.IFont;
-import org.mt4j.components.visibleComponents.font.fontFactories.BitmapFontFactory;
 import org.mt4j.components.visibleComponents.shapes.MTLine;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
@@ -22,6 +19,9 @@ import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.camera.IFrustum;
 import org.mt4j.util.camera.MTCamera;
+import org.mt4j.util.font.FontManager;
+import org.mt4j.util.font.IFont;
+import org.mt4j.util.font.fontFactories.BitmapFontFactory;
 
 import processing.core.PGraphics;
 
