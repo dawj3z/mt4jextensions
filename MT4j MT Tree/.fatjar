@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Mon May 07 16:51:37 CEST 2012
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=distribution/runnable.jar
+manifest.mergeall=true
+manifest.mainclass=ewoudvp.uva.designspace.TesterApp
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
