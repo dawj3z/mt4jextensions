@@ -23,17 +23,16 @@ import org.mt4j.util.logging.MTLoggerFactory;
 
 /**
  * <p>
- * Extension of TTFontFactory which quickly extracts the font
- * name from a ttf file.
+ * Extension of TTFontFactory which quickly extracts the font name from a ttf file.
  * </p>
  * 
  * @author R.Scarberry
  */
-public class EnhancedTTFontFactory extends TTFontFactory 
-  implements IEnhancedFontFactory {
+public class EnhancedTTFontFactory extends TTFontFactory implements IEnhancedFontFactory {
 
   /** The Constant logger. */
   private static final ILogger logger = MTLoggerFactory.getLogger(EnhancedTTFontFactory.class.getName());
+
   static {
     logger.setLevel(ILogger.WARN);
   }
@@ -75,13 +74,14 @@ public class EnhancedTTFontFactory extends TTFontFactory
    * @return name of the font or null, if no true-type font is contained
    *         in the file.
    */
+  @Override
   public String extractFontName(String fontFileName) {
     try {
-      String[] names = getFontNames(new File(fontFileName), 0);
+      final String[] names = getFontNames(new File(fontFileName), 0);
       if (names != null) {
         return names[1];
       }
-    } catch (Exception e) {
+    } catch (final Exception e) {
       // Could be either a FontFormatException or an IOException
       logger.debug("Could not extract font name from " + fontFileName + ": " +
           e);
@@ -92,13 +92,13 @@ public class EnhancedTTFontFactory extends TTFontFactory
   public static String[] getFontNames(File ttfFile, int fIndex)
       throws IOException, FontFormatException {
 
+    RandomAccessFile raf = null;
     FileChannel channel = null;
     int fileSize = 0;
     int headerOffset = 0;
 
     try {
-
-      RandomAccessFile raf = new RandomAccessFile(ttfFile, "r");
+      raf = new RandomAccessFile(ttfFile, "r");
       channel = raf.getChannel();
       fileSize = (int) channel.size();
 
@@ -107,19 +107,18 @@ public class EnhancedTTFontFactory extends TTFontFactory
       switch (buffer.getInt()) {
         case TTCF_TAG:
           buffer.getInt(); // skip TTC version ID
-          int directoryCount = buffer.getInt();
+          final int directoryCount = buffer.getInt();
           if (fIndex >= directoryCount) {
             throw new FontFormatException("bad font index: " + fIndex);
           }
-          buffer = readBlock(channel, TTCHEADERSIZE + 4 * fIndex, 4);
+          buffer = readBlock(channel, TTCHEADERSIZE + (4 * fIndex), 4);
           headerOffset = buffer.getInt();
           break;
         case V1TT_TAG:
         case TRUE_TAG:
           break;
         default:
-          throw new FontFormatException(
-              "not a valid true type font file: " + ttfFile);
+          throw new FontFormatException("not a valid true type font file: " + ttfFile);
       }
 
       /*
@@ -130,62 +129,61 @@ public class EnhancedTTFontFactory extends TTFontFactory
        * long (4 32-bit ints)
        */
       buffer = readBlock(channel, headerOffset + 4, 2);
-      int numTables = buffer.getShort();
-      int directoryOffset = headerOffset + DIRECTORYHEADERSIZE;
-      ByteBuffer bbuffer = readBlock(channel, directoryOffset, numTables
-          * DIRECTORYENTRYSIZE);
-      IntBuffer ibuffer = bbuffer.asIntBuffer();
+      final int numTables = buffer.getShort();
+      final int directoryOffset = headerOffset + DIRECTORYHEADERSIZE;
+      final ByteBuffer bbuffer = readBlock(channel, directoryOffset, numTables * DIRECTORYENTRYSIZE);
+      final IntBuffer ibuffer = bbuffer.asIntBuffer();
       DirectoryEntry table = null;
-      DirectoryEntry[] tableDirectory = new DirectoryEntry[numTables];
+      final DirectoryEntry[] tableDirectory = new DirectoryEntry[numTables];
       for (int i = 0; i < numTables; i++) {
         tableDirectory[i] = table = new DirectoryEntry();
         table.tag = ibuffer.get();
         /* checksum */ibuffer.get();
         table.offset = ibuffer.get();
         table.length = ibuffer.get();
-        if (table.offset + table.length > fileSize) {
+        if ((table.offset + table.length) > fileSize) {
           throw new FontFormatException("bad table, tag=" + table.tag);
         }
       }
 
-      byte[] name = new byte[256];
+      final byte[] name = new byte[256];
       buffer = getTableBuffer(channel, tableDirectory, NAME_TAG);
 
       String familyName = null;
       String fullName = null;
 
       if (buffer != null) {
-        ShortBuffer sbuffer = buffer.asShortBuffer();
+        final ShortBuffer sbuffer = buffer.asShortBuffer();
         sbuffer.get(); // format - not needed.
-        short numRecords = sbuffer.get();
+        final short numRecords = sbuffer.get();
         /*
          * The name table uses unsigned shorts. Many of these are known
          * small values that fit in a short. The values that are sizes
          * or offsets into the table could be greater than 32767, so
          * read and store those as ints
          */
-        int stringPtr = sbuffer.get() & 0xffff;
+        final int stringPtr = sbuffer.get() & 0xffff;
         for (int i = 0; i < numRecords; i++) {
-          short platformID = sbuffer.get();
+          final short platformID = sbuffer.get();
           if (platformID != MS_PLATFORM_ID) {
             sbuffer.position(sbuffer.position() + 5);
             continue; // skip over this record.
           }
-          short encodingID = sbuffer.get();
-          short langID = sbuffer.get();
-          short nameID = sbuffer.get();
-          int nameLen = ((int) sbuffer.get()) & 0xffff;
-          int namePtr = (((int) sbuffer.get()) & 0xffff) + stringPtr;
+          final short encodingID = sbuffer.get();
+          final short langID = sbuffer.get();
+          final short nameID = sbuffer.get();
+          final int nameLen = (sbuffer.get()) & 0xffff;
+          final int namePtr = ((sbuffer.get()) & 0xffff) + stringPtr;
           switch (nameID) {
             case FAMILY_NAME_ID:
-              if (familyName == null || langID == ENGLISH_LOCALE_ID) {
+              if ((familyName == null) || (langID == ENGLISH_LOCALE_ID)) {
                 buffer.position(namePtr);
                 buffer.get(name, 0, nameLen);
                 familyName = makeString(name, nameLen, encodingID);
               }
               break;
             case FULL_NAME_ID:
-              if (fullName == null || langID == ENGLISH_LOCALE_ID) {
+              if ((fullName == null) || (langID == ENGLISH_LOCALE_ID)) {
                 buffer.position(namePtr);
                 buffer.get(name, 0, nameLen);
                 fullName = makeString(name, nameLen, encodingID);
@@ -199,10 +197,10 @@ public class EnhancedTTFontFactory extends TTFontFactory
 
     } finally {
 
-      if (channel != null) {
+      if (raf != null) {
         try {
-          channel.close();
-        } catch (IOException ioe) {
+          raf.close();
+        } catch (final IOException ioe) {
           // Ignore.
         }
       }
@@ -214,14 +212,14 @@ public class EnhancedTTFontFactory extends TTFontFactory
 
     DirectoryEntry entry = null;
 
-    for (DirectoryEntry e : entries) {
+    for (final DirectoryEntry e : entries) {
       if (e.tag == tag) {
         entry = e;
         break;
       }
     }
 
-    if (entry == null || entry.length == 0) {
+    if ((entry == null) || (entry.length == 0)) {
       return null;
     }
 
@@ -236,9 +234,9 @@ public class EnhancedTTFontFactory extends TTFontFactory
      * as double-byte characters. ie with a leading zero byte for what
      * properly should be a single byte-char.
      */
-    if (encoding >= 2 && encoding <= 6) {
-      byte[] oldbytes = bytes;
-      int oldlen = len;
+    if ((encoding >= 2) && (encoding <= 6)) {
+      final byte[] oldbytes = bytes;
+      final int oldlen = len;
       bytes = new byte[oldlen];
       len = 0;
       for (int i = 0; i < oldlen; i++) {
@@ -276,9 +274,9 @@ public class EnhancedTTFontFactory extends TTFontFactory
     }
     try {
       return new String(bytes, 0, len, charset);
-    } catch (UnsupportedEncodingException e) {
+    } catch (final UnsupportedEncodingException e) {
       return new String(bytes, 0, len);
-    } catch (Throwable t) {
+    } catch (final Throwable t) {
       return null;
     }
   }
@@ -286,7 +284,7 @@ public class EnhancedTTFontFactory extends TTFontFactory
   public static ByteBuffer readBlock(FileChannel channel, int offset,
       int length) throws IOException {
     ByteBuffer bb = null;
-    if (offset + length <= channel.size()) {
+    if ((offset + length) <= channel.size()) {
       bb = ByteBuffer.allocate(length);
       channel.position(offset);
       channel.read(bb);
