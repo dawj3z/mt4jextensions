@@ -58,10 +58,10 @@ import processing.core.PFont;
  */
 public class EnhancedFontManager {
 
-  private static final ILogger logger = MTLoggerFactory.getLogger(EnhancedFontManager.class.getName());;
+  private static final ILogger LOG = MTLoggerFactory.getLogger(EnhancedFontManager.class.getName());;
 
   static {
-    logger.setLevel(ILogger.INFO);
+    LOG.setLevel(ILogger.DEBUG);
   }
 
   /** The font manager. */
@@ -583,9 +583,7 @@ public class EnhancedFontManager {
         }
 
       } catch (final IOException ioe) {
-
-        logger.error("Error copying resource " + fontResourceName + " to temporary file.");
-
+        LOG.error("Error copying resource " + fontResourceName + " to temporary file");
       } finally {
 
         if (in != null) {
@@ -648,8 +646,8 @@ public class EnhancedFontManager {
 
         if (factoryToUse != null) {
 
-          logger.info("Loading new font \"" + fontName + "\" with factory: " + factoryToUse.getClass().getName());
-          logger.info("Font file = " + fontAbsolutePath);
+          LOG.debug("Loading new font \"" + fontName + "\" with factory: " + factoryToUse.getClass().getName());
+          LOG.debug("Font file = " + fontAbsolutePath);
 
           loadedFont = factoryToUse.createFont(pa, fontAbsolutePath, fontSize, color, antiAliased);
 
@@ -657,14 +655,12 @@ public class EnhancedFontManager {
           if (loadedFont != null) {
             cacheFont(fontName, loadedFont);
           }
-
         } else {
-          logger.error("Couldnt find a appropriate font factory for: " + fontName + " Suffix: " + suffix);
+          LOG.error("Couldnt find a appropriate font factory for: " + fontName + " Suffix: " + suffix);
         }
-
       } catch (final Exception e) {
-        logger.error("Error while trying to create the font: " + fontName);
-        e.printStackTrace();
+        LOG.error("Error while trying to create the font: " + fontName);
+        LOG.error(e.getStackTrace());
       }
     }
 
@@ -758,7 +754,7 @@ public class EnhancedFontManager {
         if ((font.getOriginalFontSize() == fontSize) &&
             font.getFillColor().equals(fillColor) &&
             (font.isAntiAliased() == antiAliased)) {
-          logger.info("Using cached font: " + fontName + " Fontsize: " + Math.round(fontSize) + " FillColor: " + fillColor);
+          LOG.debug("Using cached font: " + fontName + " Fontsize: " + fontSize + " FillColor: " + fillColor);
           return font;
         }
       }

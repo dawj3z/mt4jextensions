@@ -31,10 +31,10 @@ import org.mt4j.util.logging.MTLoggerFactory;
 public class EnhancedTTFontFactory extends TTFontFactory implements IEnhancedFontFactory {
 
   /** The Constant logger. */
-  private static final ILogger logger = MTLoggerFactory.getLogger(EnhancedTTFontFactory.class.getName());
+  private static final ILogger LOG = MTLoggerFactory.getLogger(EnhancedTTFontFactory.class.getName());
 
   static {
-    logger.setLevel(ILogger.WARN);
+    LOG.setLevel(ILogger.WARN);
   }
 
   // Learned how to do all this by perusing the code of sun.font.TrueTypeFont
@@ -83,8 +83,7 @@ public class EnhancedTTFontFactory extends TTFontFactory implements IEnhancedFon
       }
     } catch (final Exception e) {
       // Could be either a FontFormatException or an IOException
-      logger.debug("Could not extract font name from " + fontFileName + ": " +
-          e);
+      LOG.debug("Could not extract font name from " + fontFileName + ": " + e);
     }
     return null;
   }
