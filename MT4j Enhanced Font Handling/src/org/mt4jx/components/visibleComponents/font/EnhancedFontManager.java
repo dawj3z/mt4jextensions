@@ -135,8 +135,7 @@ public class EnhancedFontManager {
         final String drives = "CDEABFGH";
         final int len = drives.length();
         for (int i = 0; i < len; i++) {
-          final String fontDir = drives.substring(i, i + 1)
-              + ":\\Windows\\Fonts";
+          final String fontDir = drives.substring(i, i + 1) + ":\\Windows\\Fonts";
           if (new File(fontDir).isDirectory()) {
             fontPath += File.pathSeparator + fontDir;
             break;
@@ -220,7 +219,6 @@ public class EnhancedFontManager {
     final Set<String> fileExtensions = new HashSet<String>(suffixToFactory.keySet());
 
     // Loop through the individual font directories.
-    //
     for (final String fp : fps) {
 
       final File dir = new File(fp);
@@ -356,7 +354,7 @@ public class EnhancedFontManager {
    * @return the default font
    */
   public IFont getDefaultFont(final PApplet app) {
-    return this.createFont(app,
+    return this.createFontByName(app,
         FontManager.DEFAULT_FONT,
         FontManager.DEFAULT_FONT_SIZE,
         new MTColor(FontManager.DEFAULT_FONT_STROKE_COLOR),
@@ -386,8 +384,7 @@ public class EnhancedFontManager {
    * @return the i font
    */
   public IFont createFont(final PApplet pa, final String fontFileName, final int fontSize, final boolean antiAliased) {
-    return this.createFont(pa, fontFileName, fontSize, new MTColor(
-        FontManager.DEFAULT_FONT_FILL_COLOR), antiAliased);
+    return this.createFontByName(pa, fontFileName, fontSize, new MTColor(FontManager.DEFAULT_FONT_FILL_COLOR), antiAliased);
   }
 
   /**
@@ -405,8 +402,7 @@ public class EnhancedFontManager {
    * @return the i font
    */
   public IFont createFont(final PApplet pa, final String fontFileName, final int fontSize) {
-    return this.createFont(pa, fontFileName, fontSize, new MTColor(
-        FontManager.DEFAULT_FONT_FILL_COLOR));
+    return this.createFont(pa, fontFileName, fontSize, new MTColor(FontManager.DEFAULT_FONT_FILL_COLOR));
   }
 
   /**
@@ -425,7 +421,7 @@ public class EnhancedFontManager {
    * @return the i font
    */
   public IFont createFont(final PApplet pa, final String fontFileName, final int fontSize, final MTColor color) {
-    return this.createFont(pa, fontFileName, fontSize, color, true);
+    return this.createFontByName(pa, fontFileName, fontSize, color, true);
   }
 
   /**
@@ -445,19 +441,21 @@ public class EnhancedFontManager {
    * 
    * @return the i font
    */
-  public IFont createFont(final PApplet pa, final String fontFileName,
-      final int fontSize, final MTColor color, final boolean antiAliased) {
+  public IFont createFontByName(final PApplet pa, final String fontFileName, final int fontSize, final MTColor color, final boolean antiAliased) {
 
     checkAvailableFontsCurrent();
 
     // Try to find a file that exists in one of the font directories with that file name.
     String fontAbsolutePath = fontFileName;
     final String[] fontPaths = fontPaths();
-    for (final String fontPath : fontPaths) {
-      final File f = new File(new File(fontPath), fontFileName);
-      if (f.exists() && f.isFile()) {
-        fontAbsolutePath = f.getAbsolutePath();
-        break;
+    // Loop over the available extensions and check for requested font
+    for (final String fileExtension : suffixToFactory.keySet()) {
+      for (final String fontPath : fontPaths) {
+        final File f = new File(new File(fontPath), fontFileName + fileExtension);
+        if (f.exists() && f.isFile()) {
+          fontAbsolutePath = f.getAbsolutePath();
+          break;
+        }
       }
     }
 
@@ -480,47 +478,11 @@ public class EnhancedFontManager {
    * 
    * @return the font (null if not available)
    */
-  public IFont createFontByName(final PApplet pa, final String fontName,
-      final int fontSize, final MTColor color) {
-    return this.createFontByName(pa, fontName, fontSize, color, true);
+  public IFont createFontByName(final PApplet pa, final String fontName, final int fontSize, final MTColor color) {
+    return createFontByName(pa, fontName, fontSize, color, true);
   }
 
-  /**
-   * Loads and returns a font specified by name. The font name should
-   * be one of those returned by availableFonts().
-   * 
-   * @param pa
-   *          the pa
-   * @param fontName
-   *          the name of the font.
-   * @param fontSize
-   *          the font size
-   * @param fillColor
-   *          the color
-   * @param antiAliased
-   *          whether or not to anti-alias the font
-   * 
-   * @return the font (null if not available)
-   */
-  public IFont createFontByName(final PApplet pa, final String fontName,
-      final int fontSize, final MTColor color,
-      final boolean antiAliased) {
-
-    checkAvailableFontsCurrent();
-
-    String fontFileName = availableFonts.get(fontName);
-    if ((fontFileName == null) || (fontFileName.length() == 0)) {
-      // It's probably a system font. Pretend the font file name is the
-      // same as the font name. Will fall through to the bitmap font factory
-      // which will load it as a processing font.
-      fontFileName = fontName;
-    }
-
-    return this.createFont(pa, fontFileName, fontSize, color, antiAliased);
-  }
-
-  public IFont createFontFromResource(final PApplet pa, final String fontResourceName, final int fontSize,
-      final MTColor color) {
+  public IFont createFontFromResource(final PApplet pa, final String fontResourceName, final int fontSize, final MTColor color) {
     return this.createFontFromResource(pa, fontResourceName, fontSize, color, true);
   }
 
@@ -542,62 +504,37 @@ public class EnhancedFontManager {
    * 
    * @return the font (null if not available)
    */
-  public IFont createFontFromResource(final PApplet pa, final String fontResourceName, final int fontSize,
-      final MTColor color, final boolean antiAliased) {
+  public IFont createFontFromResource(final PApplet pa, final String fontResourceName, final int fontSize, final MTColor color, final boolean antiAliased) {
 
     String fontAbsolutePath = fontResourcesToFiles.get(fontResourceName);
 
     if (fontAbsolutePath == null) {
 
       final String resourcePath = MT4jSettings.DEFAULT_FONT_PATH + fontResourceName;
-      InputStream in = null;
-      OutputStream out = null;
 
-      try {
-
-        in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-
-        // Copy it to a temp file, so the normal method can be used.
-        //
+      try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath)) {
+        // Copy it to a temp file, so the normal method can be used
         if (in != null) {
 
           final File tempFile = File.createTempFile("tmpfont", getFontSuffix(fontResourceName));
           tempFile.deleteOnExit();
 
-          out = new FileOutputStream(tempFile);
-          final byte[] buffer = new byte[4096];
+          try (OutputStream out = new FileOutputStream(tempFile)) {
+            final byte[] buffer = new byte[4096];
 
-          int bytesRead = 0;
-          while ((bytesRead = in.read(buffer)) != -1) {
-            out.write(buffer, 0, bytesRead);
-          }
-          out.flush();
-          out.close();
-          out = null;
+            int bytesRead = 0;
+            while ((bytesRead = in.read(buffer)) != -1) {
+              out.write(buffer, 0, bytesRead);
+            }
 
-          in.close();
-          in = null;
-
-          fontAbsolutePath = tempFile.getAbsolutePath();
-          fontResourcesToFiles.put(fontResourceName, fontAbsolutePath);
-        }
-
-      } catch (final IOException ioe) {
-        LOG.error("Error copying resource " + fontResourceName + " to temporary file");
-      } finally {
-
-        if (in != null) {
-          try {
-            in.close();
-          } catch (final IOException ioe2) { /* ignore */
+            fontAbsolutePath = tempFile.getAbsolutePath();
+            fontResourcesToFiles.put(fontResourceName, fontAbsolutePath);
+          } catch (final IOException e) {
+            LOG.error("Error writing" + fontResourceName + " to temporary file");
           }
         }
-        if (out != null) {
-          try {
-            out.close();
-          } catch (final IOException ioe2) { /* ignore */
-          }
-        }
+      } catch (final IOException e1) {
+        LOG.error("Error creating temporary file for " + fontResourceName + " processing");
       }
     }
 
@@ -608,8 +545,7 @@ public class EnhancedFontManager {
   // If fontAbsolutePath is the name of a system font, the EnhancedBitmapFontFactory will
   // load it as a PFont.
   //
-  private IFont createFontFromFile(final PApplet pa, String fontAbsolutePath,
-      final int fontSize, final MTColor color, final boolean antiAliased) {
+  private IFont createFontFromFile(final PApplet pa, String fontAbsolutePath, final int fontSize, final MTColor color, final boolean antiAliased) {
 
     checkAvailableFontsCurrent();
 
@@ -645,7 +581,6 @@ public class EnhancedFontManager {
         final IEnhancedFontFactory factoryToUse = getFactoryForFileSuffix(suffix);
 
         if (factoryToUse != null) {
-
           LOG.debug("Loading new font \"" + fontName + "\" with factory: " + factoryToUse.getClass().getName());
           LOG.debug("Font file = " + fontAbsolutePath);
 
