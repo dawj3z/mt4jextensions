@@ -28,7 +28,7 @@ public abstract class AbstractDnDAction implements IGestureEventListener {
     private static final ILogger LOG = MTLoggerFactory.getLogger(AbstractDnDAction.class.getName());;
 
     static {
-        LOG.setLevel(ILogger.DEBUG);
+        LOG.setLevel(ILogger.ERROR);
     }
 
     /**
