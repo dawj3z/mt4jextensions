@@ -61,7 +61,7 @@ public class EnhancedFontManager {
   private static final ILogger LOG = MTLoggerFactory.getLogger(EnhancedFontManager.class.getName());;
 
   static {
-    LOG.setLevel(ILogger.DEBUG);
+    LOG.setLevel(ILogger.ERROR);
   }
 
   /** The font manager. */
